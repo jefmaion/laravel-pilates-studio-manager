@@ -29,6 +29,11 @@
     $(document).ready(function () {
 
 
+
+
+        
+
+
         // $.ajax({
         //     type: "get",
         //     url: "{{ route('class.index') }}",
@@ -89,8 +94,18 @@
                         'HH:mm', // top level of text
                         ],
                     events: {
-                        url: '{{ route('class.index') }}'
+                        url: '{{ route('class.index') }}',
+                        data: function() {
+                            obj = {}
+                            $('.calendar-comp').each(function (index, element) {
+                                name = $(this).attr('name');
+                                obj[name] = $(element).val()
+                            });
+
+                            return obj
+                        }
                     },
+
                     eventRender: function(event, element) {
                         element.find(".fc-title").html(event.title);
                     },
@@ -120,7 +135,21 @@
                     
                 });
 
+
+                function getEvents() {
+                    return  {
+                         url: '{{ route('class.index') }}',
+                        data: {
+                            instructor: $('[name=instructor]').val()
+                        }
+                    }
+                }
+
         
+                $('.calendar-comp').change(function (e) { 
+                    console.log(calendar)
+                    calendar.fullCalendar('refetchEvents');
+                });
 
     });
 </script>

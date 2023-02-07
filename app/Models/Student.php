@@ -40,6 +40,10 @@ class Student extends Model
         return $this->hasMany(classes::class);
     }
 
+    public function lastEvolution() {
+       return $this->classes()->where('status', 1)->orderBy('date', 'DESC')->first();
+    }
+
 
     public function getStatusAttribute() {
         $badge = '<span class="badge badge-pill badge-%s"><span></span> %s</span>';

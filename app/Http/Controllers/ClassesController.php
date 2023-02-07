@@ -44,6 +44,8 @@ class ClassesController extends Controller
 
         if ($request->ajax()) {
 
+            
+
 
             $start = Carbon::parse($request->query('start'));
             $end   = Carbon::parse($request->query('end'));
@@ -64,7 +66,19 @@ class ClassesController extends Controller
                 4 => '<i class="far fa-times-circle fa-xs" aria-hidden="true"></i>'
             ];
 
-            $classes = Classes::whereBetween('date', [$start, $end])->get();
+            $params = $request->except(['_', 'start', 'end']);
+
+            $classes = Classes::whereBetween('date', [$start, $end]);
+
+            foreach($params as $key => $value) {
+                if(empty($value)) continue;
+                $classes->where($key, $value);
+            }
+
+            $classes = $classes->get();
+
+
+
 
             $calendar = [];
             foreach ($classes as $class) {
@@ -76,7 +90,7 @@ class ClassesController extends Controller
                     $icon = '<i class="fa fa-exclamation-circle fa-sm text-danger m-1" aria-hidden="true"></i>';
                 }
 
-                $badge =  '<span class=" badge badge-secondary text-dsark p-1"><smalsl><b> ' .  $class->type . '</b></smalsl></span> ';
+                $badge =  '<span class=" badge badge-secondary p-0 px-1"><small><b> ' .  $class->type . '</b></small></span> ';
 
                 $time = $class->time;
                 $time = date('H:i', strtotime($time . '+1 hour'));
@@ -99,7 +113,11 @@ class ClassesController extends Controller
             return responseJSON($calendar);
         }
 
-        return view('classes.index');
+        
+
+        $instructors = $this->toSelectBox(Instructor::all(), 'id', 'name');
+
+        return view('classes.index', compact('instructors'));
     }
 
     /**
@@ -195,7 +213,7 @@ class ClassesController extends Controller
         $instructors = $this->toSelectBox(Instructor::all(), 'id', 'name');
         $exercices = $this->toSelectBox(Exercice::all(), 'id', 'name');
 
-        return view('classes.presence', compact('class', 'instructors', 'exercices'));
+        return view('classes.presence', compact('class', 'instructors', 'exercices', 'ue'));
     }
 
     /**

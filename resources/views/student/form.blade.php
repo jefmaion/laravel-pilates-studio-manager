@@ -24,8 +24,7 @@
 
     <div class="col-2 form-group">
         <label>Sexo</label>
-        <x-form-input type="select" name="gender" :options="['M' => 'Masculino',  'F' => 'Feminino']"
-            value="{{ $student->user->gender }}" />
+        <x-form-input type="select" name="gender" :options="['M' => 'Masculino',  'F' => 'Feminino']" value="{{ $student->user->gender }}" />
     </div>
 
     <div class="col-2 form-group">

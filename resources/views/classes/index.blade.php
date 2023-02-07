@@ -12,6 +12,19 @@
                 </div>
 
                 <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-3 form-group">
+                            <label>Professor</label>
+                            <x-form-input type="select" class="calendar-comp" name="instructor_id" :options="$instructors" />
+                        </div>
+
+                        <div class="col-3 form-group">
+                            <label>Tipo de Aula</label>
+                            <x-form-input type="select" class="calendar-comp" name="type" :options="['AN' => 'Normal', 'RP' => 'Reposicao', 'AE' => 'Experimental']" />
+                        </div>
+                    </div>
+                    
                     @include('classes.calendar')
                 </div>
             </div>
