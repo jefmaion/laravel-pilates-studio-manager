@@ -1,6 +1,6 @@
 <div class="modal-header border-bsottom p-3 bg-whitesmoke">
     <h5 class="modal-title">
-        {{ dateExt($class->date) }}
+        {{ dateExt($class->date) }} - <small> {{ appConfig('classTypes')[$class->type]['label'] }}</small>
     </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span>&times;</span>

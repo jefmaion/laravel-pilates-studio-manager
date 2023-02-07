@@ -16,12 +16,22 @@
                     <div class="row">
                         <div class="col-3 form-group">
                             <label>Professor</label>
-                            <x-form-input type="select" class="calendar-comp" name="instructor_id" :options="$instructors" />
+                            <x-form-input type="select" class="calendar-comp"   name="instructor_id" :options="$instructors" />
                         </div>
 
-                        <div class="col-3 form-group">
+                        <div class="col-2 form-group">
                             <label>Tipo de Aula</label>
                             <x-form-input type="select" class="calendar-comp" name="type" :options="['AN' => 'Normal', 'RP' => 'Reposicao', 'AE' => 'Experimental']" />
+                        </div>
+
+                        <div class="col-2 form-group">
+                            <label>Status da Aula</label>
+                            <x-form-input type="select" class="calendar-comp" name="status" :options="[0 => 'Agendada', 1 => 'Realizada', 2 => 'Falta Justificada', 3 => 'Falta Sem Aviso']" />
+                        </div>
+
+                        <div class="col-5 form-group">
+                            <label>Aluno</label>
+                            <x-form-input type="select" class="calendar-comp" name="student_id" :options="$students" />
                         </div>
                     </div>
                     
