@@ -23,12 +23,17 @@ class Classes extends Model
         'status', 
         'comments',
         'class_order',
-        'finished'
+        'finished',
+        'evolution'
     ];
 
    
     public function classRelated() {
         return $this->belongsTo(Classes::class, 'classes_id', 'id');
+    }
+
+    public function exercices() {
+        return $this->hasMany(ClassExercice::class, 'classes_id', 'id');
     }
 
     public function getWeekdayNameAttribute() {

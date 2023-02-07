@@ -45,6 +45,13 @@
         </li>
 
         <li class="actives">
+            <a class="nav-link" href="{{ route('exercice.index') }}">
+                <i class="fa fa-address-book" aria-hidden="true"></i>
+                <span>Exercícios</span>
+            </a>
+        </li>
+
+        <li class="actives">
             <a class="nav-link" href="#">
                 <i class="fa fa-address-book" aria-hidden="true"></i>
                 <span>Contas a Receber</span>

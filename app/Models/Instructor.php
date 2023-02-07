@@ -28,4 +28,8 @@ class Instructor extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function classes() {
+        return $this->hasMany(classes::class);
+    }
 }

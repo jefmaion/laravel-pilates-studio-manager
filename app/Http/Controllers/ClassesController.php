@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Classes;
 use App\Http\Requests\StoreClassesRequest;
 use App\Http\Requests\UpdateClassesRequest;
+use App\Models\ClassExercice;
+use App\Models\Exercice;
 use App\Models\Instructor;
 use App\Services\ClassService;
 use App\Services\InstructorService;
@@ -67,28 +69,22 @@ class ClassesController extends Controller
             $calendar = [];
             foreach ($classes as $class) {
 
-              
-    
                 $icon = '';
-                $bg = Config::get('application.classStatus')[$class->status]['color'];
+                $bg   = Config::get('application.classStatus')[$class->status]['color'];
 
                 if(!$class->hasScheduledReplacementClass) {
-                    $icon = '<i class="fa fa-exclamation-circle fa-lg text-danger m-1" aria-hidden="true"></i>';
+                    $icon = '<i class="fa fa-exclamation-circle fa-sm text-danger m-1" aria-hidden="true"></i>';
                 }
 
-
-                $badge = '<span class=" badge badge-lisght text-dsark p-1"><smalsl><b> '.$icon.' (' .  $class->type . ')</b></smalsl></span> ';
-
-              
-
+                $badge =  '<span class=" badge badge-secondary text-dsark p-1"><smalsl><b> ' .  $class->type . '</b></smalsl></span> ';
 
                 $time = $class->time;
                 $time = date('H:i', strtotime($time . '+1 hour'));
                 $calendar[] = [
                     'id' => $class->id,
                     // 'title'     =>   '' . $badge . '<span><b>' . $class->student->user->nickname . '</b></span>',
-                    'title' => '<div class="h6 m-0 "><b>' . $class->student->user->nickname . '</b></div>
-                                <div>' . $icon . $class->type . '</div>',
+                    'title' => '<div class="h6 m-0 ">'. $badge .'<b>'  . $class->student->user->nickname . '</b> </div>
+                                <div>'. $icon . $class->instructor->user->nickname.'</div>',
 
                     'start'     => $class->date .  'T' . $class->time,
                     'end'       => $class->date .  'T' . $time,
@@ -197,8 +193,9 @@ class ClassesController extends Controller
         $class = Classes::find($id);
 
         $instructors = $this->toSelectBox(Instructor::all(), 'id', 'name');
+        $exercices = $this->toSelectBox(Exercice::all(), 'id', 'name');
 
-        return view('classes.presence', compact('class', 'instructors'));
+        return view('classes.presence', compact('class', 'instructors', 'exercices'));
     }
 
     /**
@@ -251,14 +248,31 @@ class ClassesController extends Controller
     public function update(UpdateClassesRequest $request, Classes $class)
     {
 
+
+        // dd($request->all());
+
         $data = [
             'status' => $request->get('status'),
             'comments' => $request->get('comments'),
-            'finished' => 1
+            'finished' => 1,
+            'evolution' => $request->get('evolution')
         ];
 
 
         $class->fill($data)->update();
+
+        if($request->get('exercice_id')) {
+            $exercices = [];
+            foreach($request->get('exercice_id') as $exercice_id) {
+                ClassExercice::create([
+                    'exercice_id' => $exercice_id,
+                    'classes_id' => $class->id
+                ]);
+                
+            }
+
+
+        }
 
         if ($request->get('replace')) {
             return redirect()->route('class.replacement', $class);

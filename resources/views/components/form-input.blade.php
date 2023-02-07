@@ -14,7 +14,7 @@
 
 
     @case('select')
-        <select class="form-control {{ $class }} @error($nameDot) is-invalid @enderror" name="{{ $name }}">
+        <select class="form-control {{ $class }} @error($nameDot) is-invalid @enderror" name="{{ $name }}" {{ $multiple }}>
             <option></option>
             @if(isset($options))
                 @foreach($options as $key => $option)

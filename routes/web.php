@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\ExerciceController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\RegistrationController;
@@ -28,6 +29,8 @@ Route::get('/dashboard', function () {
 
 
 Route::resource('/plan', PlanController::class);
+
+Route::resource('/exercice', ExerciceController::class);
 
 Route::get('/student/zipcode/{zipcode}', [StudentController::class, 'zipcodeData']);
 Route::get('/student/{id}/image', [StudentController::class, 'profile'])->name('student.profile');

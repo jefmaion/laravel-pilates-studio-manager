@@ -22,13 +22,14 @@ class FormInput extends Component
     public $rows;
 
     public $options;
+    public $multiple;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($type='text', $name=null, $value=null, $rows=5, $class=null, $label=null, $options=null)
+    public function __construct($type='text', $name=null, $value=null, $rows=5, $class=null, $label=null, $options=null, $multiple=null)
     {
 
 
@@ -39,6 +40,11 @@ class FormInput extends Component
         $this->value = old($this->convertArrayDot($name), $value);
         $this->class = $class;
         $this->rows  = $rows;
+
+
+        $this->multiple = ($multiple == "multiple") ? 'multiple="multiple"' : null;
+
+ 
 
         $this->nameDot = $this->convertArrayDot($name);
 
