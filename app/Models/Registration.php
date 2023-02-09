@@ -54,7 +54,7 @@ class Registration extends Model
     }
 
     
-
+   
 
     public function getCanCancelAttribute() {
         return ($this->status == 1 && $this->daysToRenew > 0);

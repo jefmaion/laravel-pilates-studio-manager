@@ -44,6 +44,24 @@ class Student extends Model
        return $this->classes()->where('status', 1)->orderBy('date', 'DESC')->first();
     }
 
+    public function getLastClassAttribute() {
+        return $this->lastEvolution();
+    }
+
+    public function getLastEvolAttribute() {
+       $ev = $this->classes()->where('status', 1)->orderBy('date', 'DESC')->first();
+
+       return $ev;
+    }
+
+    public function getHasLateInstallmentsAttribute() {
+        return $this->installments()->where('status', 0)->whereDate('due_date', '<', Carbon::now())->count();
+    }
+
+    public function getHasInstallmentsToPayTodayAttribute() {
+        return $this->installments()->where('status', 0)->whereDate('due_date', '=', Carbon::now())->count();
+    }
+
 
     public function getStatusAttribute() {
         $badge = '<span class="badge badge-pill badge-%s"><span></span> %s</span>';

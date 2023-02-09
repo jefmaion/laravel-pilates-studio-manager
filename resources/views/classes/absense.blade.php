@@ -8,7 +8,7 @@
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
-                    Marcar Falta {{ ($status == 2) ? ' Com Aviso' : '' }}
+                    Registrar Falta 
                 </h4>
             </div>
             <div class="card-body">
@@ -25,29 +25,30 @@
                             </div>
 
                             <div class="media-title mb-3">
-                                <a href="{{ route('student.show', $class->student) }}" class="h5">{{ $class->student->user->name }}</a> 
+                                <a href="{{ route('student.show', $class->student) }}" class="h5">{{
+                                    $class->student->user->name }}</a>
                                 <div class=""></div>
                             </div>
 
                             <div class="tesxt-time">
-                              
+
                                 <div class="mb-2">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                        {{ date('d/m/Y', strtotime($class->date)) }} |  <i class="fas fa-clock    "></i>
-                                        {{ $class->time }}  | {{ Config::get('application.classTypes')[$class->type]['label']}}
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    {{ date('d/m/Y', strtotime($class->date)) }} | <i class="fas fa-clock    "></i>
+                                    {{ $class->time }} | {{
+                                    Config::get('application.classTypes')[$class->type]['label']}}
                                 </div>
                                 <div class="mb-2">
-                                    
+
                                 </div>
                                 <div class="mb-2">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     {{ $class->instructor->user->name }}
                                 </div>
                             </div>
-                            
+
                         </div>
                     </li>
-            
                 </ul>
 
 
@@ -56,8 +57,23 @@
                     @method('put')
                     <div class="row">
 
-                        <input type="hidden" name="status" value="{{ $status }}">
 
+                        <div class="col-12 form-group">
+                            <label for="">Tipo de Falta </label>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadioInline1" name="status" class="custom-control-input" value="3" checked>
+                                <label class="custom-control-label" for="customRadioInline1">Falta</label>
+                            </div>
+
+                            @if($class->type !== 'RP')
+
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadioInline2" name="status" class="custom-control-input"
+                                    value="2">
+                                <label class="custom-control-label" for="customRadioInline2">Falta Justificada</label>
+                            </div>
+                            @endif
+                        </div>
 
                         <div class="col-12 form-group notice">
                             <label for="">Motivo da Falta</label>
@@ -66,28 +82,24 @@
 
                     </div>
 
-                    @if($status == 2)
-                    <div class="form-group">
-                        <label class="custom-switch p-0">
-                          <input type="checkbox" name="replace" class="custom-switch-input">
-                          <span class="custom-switch-indicator"></span>
-                          <span class="custom-switch-description">Agendar Reposição</span>
-                        </label>
-                      </div>
-                    @endif
+
+                    <div class="form-group" id="replace-container">
+                        <x-form-input type="switch" name="replace" label="Agendar Reposicao" value="0" />
+                    </div>
+
 
                     <a name="" id="" class="btn btn-secondary" href="{{ route('class.index') }}" role="button">
                         <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
                         Voltar
                     </a>
-                    <button type="submit" class="btn btn-primary">Marcar Falta</button>
+                    <button type="submit" class="btn btn-primary">Registrar Falta</button>
                 </form>
-                
+
             </div>
         </div>
     </div>
 
-    
+
 </div>
 
 
@@ -111,11 +123,29 @@
 @section('scripts')
 <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
-
     // Select2
-  if (jQuery().select2) {
+if (jQuery().select2) {
     $(".select2").select2();
-  }
+}
+
+
+replaceToggle($('[name="status"]:checked').val())
+
+$('[name="status"]').click(function(e) {
+    replaceToggle($(this).val());
+});
+
+function replaceToggle(value) {
+
+    $('#replace-container').hide();
+    $('[name="replace"]').prop('disabled', true);
+
+    if(value == 2) {
+        $('[name="replace"]').prop('disabled', false);
+        $('#replace-container').fadeIn();
+        return 
+    }
+}
 
 
 </script>

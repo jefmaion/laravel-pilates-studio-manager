@@ -48,6 +48,7 @@ class Services {
 
         $item->fill($data);
 
+
         if($item->save()) {
             return true;
         }
@@ -67,6 +68,8 @@ class Services {
         return $plan->delete();
 
     }
+
+    
 
     public function list($enabled=null) {
 

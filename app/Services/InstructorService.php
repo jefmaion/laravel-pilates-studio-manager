@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Libraries\FileManager;
 use App\Models\Instructor;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class InstructorService extends Services {
 
@@ -60,6 +62,23 @@ class InstructorService extends Services {
 
         return false;
 
+    }
+
+    public function saveProfilePhoto(Instructor $instructor, $file) {
+
+        $profileFolder = Config::get('application.imgProfileFolder');
+
+        FileManager::path($profileFolder);
+
+        if(!$fileName = FileManager::saveImage($file)) {
+            return false;
+        }
+
+        if($instructor->user->image) {
+            FileManager::destroy($instructor->user->image);
+        }
+
+        return $instructor->user()->update(['image' => $fileName]);
     }
 
 

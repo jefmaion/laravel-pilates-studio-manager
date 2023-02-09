@@ -139,7 +139,9 @@ class RegistrationService extends Services {
                 'registration_id' => $registration->id,
                 'student_id' => $registration->student->id,
                 'due_date' => $dueDate,
+                'pay_date' => $dueDate,
                 'value' => $registration->final_value,
+                'initial_value' => $registration->final_value,
                 'description' => 'Mensalidade '.$i.'/'.$registration->plan->duration.' de '. $registration->student->user->name,
                 'status' => ($i === 1) ? 1 : 0,
                 'order' => $i

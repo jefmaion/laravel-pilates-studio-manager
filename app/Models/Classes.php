@@ -23,8 +23,7 @@ class Classes extends Model
         'status', 
         'comments',
         'class_order',
-        'finished',
-        'evolution'
+        'finished'
     ];
 
    
@@ -46,6 +45,10 @@ class Classes extends Model
 
     public function student() {
         return $this->belongsTo(Student::class);
+    }
+
+    public function evolution() {
+        return $this->belongsTo(Evolution::class, 'id','classes_id');
     }
 
 

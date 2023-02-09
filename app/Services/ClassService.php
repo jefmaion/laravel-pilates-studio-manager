@@ -3,11 +3,19 @@
 namespace App\Services;
 
 use App\Models\Classes;
+use App\Models\ClassExercice;
+use App\Models\Evolution;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 
 class ClassService extends Services
 {
+
+    const MSG_REPLACE_SUCCESS   = 'Reposição reagendada com sucesso!';
+    const MSG_REPLACE_ERROR   = 'Não foi possível reagendar';
+
+    const MSG_ABSENSE_SUCCESS   = 'Falta registrada com sucesso!';
+    const MSG_ABSENSE_ERROR   = 'Não foi possível registrar a falta';
 
     protected $plan;
 
@@ -19,22 +27,64 @@ class ClassService extends Services
 
     public function addReplacement(Classes $class, $replace)
     {
-        $replacementClass = [
-            'scheduled_instructor_id' =>  $replace['instructor_id'],
-            'weekday' => date('w', strtotime($replace['date'])),
-            'type' => 'RP',
-            'status' => 0,
-            'classes_id' => $class->id,
-            'class_order' => $class->order,
-            'student_id' => $class->student_id
 
-        ];
+        $newClass = $class->replicate();
 
-        $replacementClass = array_merge($replacementClass, $replace);
-        $replacementClass = Classes::create($replacementClass);
+        $newClass->fill($replace);
+        $newClass->type                    = 'RP';
+        $newClass->status                  = 0;
+        $newClass->finished                = 0;
+        $newClass->weekday                 = date('w', strtotime($replace['date']));
+        $newClass->scheduled_instructor_id = $newClass->instructor_id;
 
-        $class->classes_id = $replacementClass->id;
-        $class->update();
+        $newClass->classRelated()->associate($class);
+        $newClass->save();
+
+        $class->classRelated()->associate($newClass);
+
+        if($class->update()) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public function storePresence(Classes $class, $data) {
+
+        $class->fill($data)->update();
+
+    
+        if(isset($data['evolution'])) {
+            Evolution::create([
+                'instructor_id' => $class->instructor_id,
+                'classes_id' => $class->id,
+                'evolution' => $data['evolution']
+            ]);
+        }
+
+        if(isset($data['exercice_id'])) {
+            foreach($data['exercice_id'] as $exercice_id) {
+                ClassExercice::create([
+                    'exercice_id' => $exercice_id,
+                    'classes_id' => $class->id
+                ]);            
+            }
+        }
+        return true;
+        
+    }
+
+    public function storeAbsense(Classes $class, $data) {
+        
+        $class->finished = 1;
+
+        if($class->fill($data)->update()) {
+            return true;
+        }
+
+        return false;
+
     }
 
 
@@ -44,21 +94,6 @@ class ClassService extends Services
         $start = Carbon::parse($request->query('start'));
         $end   = Carbon::parse($request->query('end'));
 
-
-
-        $color = [
-            1 => 'info',
-            2 => 'success',
-            3 => 'warning',
-            4 => 'danger'
-        ];
-
-        $icons = [
-            1 => '<i class="fa fa-circle fa-xs" aria-hidden="true"></i>',
-            2 => '<i class="far fa-check-circle fa-xs" aria-hidden="true"></i>',
-            3 => '<i class="far fa-times-circle fa-xs text-danger" aria-hidden="true"></i>',
-            4 => '<i class="far fa-times-circle fa-xs" aria-hidden="true"></i>'
-        ];
 
         $params = $request->except(['_', 'start', 'end']);
 
@@ -72,29 +107,48 @@ class ClassService extends Services
         $classes = $classes->get();
         $calendar = [];
 
+
         foreach ($classes as $class) {
 
             $icon = '';
             $bg   = Config::get('application.classStatus')[$class->status]['color'];
 
             if (!$class->hasScheduledReplacementClass) {
-                $icon = '<i class="fa fa-exclamation-circle fa-sm text-danger m-1" aria-hidden="true"></i>';
+                $icon = '<i class="fa fa-exclamation-circle fa-lg text-danger m-1" aria-hidden="true"></i>';
             }
 
-            $badge =  '<span class=" badge badge-secondary p-0 px-1"><small><b> ' .  $class->type . '</b></small></span> ';
+            if ($class->status ==1 && !$class->evolution) {
+                $icon = '<i class="fa fa-exclamation-circle fa-lg text-danger m-1" aria-hidden="true"></i>';
+            }
 
-            $time = $class->time;
-            $time = date('H:i', strtotime($time . '+1 hour'));
+            if ($class->student->hasLateInstallments) {
+                $icon = '<span class="text-warning"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>';
+            }
+
+            $badge =  '<span class=" badge badge-secondary p-0 px-1">
+                        <small>
+                            <b>' .  $class->type . '</b>
+                        </small>
+                    </span> ';
+
+            $badge = '';
+
+            $time  = $class->time;
+            $time  = date('H:i', strtotime($time . '+1 hour'));
+            $title = '<div class="m-0 ">
+                        '. $icon  . $badge . 
+                        '<b>'  . $class->student->user->nickname . '</b> 
+                      </div>
+                      <div>
+                      '.appConfig('classTypes')[$class->type]['label'].'
+                      </div>';
+
             $calendar[] = [
                 'id' => $class->id,
-                'title' => '<div class="m-0 ">' . $badge . '<b>'  . $class->student->user->nickname . '</b> </div>
-                                <div>' . $icon . $class->instructor->user->nickname . '</div>',
-
+                'title' => $title,
                 'start'     => $class->date .  'T' . $class->time,
                 'end'       => $class->date .  'T' . $time,
                 'className' => ['bg-' . $bg],
-                // 'backgroundColor' => "#00bcd4"
-                // 'borderColor' => '#00000'
             ];
         }
 

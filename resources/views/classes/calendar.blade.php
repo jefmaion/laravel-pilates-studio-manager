@@ -1,6 +1,7 @@
 <div id="myEvent"></div>
 
 @section('css')
+@parent
 <link rel="stylesheet" href="{{ asset('assets/bundles/fullcalendar/fullcalendar.min.css') }}">
 <style>
 
@@ -10,7 +11,7 @@
 }
 
 .fc-time-grid .fc-slats td {
-  height: 3em; // Change This to your required height
+  height: 2.5em; // Change This to your required height
   border-bottom: 0;
 }
 
@@ -19,57 +20,17 @@
 }
     
 </style>
-@endsection
+@overwrite
 
 @section('scripts')
+    @parent
+
+
 <script src="{{ asset('assets/bundles/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.5/dist/locale/pt-br.js"></script>
 
 <script>
     $(document).ready(function () {
-
-
-
-
-        
-
-
-        // $.ajax({
-        //     type: "get",
-        //     url: "{{ route('class.index') }}",
-        //     dataType: "json",
-        //     success: function (response) {
-                
-
-        //         var calendar = $('#myEvent').fullCalendar({
-        //             height: 'auto',
-        //             defaultView: 'agendaWeek',
-        //             editable: true,
-        //             selectable: true,
-        //             allDaySlot: false,
-        //             minTime: "06:00:00",
-        //             maxTime: "21:00:00",
-        //             slotDuration: '00:30:00',
-        //             // eventLimit: true,
-        //             timeFormat: 'H(:mm)',
-        //             slotEventOverlap:false,
-        //             slotLabelFormat: [
-        //                 'HH:mm', // top level of text
-        //                 ],
-        //             events: response,
-        //             eventRender: function(event, element) {
-        //                     element.find(".fc-title").html(event.title);
-        //             },
-        //             header: {
-        //                 left: 'prev,next today',
-        //                 center: 'title',
-        //                 right: 'month,agendaWeek,agendaDay'
-        //             },
-        //         });
-
-        //     }
-        // });
-
 
         var calendar = $('#myEvent').fullCalendar({
                     header: {
@@ -110,15 +71,8 @@
                         element.find(".fc-title").html(event.title);
                     },
                     eventClick:  function(event, jsEvent, view) {
-                        $.ajax({
-                            type: "get",
-                            url: "class/" + event.id,
-                            success: function (response) {
-                                $('#modelId .modal-content').html(response);
-                                $('#modelId').modal('show')
-                            }
-                        });
                         
+                        showClass(event.id)
                     },
                     dayClick: function(date, jsEvent, view) {
 
@@ -134,6 +88,9 @@
                     }
                     
                 });
+
+
+                
 
 
                 function getEvents() {
@@ -152,5 +109,18 @@
                 });
 
     });
+
+    function showClass(id) {
+        $.ajax({
+                type: "get",
+                url: "class/" + id,
+                success: function (response) {
+
+                    // $('#modelId').modal('hide');
+                    $('#modelId .modal-content').html(response);
+                    $('#modelId').modal('show')
+                }
+            });
+    }
 </script>
-@endsection
+@overwrite

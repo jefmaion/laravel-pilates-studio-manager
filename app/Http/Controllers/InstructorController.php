@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Instructor;
 use App\Http\Requests\StoreInstructorRequest;
+use App\Http\Requests\StoreProfilePhotoRequest;
 use App\Http\Requests\UpdateInstructorRequest;
 use App\Services\InstructorService;
 use App\Traits\Viacep;
@@ -135,7 +136,7 @@ class InstructorController extends Controller
     }
 
 
-    public function profile($id, Request $request) {
+    public function profile(StoreProfilePhotoRequest $request, $id) {
 
 
         $instructor = $this->instructorService->find($id);
@@ -144,25 +145,13 @@ class InstructorController extends Controller
             return view('instructor.image-profile', compact('instructor'));
         }
 
-        $request->validate([
-            'profile_image' => 'required|image',
-        ]);
-  
-        $profileName = time().'.'.$request->profile_image->getClientOriginalExtension();
-        $request->profile_image->move(public_path('profiles'), $profileName);
-
-        if($instructor->user->image) {
-            if(file_exists(public_path('profiles/' . $instructor->user->image))) {
-                unlink(public_path('profiles/' . $instructor->user->image));
-            }
+        if(!$this->instructorService->saveProfilePhoto($instructor, $request->profile_image)) {
+            return responseRedirect(['instructor.profile', $instructor],'Erro ao salvar', 'error');
         }
 
-        $instructor->user()->update(['image' => $profileName]);
-  
         return responseRedirect(['instructor.profile', $instructor],'Foto adicionada com sucesso!');
         
     }
-
 
     public function list()
     {

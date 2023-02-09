@@ -207,7 +207,7 @@ class RegistrationController extends Controller
         foreach($students as $student) {
 
             $plan = $plans[rand(0, count($plans)-1)];
-            $start = date('Y-m-d', strtotime(Carbon::today()->addDays(rand(1, 365))));
+            $start = date('Y-m-d', strtotime(Carbon::parse('2022-06-01')->addDays(rand(1, 365))));
 
             $data = [];
             $data['plan_id']     = $plan->id;

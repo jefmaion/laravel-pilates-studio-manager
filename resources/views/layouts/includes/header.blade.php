@@ -3,10 +3,12 @@
 <title>Otika - Admin Dashboard Template</title>
 <!-- General CSS Files -->
 <link rel="stylesheet" href="{{ asset("assets/css/app.min.css") }}">
-@yield('css')
+
 <!-- Template CSS -->
 <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
+@yield('css')
 <link rel="stylesheet" href="{{ asset("assets/css/components.css") }}">
+
 <!-- Custom style CSS -->
 <link rel="stylesheet" href="{{ asset("assets/css/custom.css") }}">
 

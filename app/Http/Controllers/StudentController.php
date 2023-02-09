@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProfilePhotoRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Instructor;
@@ -16,6 +17,8 @@ use App\View\Components\BadgeStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+
+
 
 class StudentController extends Controller
 {
@@ -38,8 +41,6 @@ class StudentController extends Controller
      */
     public function index()
     {
-
-        
         if($this->request->ajax()) {
             return $this->list();
         }
@@ -148,7 +149,7 @@ class StudentController extends Controller
 
     }
 
-    public function profile($id, Request $request) {
+    public function profile(StoreProfilePhotoRequest $request, $id) {
 
 
         $student = $this->studentService->find($id);
@@ -157,21 +158,10 @@ class StudentController extends Controller
             return view('student.image-profile', compact('student'));
         }
 
-        $request->validate([
-            'profile_image' => 'required|image',
-        ]);
-  
-        $profileName = time().'.'.$request->profile_image->getClientOriginalExtension();
-        $request->profile_image->move(public_path('profiles'), $profileName);
-
-        if($student->user->image) {
-            if(file_exists(public_path('profiles/' . $student->user->image))) {
-                unlink(public_path('profiles/' . $student->user->image));
-            }
+        if(!$this->studentService->saveProfilePhoto($student, $request->profile_image)) {
+            return responseRedirect(['student.profile', $student],'Erro ao salvar', 'error');
         }
 
-        $student->user()->update(['image' => $profileName]);
-  
         return responseRedirect(['student.profile', $student],'Foto adicionada com sucesso!');
         
     }

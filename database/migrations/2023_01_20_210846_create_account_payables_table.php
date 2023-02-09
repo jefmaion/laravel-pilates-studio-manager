@@ -22,8 +22,13 @@ class CreateAccountPayablesTable extends Migration
 
 
             $table->date('due_date');
-            $table->decimal('value');
             $table->string('description');
+            $table->decimal('initial_value')->nullable();
+            $table->date('pay_date')->nullable();
+            $table->decimal('fees')->nullable();
+            $table->integer('delay_days')->default(0);
+            $table->decimal('value')->nullable();
+
             $table->integer('status')->default(0);
             $table->integer('order')->nullable();
 

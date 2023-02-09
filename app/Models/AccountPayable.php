@@ -9,14 +9,22 @@ class AccountPayable extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 
-        'registration_id',
-        'student_id',
-    'due_date',
-    'value',
-    'description','
-    status', 'order'];
+    protected $fillable = [ 'registration_id','student_id','due_date','value','description','status', 'order', 'pay_date', 'initial_value', 'fees', 'delay_days'];
 
+
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
+
+
+    public function getIsLateAttribute() {
+
+        if($this->due_date < date('Y-m-d') && $this->status == 0) {
+            return true;
+        }
+
+        return false;
+    }
 
     public function getStatusLabelAttribute() {
         $badge = '<span class="badge badge-pill badge-%s"><span></span> %s</span>';

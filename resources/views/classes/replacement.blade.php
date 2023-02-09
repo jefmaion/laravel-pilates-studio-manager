@@ -39,6 +39,9 @@
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     {{ $class->instructor->user->name }}
                                 </div>
+                                <p>
+                                    <strong>Motivo da falta: </strong> {{ $class->comments }}
+                                </p>
                             </div>
                             
                         </div>
@@ -80,9 +83,9 @@
                         <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
                         Voltar
                     </a>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modelId">
+                    {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modelId">
                         Launch
-                      </button>
+                      </button> --}}
                     <button type="submit" class="btn btn-primary">Reagendar Aula</button>
                 </form>
                 
@@ -107,7 +110,7 @@
 @endsection
 
 @section('outbody')
-@include('classes.modalcalendar')
+    {{-- @include('classes.modalcalendar') --}}
 @endsection
 
 @section('css')
@@ -115,14 +118,11 @@
 @endsection
 
 @section('scripts')
+
 <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
-
-    // Select2
-  if (jQuery().select2) {
+if (jQuery().select2) {
     $(".select2").select2();
-  }
-
-
+}
 </script>
-@endsection
+@stop

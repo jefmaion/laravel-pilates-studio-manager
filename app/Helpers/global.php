@@ -75,7 +75,7 @@ if(!function_exists('imageProfile')) {
     
     function imageProfile($image=null) {
 
-        $default = 'assets/img/users/user-1.png';
+        $default = '/profiles/no-photo.jpg';
 
         if(empty($image)) {
             return asset($default);
@@ -87,6 +87,16 @@ if(!function_exists('imageProfile')) {
 
         return asset($default);
     }
+}
+
+
+
+if(!function_exists('dateDMY')) {
+    function dateDMY($date) {
+        return date('d/m/Y', strtotime($date));
+    }
+
+
 }
 
 if(!function_exists('dateExt')) {

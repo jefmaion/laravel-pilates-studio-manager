@@ -2,6 +2,8 @@
 
 return [
 
+    'imgProfileFolder' => 'profiles',
+
     'monthNames' => [
         1 => 'Janeiro', 
         2 => 'Fereveiro', 
@@ -78,7 +80,7 @@ return [
         ],
 
         3 => [
-            'label' => 'Falta',
+            'label' => 'Falta sem aviso',
             'color' => 'danger'
         ],
 

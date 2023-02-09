@@ -263,7 +263,16 @@
 
                                     <td>R$ {{ USD_BRL($inst->value) }}</td>
                                     <td>
+
+                                        @if($inst->isLate)
+                                            <a href="{{ route('payable.receive', $inst) }}">
+                                                {!! $inst->status_label !!}
+                                            </a>
+                                        @else
+
                                         {!! $inst->status_label !!}
+
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

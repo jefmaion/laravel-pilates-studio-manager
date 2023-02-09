@@ -15,7 +15,14 @@ class AccountPayableService extends Services {
     }
 
 
-    
+    public function list($enabled=null) {
+
+        if($enabled !== null) {
+            return $this->model->where('enabled', $enabled)->orderBy('id','desc')->get();
+        }
+
+        return $this->model->orderBy('due_date','ASC')->get();
+    }
 
 
 }

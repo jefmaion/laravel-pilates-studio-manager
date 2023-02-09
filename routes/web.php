@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountPayableController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\ExerciceController;
 use App\Http\Controllers\InstructorController;
@@ -32,6 +33,9 @@ Route::resource('/plan', PlanController::class);
 
 Route::resource('/exercice', ExerciceController::class);
 
+Route::get('/account/payable/{id}/receive', [AccountPayableController::class, 'receive'])->name('payable.receive');
+Route::resource('/account/payable', AccountPayableController::class);
+
 Route::get('/student/zipcode/{zipcode}', [StudentController::class, 'zipcodeData']);
 Route::get('/student/{id}/image', [StudentController::class, 'profile'])->name('student.profile');
 Route::post('/student/{id}/image', [StudentController::class, 'profile'])->name('student.profile.store');
@@ -46,8 +50,9 @@ Route::post('/registration/class', [RegistrationController::class, 'setClass'])-
 Route::resource('/registration', RegistrationController::class);
 
 Route::get('/class/{id}/presence', [ClassesController::class, 'presence'])->name('class.presence');
+Route::post('/class/{id}/presence', [ClassesController::class, 'storePresence'])->name('class.presence.store');
 Route::get('/class/{id}/replacement', [ClassesController::class, 'replacement'])->name('class.replacement');
-Route::get('/class/{id}/absense/{type}', [ClassesController::class, 'absense'])->name('class.absense');
+Route::get('/class/{id}/absense', [ClassesController::class, 'absense'])->name('class.absense');
 Route::post('/class/{id}/replacement/store', [ClassesController::class, 'storeReplacement'])->name('class.replace.store');
 Route::resource('/class', ClassesController::class);
 

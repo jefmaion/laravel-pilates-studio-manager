@@ -52,7 +52,7 @@
         </li>
 
         <li class="actives">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('payable.index') }}">
                 <i class="fa fa-address-book" aria-hidden="true"></i>
                 <span>Contas a Receber</span>
             </a>
