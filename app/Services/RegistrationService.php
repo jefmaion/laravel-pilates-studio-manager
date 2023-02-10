@@ -135,15 +135,25 @@ class RegistrationService extends Services {
 
         for($i=1; $i<= $registration->plan->duration; $i++) {
 
+            $paymentMethod = $data['other_payment_method'];
+            $status = 0;
+
+            if($i === 1) {
+                $paymentMethod = $data['first_payment_method'];
+                $status = 1;
+            }
+
             $this->accountPayableService->create([
                 'registration_id' => $registration->id,
                 'student_id' => $registration->student->id,
+                'initial_payment_method_id' => $paymentMethod,
+                'payment_method_id' => $paymentMethod,
                 'due_date' => $dueDate,
                 'pay_date' => $dueDate,
                 'value' => $registration->final_value,
                 'initial_value' => $registration->final_value,
                 'description' => 'Mensalidade '.$i.'/'.$registration->plan->duration.' de '. $registration->student->user->name,
-                'status' => ($i === 1) ? 1 : 0,
+                'status' => $status,
                 'order' => $i
             ]);
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountPayableController;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\EvolutionController;
 use App\Http\Controllers\ExerciceController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PlanController;
@@ -53,8 +54,13 @@ Route::get('/class/{id}/presence', [ClassesController::class, 'presence'])->name
 Route::post('/class/{id}/presence', [ClassesController::class, 'storePresence'])->name('class.presence.store');
 Route::get('/class/{id}/replacement', [ClassesController::class, 'replacement'])->name('class.replacement');
 Route::get('/class/{id}/absense', [ClassesController::class, 'absense'])->name('class.absense');
+// Route::get('/class/{id}/evolution', [ClassesController::class, 'evolution'])->name('class.evolution');
+// Route::post('/class/{id}/evolution', [ClassesController::class, 'storeEvolution'])->name('class.evolution.store');
 Route::post('/class/{id}/replacement/store', [ClassesController::class, 'storeReplacement'])->name('class.replace.store');
+
 Route::resource('/class', ClassesController::class);
+
+Route::resource('/class/{id}/evolution', EvolutionController::class);
 
 // Route::resource('/registration', RegistrationController::class);
 

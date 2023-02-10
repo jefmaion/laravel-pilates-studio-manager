@@ -51,7 +51,6 @@ class Classes extends Model
         return $this->belongsTo(Evolution::class, 'id','classes_id');
     }
 
-
     public function instructor() {
         return $this->belongsTo(Instructor::class);
     }

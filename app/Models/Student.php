@@ -40,6 +40,14 @@ class Student extends Model
         return $this->hasMany(classes::class);
     }
 
+    public function evolutions() {
+        return $this->hasMany(Evolution::class)->orderBy('created_at', 'desc');
+    }
+
+    public function getLastClassesAttribute() {
+        return $this->classes()->where('finished', 1)->orderBy('date', 'desc')->get();
+    }
+
     public function lastEvolution() {
        return $this->classes()->where('status', 1)->orderBy('date', 'DESC')->first();
     }

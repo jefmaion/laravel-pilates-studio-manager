@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Registration;
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Models\Instructor;
+use App\Models\PaymentMethod;
 use App\Models\Plan;
 use App\Models\Student;
 use App\Services\InstructorService;
@@ -67,8 +68,9 @@ class RegistrationController extends Controller
         $students    = $this->toSelectBox($this->studentService->list(), 'id', 'name');
         $plans       = $this->toSelectBox($this->planService->list(), 'id', 'name');
         $instructors = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
+        $paymentMethods = $this->toSelectBox(PaymentMethod::all(), 'id', 'name');
 
-        return view('registration.create', compact('students', 'plans', 'instructors'));
+        return view('registration.create', compact('students', 'plans', 'instructors', 'paymentMethods'));
     }
 
     /**
@@ -191,10 +193,11 @@ class RegistrationController extends Controller
     }
 
     public function __seederRegistrations() {
-        $students = Student::all();
+        $students = Student::limit(10)->get();
         $plans    = Plan::all();
         $instructors = Instructor::all();
         $registration = new RegistrationService();
+        $payments = PaymentMethod::all();
 
         $times = [];
         foreach(Config::get('application.class_time') as $key => $item) {
@@ -207,6 +210,8 @@ class RegistrationController extends Controller
         foreach($students as $student) {
 
             $plan = $plans[rand(0, count($plans)-1)];
+            $pay1 = $plans[rand(0, count($payments)-1)];
+            $pay2 = $plans[rand(0, count($payments)-1)];
             $start = date('Y-m-d', strtotime(Carbon::parse('2022-06-01')->addDays(rand(1, 365))));
 
             $data = [];
@@ -220,6 +225,9 @@ class RegistrationController extends Controller
             $data['final_value'] = $data['value'] - ($data['value'] * ($data['discount'] / 100));
             $data['current']     = 1;
             $data['status']      = 1;
+
+            $data['first_payment_method'] = $pay1->id;
+            $data['other_payment_method'] = $pay2->id;
 
             $classes = [];
 

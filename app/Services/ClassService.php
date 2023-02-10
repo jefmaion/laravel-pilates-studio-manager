@@ -52,6 +52,8 @@ class ClassService extends Services
 
     public function storePresence(Classes $class, $data) {
 
+        $data['finished'] = 1;
+
         $class->fill($data)->update();
 
     
@@ -59,6 +61,7 @@ class ClassService extends Services
             Evolution::create([
                 'instructor_id' => $class->instructor_id,
                 'classes_id' => $class->id,
+                'student_id' => $class->student_id,
                 'evolution' => $data['evolution']
             ]);
         }

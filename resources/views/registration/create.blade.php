@@ -55,6 +55,16 @@
                                         <x-form-input type="text" classs="money" name="final_value" />
                                     </div>
 
+                                    <div class="col-6 form-group">
+                                        <label>Forma de Pagamento da 1º Mensalidade</label>
+                                        <x-form-input type="select" class="select2" name="first_payment_method" :options="$paymentMethods" />
+                                    </div>
+
+                                    <div class="col-6 form-group">
+                                        <label>Forma de Pagamento das demais mensalidades</label>
+                                        <x-form-input type="select" class="select2" name="other_payment_method" :options="$paymentMethods" />
+                                    </div>
+
                                 </div>
 
                         </div>
@@ -185,21 +195,19 @@
 
     // Select2
   if (jQuery().select2) {
-    function formatState (state) {
-        if (!state.id) {
-            return state.text;
-        }
-        var baseUrl = "/user/pages/images/flags";
-        var $state = $(
-           ' '<span><img src="' + baseUrl + '/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>''
-        );
-        return $state;
-        };
+    // function formatState (state) {
+    //     if (!state.id) {
+    //         return state.text;
+    //     }
+    //     var baseUrl = "/user/pages/images/flags";
+    //     var $state = $(
+    //        ' '<span><img src="' + baseUrl + '/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>''
+    //     );
+    //     return $state;
+    //     };
 
 
-    $(".select2").select2({
-        templateResult: formatState
-    });
+    $(".select2").select2();
   }
 
     $('[name=plan_id]').change(function (e) { 

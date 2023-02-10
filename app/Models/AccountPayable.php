@@ -9,11 +9,19 @@ class AccountPayable extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'registration_id','student_id','due_date','value','description','status', 'order', 'pay_date', 'initial_value', 'fees', 'delay_days'];
+    protected $fillable = [ 'registration_id','student_id', 'initial_payment_method_id', 'payment_method_id', 'due_date','value','description','status', 'order', 'pay_date', 'initial_value', 'fees', 'delay_days'];
 
 
     public function student() {
         return $this->belongsTo(Student::class);
+    }
+
+    public function paymentMethod() {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function firstPaymentMethod() {
+        return $this->belongsTo(PaymentMethod::class, 'initial_payment_method_id', 'id');
     }
 
 

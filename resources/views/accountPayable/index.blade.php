@@ -27,6 +27,7 @@
                             
                            
                             <th>Valor</th>
+                            <th>Forma de Pagamento</th>
                             <th>Vencimento</th>
                             <th>Status</th>
                         </tr>
@@ -63,6 +64,7 @@
         columns: [
             {data: 'description'},
             {data: 'value'},
+            {data: 'payment_method'},
             {data: 'due_date'},
             {data: 'status'},
         ]

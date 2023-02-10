@@ -60,14 +60,14 @@
 
                         <input type="hidden" name="status" value="1">
 
-                        <div class="col-9 form-group">
-                            <label>Descrição</label>
-                            <x-form-input name="name" value="{{ $account->description }}" />
-                        </div>
-                    
                         <div class="col-3 form-group">
                             <label>Data de Vencimento</label>
                             <x-form-input type="date" name="duration" value="{{ $account->due_date }}" />
+                        </div>
+
+                        <div class="col-7 form-group">
+                            <label>Descrição</label>
+                            <x-form-input name="name" disabled value="{{ $account->description }}" />
                         </div>
                     
                         <div class="col-2 form-group">
@@ -90,13 +90,18 @@
                             <x-form-input type="date" name="pay_date" value="{{ $account->pay_date }}" />
                         </div>
 
+                        <div class="col-6 form-group">
+                            <label>Forma de Pagamento </label>
+                            <x-form-input type="select" class="select2" name="payment_method_id" value="{{ $account->payment_method_id }}" :options="$paymentMethods" />
+                        </div>
+
                         <div class="col-3 form-group">
                             <label>Dias Atraso</label>
                             <x-form-input type="number" name="duration" value="{{ $account->delay_days }}" />
                         </div>
 
                         
-                    
+                        
                         
                     
                     </div>

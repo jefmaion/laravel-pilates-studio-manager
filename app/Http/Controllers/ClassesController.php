@@ -159,6 +159,17 @@ class ClassesController extends Controller
         return view('classes.absense', compact('class', 'instructors'));
     }
 
+    public function evolution($id) {
+        if (!$class = $this->classService->find($id)) {
+            return responseRedirect('class.index', $this->classService::MSG_NOT_FOUND, 'error');
+        }
+
+        $exercices = $this->toSelectBox(Exercice::all(), 'id', 'name');
+        
+
+        return view('classes.evolution', compact('class', 'exercices'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -190,6 +201,22 @@ class ClassesController extends Controller
         }
 
         return responseRedirect('class.index', $this->classService::MSG_REPLACE_SUCCESS);
+    }
+
+    public function storeEvolution($id, Request $request) {
+
+        if (!$class = $this->classService->find($id)) {
+            return responseRedirect('class.evolution', $this->classService::MSG_NOT_FOUND, 'error');
+        }
+
+        
+        $class->evol()->create([
+            'exercice_id' => $request->get('exercice_id'),
+            'comments' => $request->get('evolution'),
+        ]);
+
+
+        return responseRedirect(['class.evolution', $class]);
     }
 
     /**

@@ -251,6 +251,7 @@
                                 <tr>
                                     <th>Nº Mensalidade</th>
                                     <th>Data</th>
+                                    <th>Forma de Pagamento</th>
                                     <th>Valor</th>
                                     <th>Status</th>
                                 </tr>
@@ -261,6 +262,7 @@
                                     <td scope="row">{{ $inst->order }}º</td>
                                     <td>{{ date('d/m/Y', strtotime($inst->due_date)) }}</td>
 
+                                    <td>{{ $inst->paymentMethod->name }}</td>
                                     <td>R$ {{ USD_BRL($inst->value) }}</td>
                                     <td>
 
@@ -425,26 +427,3 @@
         </div>
     </div>
 </div>
-
-
-
-@endsection
-
-
-
-@section('css')
-<link rel="stylesheet" href="{{ asset('assets/bundles/datatables/datatables.min.css') }}">
-<link rel="stylesheet"
-    href="{{ asset('assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
-@endsection
-
-@section('scripts')
-<script src="{{ asset('assets/bundles/datatables/datatables.min.js') }}"></script>
-<script src="{{ asset('assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('assets/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('assets/js/page/datatables.js') }}"></script>
-<script src="{{ asset('js/datatables.config.js') }}"></script>
-<script>
-    $(".datatables").dataTable({...config, ressponsive:false});
-</script>
-@endsection

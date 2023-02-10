@@ -11,7 +11,7 @@
 }
 
 .fc-time-grid .fc-slats td {
-  height: 2.5em; // Change This to your required height
+  height: 3em; // Change This to your required height
   border-bottom: 0;
 }
 

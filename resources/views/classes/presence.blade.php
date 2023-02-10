@@ -3,7 +3,7 @@
 @section('content')
 <form action="{{ route('class.presence.store', $class) }}" method="post">
 <div class="row">
-    <div class="col-12">
+    <div class="col-6">
         <div class="card">
             <div class="card-header">
                 <h4>
@@ -59,12 +59,12 @@
                         <x-form-input type="select" class="select2 class-props"   name="instructor_id" value="{{ $class->instructor_id }}"  :options="$instructors" />
                     </div>
 
-                    {{-- <div class="col-12 form-group notice">
+                    <div class="col-12 form-group notice">
                         <label for="">Comentários da aula</label>
                         <x-form-input type="textarea" rows="30" name="comments" />
-                    </div> --}}
+                    </div>
 
-                    <div class="form-group col-12">
+                    {{-- <div class="form-group col-12">
                         <label for="">Exercícios/Aparelhos Utilizados</label>
                         <x-form-input type="select" class="select2 class-props" multiple="multiple" name="exercice_id[]" value=""  :options="$exercices" />
                         @if($errors->has('exercice_id'))
@@ -74,7 +74,7 @@
             
                     <div class="form-group col-12">
                         <textarea class="form-control summernote-simple" name="evolution"></textarea>
-                    </div>
+                    </div> --}}
 
                 </div>
 

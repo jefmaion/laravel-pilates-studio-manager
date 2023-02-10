@@ -6,6 +6,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateAccountPayableRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Instructor;
+use App\Models\PaymentMethod;
 use App\Models\Plan;
 use App\Models\Student;
 use App\Services\AccountPayableService;
@@ -166,6 +167,8 @@ class AccountPayableController extends Controller
             $account = $this->calculateTax($account, date('Y-m-d'));
         }
 
+        $paymentMethods = $this->toSelectBox(PaymentMethod::all(), 'id', 'name');
+
 
         // $payDate = date('Y-m-d');
         // $fee = 2;
@@ -179,7 +182,7 @@ class AccountPayableController extends Controller
 
         // dd($account->value, $tax, $daysLate, $a, $taxDays);
 
-        return view('accountPayable.receive', compact('account'));
+        return view('accountPayable.receive', compact('account', 'paymentMethods'));
     }
 
 
@@ -211,6 +214,7 @@ class AccountPayableController extends Controller
                 'value'  =>  'R$ '. USD_BRL($account->value),
                 'due_date' => dateDMY($account->due_date),
                 'status'     => $account->statusLabel,
+                'payment_method'     => $account->paymentMethod->name,
             ];
         }
 

@@ -17,10 +17,11 @@ class CreateEvolutionsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('classes_id');
+            $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('instructor_id');
-            $table->text('evolution')->nullable();
 
             $table->foreign('classes_id')->references('id')->on('classes');
+            $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('instructor_id')->references('id')->on('instructors');
 
         });
