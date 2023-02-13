@@ -92,6 +92,7 @@
             </a>
         </li>
 
+        @if($class->student->registration->lateInstallments->count() > 0)
         <li class="nav-item">
             <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile" aria-selected="false">
                 <i class="fas fa-money-bill-wave"></i> Mensalidades
@@ -100,6 +101,7 @@
                 @endif
             </a>
         </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link" id="contact-tab2" data-toggle="tab" href="#contact2" role="tab" aria-controls="contact" aria-selected="false">
@@ -112,6 +114,7 @@
     </ul>
 
     <div class="tab-content tab-bordeered" id="myTab3Content">
+
         <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab2">
             <table class="table table-ssm table-striped datatables w-100" id="table-def">
                 <thead class="">
@@ -144,7 +147,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($class->student->registration->installments as $inst)
+                    @foreach($class->student->registration->lateInstallments as $inst)
+
+
+
                     <tr>
                         <td>{{ date('d/m/Y', strtotime($inst->due_date)) }}</td>
                         <td>R$ {{ USD_BRL($inst->value) }}</td>
@@ -161,6 +167,7 @@
                 </tbody>
             </table>
         </div>
+
         <div class="tab-pane fade" id="contact2" role="tabpanel" aria-labelledby="contact-tab2">
 
             @if(!$class->evolution && $class->status == 1)
@@ -203,6 +210,7 @@
 
             
         </div>
+
       </div>
 
 {{-- 

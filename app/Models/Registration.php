@@ -40,6 +40,10 @@ class Registration extends Model
     public function installmentsToPay() {
         return $this->hasMany(AccountPayable::class)->where('status', 0);
     }
+
+    public function lateInstallments() {
+        return $this->hasMany(AccountPayable::class)->where('status', 0)->where('due_date', '<', date('Y-m-d'));
+    }
     
     public function getDaysToRenewAttribute() {
         return now()->diffInDays(Carbon::parse($this->end), false);

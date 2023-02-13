@@ -48,7 +48,7 @@ class RegistrationService extends Services {
         }
 
         $this->generateInstallments($registration, $data);
-        $this->generateClasses($registration, $data['class']);
+        // $this->generateClasses($registration, $data['class']);
 
         
         return $registration;
@@ -115,6 +115,61 @@ class RegistrationService extends Services {
                 $numClasses++;
             }
         }
+
+        $classes = Classes::where('registration_id', $registration->id)->orderBy('date', 'asc')->get();
+        $order = 1;
+        foreach($classes as $class) {
+            $class->update(['class_order' => $order]);
+            $order++;
+        }
+
+        $registration->class_value = $registration->final_value / $numClasses;
+        $registration->save();
+        
+        return true;
+    }
+
+    public function addClasses(Registration $registration, $data, $dateToStart=null, $dateToEnd=null) {
+
+        $dateToStart = (empty($dateToStart)) ? $registration->start : $dateToStart;
+        $dateToEnd   = (empty($dateToEnd))   ? $registration->end   : $dateToEnd;
+        $numClasses = 0;
+        
+        // foreach($data as  $class) {
+
+            // if(empty($class['instructor_id']) || empty($class['time'])) {
+            //     continue;
+            // }
+
+            // dd( $data);
+
+            $data['registration_id'] = $registration->id;
+    
+            $newClass  = RegistrationClass::create($data);
+
+            $startDate = (date('w', strtotime($dateToStart)) == $newClass->weekday) ? Carbon::parse($dateToStart) :  Carbon::parse($dateToStart)->next((int) $newClass->weekday); // Get the first friday.
+            
+            $endDate   = Carbon::parse($dateToEnd);
+
+            // dd( $startDate);
+
+            for ($date = $startDate; $date->lte($endDate); $date->addWeek()) {
+
+                $this->classService->create([
+                        'registration_id' => $registration->id,
+                        'student_id' => $registration->student_id,
+                        'instructor_id' => $newClass->instructor_id,
+                        'scheduled_instructor_id' => $newClass->instructor_id,
+                        'type' => 'AN',
+                        'date' => $date->format('Y-m-d'),
+                        'time' => $newClass->time,
+                        'weekday' => $newClass->weekday,
+                        'has_replacement' => 1
+                ]);
+
+                $numClasses++;
+            }
+        // }
 
         $classes = Classes::where('registration_id', $registration->id)->orderBy('date', 'asc')->get();
         $order = 1;

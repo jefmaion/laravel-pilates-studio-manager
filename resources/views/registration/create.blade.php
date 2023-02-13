@@ -77,38 +77,13 @@
                                 <div class="col">
                                     <p><strong>Dias de Aulas</strong> (<a href="#"  data-toggle="modal" data-target="#modelId">Agenda</a>)</p>
                                 </div>
-                                {{-- <div class="col text-right">
-                                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modelId">
-                                        Adicionar Aula
-                                    </button>
-                                </div> --}}
                             </div>
-
-                            {{-- <table class="table table-striped" id="table-class">
-                                <thead>
-                                    <tr>
-                                        <th>Dia da Semana</th>
-                                        <th>Instrutor</th>
-                                        <th>Horário</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-        
-        
-        
-        
-                                </tbody>
-                            </table> --}}
 
                             @if($errors->has('class'))
                             
                             <p class="text-danger"><strong>Atenção: </strong>  {{ $errors->first('class') }}</p>
         
                             @endif
-
-
-
 
                             <table class="table table-striped table-bordered" >
                                 <thead class="thead-dark">

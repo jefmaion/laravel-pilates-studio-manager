@@ -15,7 +15,7 @@
                 @include('classes.calendar')
             </div>
 
-            <div class="col-3">
+            <div class="col-2">
 
                 <div class="dropdown d-inline mr-2">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

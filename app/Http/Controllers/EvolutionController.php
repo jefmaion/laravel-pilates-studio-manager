@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evolution;
+use App\Models\EvolutionExercice;
 use App\Models\Exercice;
 use App\Services\ClassService;
 use Illuminate\Http\Request;
@@ -39,9 +40,10 @@ class EvolutionController extends Controller
         }
 
         $exercices = $this->toSelectBox(Exercice::all(), 'id', 'name');
+        $exercice  = new EvolutionExercice();
         
 
-        return view('evolution.create', compact('class', 'exercices'));
+        return view('evolution.create', compact('class', 'exercices', 'exercice'));
     }
 
     /**
@@ -91,9 +93,21 @@ class EvolutionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idClass, $idExercice)
     {
-        //
+
+        
+
+        if (!$class = $this->classService->find($idClass)) {
+            return responseRedirect('class.index', $this->classService::MSG_NOT_FOUND, 'error');
+        }
+
+        $exercice = EvolutionExercice::find($idExercice);
+
+        $exercices = $this->toSelectBox(Exercice::all(), 'id', 'name');
+        
+
+        return view('evolution.create', compact('class', 'exercices', 'exercice'));
     }
 
     /**
@@ -103,9 +117,20 @@ class EvolutionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $idClass, $idExercice)
     {
-        //
+
+        if (!$class = $this->classService->find($idClass)) {
+            return responseRedirect('class.index', $this->classService::MSG_NOT_FOUND, 'error');
+        }
+
+        $exercice = EvolutionExercice::find($idExercice);
+
+        $exercice->fill($request->except(['_token', '_method']));
+
+        $exercice->save();
+
+        return redirect()->route('evolution.create', $class);
     }
 
     /**
@@ -114,8 +139,16 @@ class EvolutionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idClass, $idExercice)
     {
-        //
+        if (!$class = $this->classService->find($idClass)) {
+            return responseRedirect('class.index', $this->classService::MSG_NOT_FOUND, 'error');
+        }
+
+        $exercice = EvolutionExercice::find($idExercice);
+
+        $exercice->delete();
+
+        return redirect()->route('evolution.create', $class);
     }
 }

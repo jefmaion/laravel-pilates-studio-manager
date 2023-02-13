@@ -11,5 +11,7 @@ class RegistrationClass extends Model
 
     protected $fillable = ['instructor_id', 'registration_id', 'time', 'weekday'];
 
-    
+    public function instructor() {
+        return $this->belongsTo(Instructor::class);
+    }
 }

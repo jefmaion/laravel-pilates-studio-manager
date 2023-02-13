@@ -25,6 +25,10 @@ class AccountPayable extends Model
     }
 
 
+    public function isLateInstallment() {
+        // return ($this->due_date < date('Y-m-d') && $this->status == 0);
+    }
+
     public function getIsLateAttribute() {
 
         if($this->due_date < date('Y-m-d') && $this->status == 0) {

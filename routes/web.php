@@ -6,8 +6,10 @@ use App\Http\Controllers\EvolutionController;
 use App\Http\Controllers\ExerciceController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\RegistrationClassController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
+use App\Models\RegistrationClass;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,9 +48,13 @@ Route::resource('/student', StudentController::class);
 Route::resource('/student/{id}/class', ClassesController::class);
 
 Route::get('/registration/_seeder', [RegistrationController::class, '__seederRegistrations']);
-Route::get('/registration/{registration}/class', [RegistrationController::class, 'addClass'])->name('registration.class');
-Route::post('/registration/class', [RegistrationController::class, 'setClass'])->name('registration.class.add');
+// Route::get('/registration/{registration}/class', [RegistrationController::class, 'addClass'])->name('registration.class');
+// Route::get('/registration/{id}/class', [RegistrationController::class, 'classes'])->name('registration.classes');
+// Route::post('/registration/{id}/class', [RegistrationController::class, 'classes'])->name('registration.classes.store');
+// Route::get('/registration/{id}/renew', [RegistrationController::class, 'renew'])->name('registration.renew');
+
 Route::resource('/registration', RegistrationController::class);
+Route::resource('/registation/{id}/class', RegistrationClassController::class)->names('registration.class');
 
 Route::get('/class/{id}/presence', [ClassesController::class, 'presence'])->name('class.presence');
 Route::post('/class/{id}/presence', [ClassesController::class, 'storePresence'])->name('class.presence.store');
@@ -62,7 +68,8 @@ Route::resource('/class', ClassesController::class);
 
 Route::resource('/class/{id}/evolution', EvolutionController::class);
 
-// Route::resource('/registration', RegistrationController::class);
+// Route::resource('/class/{id}/evolution/{id}/exercices', EvolutionExercicesController::class);
+
 
 Route::get('/instructor/list', [InstructorController::class, 'list']);
 Route::get('/instructor/zipcode/{zipcode}', [InstructorController::class, 'zipcodeData']);

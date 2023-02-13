@@ -202,7 +202,7 @@
                 @endif
 
                 @if($registration->canRenew)
-                        <a name="" id="" class="btn btn-success btn-block" href="{{ route('registration.edit', $registration) }}" role="button">
+                        <a name="" id="" class="btn btn-success btn-block" data-toggle="modal" data-target="#modal-re-enroll" href="#">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Renovar Matrícula
                         </a>
@@ -285,6 +285,10 @@
 
                         <p>
                             <a href="#" data-toggle="modal" data-target="#modal-class-week">Alterar plano de aulas</a>
+                        </p>
+
+                        <p>
+                            <a href="{{ route('registration.class.create', $registration) }}" >Alterar plano de aulas</a>
                         </p>
 
                         <table class="table tabsle-sm table-striped datatables w-100">
@@ -381,8 +385,7 @@
     </div>
 </div>
 
-<div class="modal fade show" id="modal-class-week" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade show" id="modal-class-week" tabindex="-1" role="dialog"aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <form action="{{ route('registration.update', $registration) }}" method="post">
@@ -427,3 +430,83 @@
         </div>
     </div>
 </div>
+
+
+
+<div class="modal fade show" id="modal-re-enroll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered mosdal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Renovar Matrícula</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <h6>Plano</h6>
+                <ul>
+                    <li>{{ $registration->plan->name }}</li>
+                    <li>
+                        Valor atual: <b>R$ {{ USD_BRL($registration->final_value) }} </b> (R$ {{ USD_BRL($registration->value) }} - {{ $registration->discount }}%)
+                   </li>
+                   <li>Data de início: {{ $registration->end  }}</li>
+                </ul>
+
+           
+                <h6> Aulas</h6>
+                <ul>
+                    @foreach($registration->classWeek as $week)
+                    <li>
+                        <b>{{ Config::get('application.weekdays')[$week->weekday] }}</b> às 
+                        <b>{{ Config::get('application.class_time')[$week->time] }} </b> com 
+                        <b>{{ $week->instructor->user->name }}</b>
+                    </li>
+                    @endforeach
+                </ul>
+
+                <h6>Parcelas</h6>
+                <ul>
+                    <li>
+                         Primeira Parecela: <b>Débito/Dinheiro/Pix</b>
+                    </li>
+                    @if($registration->plan->duration > 1)
+                    <li>
+                        Segunda Parecela: <b>Cartão de Crédito</b>
+                   </li>
+                   @endif
+                   
+                </ul>
+            </div>
+
+            <div class="modal-footer bg-whitesmoke">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times    "></i> Fechar</button>
+                <button type="submit" class="btn btn-primary"> <i class="fas fa-trash    "></i> Alterar Informações</button>
+                <a name="" id="" class="btn btn-primary" href="#" role="button"><i class="fas fa-trash    "></i> Renovar Matricula</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('assets/bundles/datatables/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
+@endsection
+
+@section('scripts')
+<script src="{{ asset('assets/bundles/datatables/datatables.min.js') }}"></script>
+<script src="{{ asset('assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
+<!-- Page Specific JS File -->
+<script src="{{ asset('assets/js/page/datatables.js') }}"></script>
+<script src="{{ asset('js/datatables.config.js') }}"></script>
+<script>
+
+    $(".datatables").dataTable({...config});
+</script>
+
+@endsection

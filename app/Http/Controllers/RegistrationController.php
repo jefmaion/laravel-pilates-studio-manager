@@ -116,11 +116,9 @@ class RegistrationController extends Controller
      */
     public function edit(Registration $registration)
     {
-
-
-        if($registration->scheduledClasses()->count() > 0) {
-            return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_RENEW_CLASS, 'warning');
-        }
+        // if($registration->scheduledClasses()->count() > 0) {
+        //     return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_RENEW_CLASS, 'warning');
+        // }
 
         $students    = $this->toSelectBox($this->studentService->list(), 'id', 'name');
         $plans       = $this->toSelectBox($this->planService->list(), 'id', 'name');
@@ -143,11 +141,58 @@ class RegistrationController extends Controller
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         }
 
+
+
         $this->registrationService->updateClassWeek($registration, $request->get('class'));
 
         return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_UPDATE_CLASSES);
     }
 
+    public function classes(Request $request, $id) {
+
+
+
+
+
+        if(!$registration = $this->registrationService->find($id)) {
+            return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
+        };
+
+        $instructors = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
+
+
+        if($request->isMethod('post')) {
+            $this->registrationService->addClasses($registration, $request->all());
+            return redirect()->route('registration.classes', $registration);
+        }
+
+        
+        return view('registration.class', compact('registration', 'instructors'));
+    }
+
+    public function renew($id) {
+
+        if(!$registration = $this->registrationService->find($id)) {
+            return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
+        };
+
+
+        $new = $registration->replicate();
+
+        $new->start = $registration->end;
+        $new->first_payment_method = 1;
+        $new->other_payment_method = 1;
+        $new->class = $registration->classWeek->toArray();
+
+        $registration->update(['status' => 2]);
+        
+
+        $registration = $this->registrationService->makeRegistration($new->toArray());
+
+        if($registration) {
+            return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_CREATE_SUCCESS . ' (<a href="'.route('registration.create').'">Matricular Outro</a>)');
+        } 
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -192,6 +237,25 @@ class RegistrationController extends Controller
         return responseToDataTable($data);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     public function __seederRegistrations() {
         $students = Student::limit(10)->get();
         $plans    = Plan::all();
