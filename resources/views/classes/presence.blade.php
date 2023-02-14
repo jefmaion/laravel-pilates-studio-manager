@@ -61,7 +61,7 @@
 
                     <div class="col-12 form-group notice">
                         <label for="">Comentários da aula</label>
-                        <x-form-input type="textarea" rows="30" name="comments" />
+                        <x-form-input type="textarea" rows="5" name="comments" />
                     </div>
 
                     {{-- <div class="form-group col-12">
@@ -83,7 +83,8 @@
                     Voltar
                 </a>
 
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check-circle    "></i>
                     Marcar Presença
                 </button>
                 

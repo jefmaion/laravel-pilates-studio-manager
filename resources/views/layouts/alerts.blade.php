@@ -40,13 +40,3 @@
 
 @endif
 
-
-
-@section('scripts')
-<script>
-
-setTimeout(function() {
-        $('.alert-autohide').fadeOut();
-}, 15000); // <-- time in milliseconds
-</script>
-@endsection

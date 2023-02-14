@@ -15,10 +15,12 @@ class PaymentMethodSeeder extends Seeder
     public function run()
     {
         $methods = [
+            ['name' => 'Cartão Débito', 'enabled' => 1],
+            ['name' => 'Cartão Crédito', 'enabled' => 1],
             ['name' => 'Dinheiro', 'enabled' => 1],
             ['name' => 'Pix', 'enabled' => 1],
-            ['name' => 'Cartão Crédito', 'enabled' => 1],
-            ['name' => 'Cartão Débito', 'enabled' => 1],
+           
+            
 
         ];
 

@@ -78,6 +78,13 @@ class Classes extends Model
         $badge = '<span class="badge badge-pill badge-%s"><span></span> %s</span>';
 
         $status = Config::get('application.classStatus')[$this->status];
+
+        //<span data-toggle="tooltip" title="" data-original-title="Tooltip, bro!">
+
+        if(!empty($this->comments)) {
+            $status['label'] = '*'.$status['label'];
+            $badge = '<span data-toggle="tooltip" title="" data-original-title="'.$this->comments.'">'.$badge.'<span>';
+        }
         
         return sprintf($badge, $status['color'], $status['label']);
 

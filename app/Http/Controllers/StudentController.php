@@ -162,7 +162,7 @@ class StudentController extends Controller
             return responseRedirect(['student.profile', $student],'Erro ao salvar', 'error');
         }
 
-        return responseRedirect(['student.profile', $student],'Foto adicionada com sucesso!');
+        return responseRedirect(['student.show', $student],'Foto adicionada com sucesso!');
         
     }
 

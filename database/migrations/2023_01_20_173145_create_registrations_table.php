@@ -29,6 +29,7 @@ class CreateRegistrationsTable extends Migration
             $table->float('class_value')->nullable();
             $table->date('start');
             $table->date('end');
+            $table->text('comments')->nullable();
             $table->integer('status')->nullable();
             $table->date('cancellation_date')->nullable();
             $table->string('cancellation_reason', 1000)->nullable();

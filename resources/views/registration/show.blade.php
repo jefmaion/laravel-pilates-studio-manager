@@ -12,7 +12,7 @@
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
-                    Aluno 
+                    Matrícula de {{ $registration->student->user->name }}
                 </h4>
             </div>
 
@@ -26,8 +26,7 @@
 
                 <div class="author-box-details">
                     <div class="author-box-name">
-                        <a href="{{ route('student.show', $registration->student) }}">{{
-                            $registration->student->user->name }}</a>
+                        <a href="{{ route('student.show', $registration->student) }}">{{$registration->student->user->name }}</a>
                     </div>
                     <div class="author-box-description">
                         <div>
@@ -125,6 +124,14 @@
                             </div>
                             <div class="col">
                                 <span class="float-right text-muted text-right">
+
+                                    @if(empty($registration->classWeek))
+                                    <a name="" id="" class="btn btn-primary" href="{{ route('registration.class.index', $registration) }}" >
+                                        Adicionar/Alterar Aulas
+                                    </a>
+                                    @endif
+
+
                                     @foreach($registration->classWeek as $week)
                                     <div>{{ Config::get('application.weekdays')[$week->weekday] }} às {{ Config::get('application.class_time')[$week->time] }}</div>
                                     @endforeach
@@ -235,21 +242,21 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
                             aria-controls="home" aria-selected="true">Mensalidades ({{
-                            count($registration->installments) }})</a>
+                                count($registration->installments) }})</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                            aria-controls="profile" aria-selected="false">Aulas ({{ count($registration->classes)
+                            aria-controls="profile" aria-selected="false">Grade de Aulas ({{ count($registration->classes)
                             }})</a>
                     </li>
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <table class="table tabsle-sm table-striped datatables w-100" id="table-def">
+                        <table class="table tabsle-sm table-striped datatables w-100" id="table-def" style="font-size:12px">
                             <thead class="">
                                 <tr>
-                                    <th>Nº Mensalidade</th>
+                                    {{-- <th>Nº Mensalidade</th> --}}
                                     <th>Data</th>
                                     <th>Forma de Pagamento</th>
                                     <th>Valor</th>
@@ -259,7 +266,7 @@
                             <tbody>
                                 @foreach($registration->installments as $inst)
                                 <tr>
-                                    <td scope="row">{{ $inst->order }}º</td>
+                                    {{-- <td scope="row">{{ $inst->order }}º</td> --}}
                                     <td>{{ date('d/m/Y', strtotime($inst->due_date)) }}</td>
 
                                     <td>{{ $inst->paymentMethod->name }}</td>
@@ -283,18 +290,16 @@
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
+            
                         <p>
-                            <a href="#" data-toggle="modal" data-target="#modal-class-week">Alterar plano de aulas</a>
+                            <a name="" id="" class="btn btn-primary" href="{{ route('registration.class.index', $registration) }}" role="button">
+                                Adicionar/Alterar Aulas
+                            </a>
                         </p>
 
-                        <p>
-                            <a href="{{ route('registration.class.create', $registration) }}" >Alterar plano de aulas</a>
-                        </p>
-
-                        <table class="table tabsle-sm table-striped datatables w-100">
+                        <table class="table tabsle-sm table-striped datatables w-100" style="font-size:12px">
                             <thead>
                                 <tr>
-                                    <th>Nº Aula</th>
                                     <th>Data</th>
                                     <th>Dia</th>
                                     <th>Hora</th>
@@ -305,11 +310,13 @@
                             <tbody>
                                 @foreach($registration->classes as $class)
                                 <tr>
-                                    <td scope="row">{{ $class->class_order }}º</td>
                                     <td>{{ date('d/m/Y', strtotime($class->date)) }}</td>
                                     <td>{{ $class->weekdayName }}</td>
                                     <td>{{ $class->time }}</td>
                                     <td>
+                                        <figure class="avatar mr-2 avatar-sm">
+                                            <img src="{{ imageProfile($class->instructor->user->image) }}" alt="...">
+                                          </figure>
                                         {{ $class->instructor->user->name }}
                                     </td>
                                     <td>

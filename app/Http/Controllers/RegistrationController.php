@@ -257,9 +257,9 @@ class RegistrationController extends Controller
 
     
     public function __seederRegistrations() {
-        $students = Student::limit(10)->get();
+        $students = Student::limit(40)->get();
         $plans    = Plan::all();
-        $instructors = Instructor::all();
+        $instructors = Instructor::limit(3)->get();
         $registration = new RegistrationService();
         $payments = PaymentMethod::all();
 
@@ -276,7 +276,7 @@ class RegistrationController extends Controller
             $plan = $plans[rand(0, count($plans)-1)];
             $pay1 = $plans[rand(0, count($payments)-1)];
             $pay2 = $plans[rand(0, count($payments)-1)];
-            $start = date('Y-m-d', strtotime(Carbon::parse('2022-06-01')->addDays(rand(1, 365))));
+            $start = date('Y-m-d', strtotime(Carbon::parse('2023-01-01')->addDays(rand(1, 365))));
 
             $data = [];
             $data['plan_id']     = $plan->id;
@@ -293,19 +293,22 @@ class RegistrationController extends Controller
             $data['first_payment_method'] = $pay1->id;
             $data['other_payment_method'] = $pay2->id;
 
+
+            $reg = $registration->makeRegistration($data);
+
             $classes = [];
 
             for($i=0;$i<=$plan->class_per_week; $i++) {
-                $data['class'][] = [
+                $registration->addClasses($reg, [
                     'instructor_id' => $instructors[rand(0, count($instructors)-1)]->id,
                     'weekday'   => rand(1,6),
                     'time'  => $times[rand(0, count($times)-1)]
-                ];
+                ]);
             }
 
     
             
-            $registration->makeRegistration($data);
+           
         }
     }
 }

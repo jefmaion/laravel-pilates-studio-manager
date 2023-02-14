@@ -188,6 +188,14 @@ class RegistrationService extends Services {
 
         $dueDate =  Carbon::parse(date('Y-m-', strtotime($data['start'])) . $data['due_date']) ;
 
+        if(!isset($data['other_payment_method'])) {
+            $data['other_payment_method'] = 2;
+        }
+
+        if(!isset($data['first_payment_method'])) {
+            $data['first_payment_method'] = 1;
+        }
+
         for($i=1; $i<= $registration->plan->duration; $i++) {
 
             $paymentMethod = $data['other_payment_method'];

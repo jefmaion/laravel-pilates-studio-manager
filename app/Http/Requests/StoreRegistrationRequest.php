@@ -42,9 +42,9 @@ class StoreRegistrationRequest extends FormRequest
             'start' => 'required',
 
 
-            'class' => 'array|min:'.$min.'|max:'.$min,
-            'class.*.instructor_id' => 'required_with:class.*.time',
-            'class.*.time' => 'required_with:class.*.instructor_id'
+            // 'class' => 'array|min:'.$min.'|max:'.$min,
+            // 'class.*.instructor_id' => 'required_with:class.*.time',
+            // 'class.*.time' => 'required_with:class.*.instructor_id'
         ];
     }
 
@@ -55,19 +55,19 @@ class StoreRegistrationRequest extends FormRequest
         //     'value' => BRL_USD($this->value)
         // ]);
 
-        $values = [];
-        foreach($this->class as $key => $item) {
+        // $values = [];
+        // foreach($this->class as $key => $item) {
 
-            //verifica se ta vazio
-            if(empty($item['instructor_id']) && empty($item['time'])) {
-                continue;
-            }
+        //     //verifica se ta vazio
+        //     if(empty($item['instructor_id']) && empty($item['time'])) {
+        //         continue;
+        //     }
 
-            $values[$key] = $item;
-        }
+        //     $values[$key] = $item;
+        // }
 
-        $this->merge([
-            'class' => $values
-        ]);
+        // $this->merge([
+        //     'class' => $values
+        // ]);
     }
 }

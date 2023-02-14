@@ -133,7 +133,7 @@ class AccountPayableController extends Controller
             return responseRedirect(['accountPayable.show', $account], $this->accountPayable::MSG_UPDATE_ERROR, 'error');
         } 
 
-        return responseRedirect(['payable.show', $account], $this->accountPayable::MSG_UPDATE_SUCCESS);
+        return responseRedirect('payable.index', $this->accountPayable::MSG_UPDATE_SUCCESS);
 
     }
 

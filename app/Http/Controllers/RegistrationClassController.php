@@ -2,18 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Instructor;
+use App\Models\Registration;
+use App\Models\RegistrationClass;
+use App\Services\RegistrationService;
 use Illuminate\Http\Request;
 
 class RegistrationClassController extends Controller
 {
+
+    private $request;
+    private $registrationService;
+    private $studentService;
+    private $instructorService;
+    private $planService;
+
+
+    public function __construct(
+        RegistrationService $registrationService
+    )
+    {
+        $this->registrationService = $registrationService;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        if(!$registration = $this->registrationService->find($id)) {
+            return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
+        };
+
+        $instructors = $this->toSelectBox(Instructor::all(), 'id', 'name');
+
+
+        // if($request->isMethod('post')) {
+        //     $this->registrationService->addClasses($registration, $request->all());
+        //     return redirect()->route('registration.classes', $registration);
+        // }
+
+        
+        return view('registration.class', compact('registration', 'instructors'));
     }
 
     /**
@@ -32,9 +65,17 @@ class RegistrationClassController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+
+        if(!$registration = $this->registrationService->find($id)) {
+            return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
+        };
+
+        $this->registrationService->addClasses($registration, $request->all());
+        return redirect()->route('registration.class.index', $registration);
+
+
     }
 
     /**
@@ -77,8 +118,15 @@ class RegistrationClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $idClass)
     {
-        //
+
+        $registration = Registration::find($id);
+        $class       =  RegistrationClass::find($idClass);
+
+        $registration->classes()->where('type', 'AN')->where('status', 0)->where('weekday', $class->weekday)->where('time', $class->time)->delete();
+        $registration->classWeek()->where('id', $idClass)->delete();
+
+        return redirect()->route('registration.class.index', $registration);
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-8">
+    <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h4>
@@ -20,12 +20,12 @@
 
                                 <div class="row">
 
-                                    <div class="col-12 form-group">
+                                    <div class="col-9 form-group form-group-lg">
                                         <label>Aluno</label>
-                                        <x-form-input type="select" class="select2" name="student_id" :options="$students" />
+                                        <x-form-input type="select" class="select2 input-lg" name="student_id" :options="$students" />
                                     </div>
             
-                                    <div class="col-2 form-group">
+                                    <div class="col-3 form-group">
                                         <label>Inicio das Aulas</label>
                                         <x-form-input type="date" name="start" value="{{ date('Y-m-d') }}" />
                                     </div>
@@ -35,7 +35,7 @@
                                         <x-form-input type="number" name="due_date" />
                                     </div>
             
-                                    <div class="col-3 form-group">
+                                    <div class="col-4 form-group">
                                         <label>Plano</label>
                                         <x-form-input type="select" class="select2" name="plan_id" :options="$plans" />
                                     </div>
@@ -45,7 +45,7 @@
                                         <x-form-input type="text" classs="money" name="value" />
                                     </div>
             
-                                    <div class="col-1 form-group">
+                                    <div class="col-2 form-group">
                                         <label>Desconto</label>
                                         <x-form-input type="number" name="discount" />
                                     </div>
@@ -56,19 +56,24 @@
                                     </div>
 
                                     <div class="col-6 form-group">
-                                        <label>Forma de Pagamento da 1º Mensalidade</label>
+                                        <label>Pagamento da 1º Mensalidade</label>
                                         <x-form-input type="select" class="select2" name="first_payment_method" :options="$paymentMethods" />
                                     </div>
 
                                     <div class="col-6 form-group">
-                                        <label>Forma de Pagamento das demais mensalidades</label>
+                                        <label>Pagamento das demais mensalidades</label>
                                         <x-form-input type="select" class="select2" name="other_payment_method" :options="$paymentMethods" />
+                                    </div>
+
+                                    <div class="col-12 form-group">
+                                        <label>Observações</label>
+                                        <x-form-input type="textarea" rows="5" class="sselect2" name="comments"  />
                                     </div>
 
                                 </div>
 
                         </div>
-
+{{-- 
                         <div class="col-12">
                             <hr>
                             
@@ -117,7 +122,7 @@
                             </table>
         
                            
-                        </div>
+                        </div> --}}
                      
 
                     </div>

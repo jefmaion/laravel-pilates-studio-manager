@@ -1,6 +1,6 @@
 <div class="modal-header bg-whitesmoke p-3">
     <h5 class="modal-title">
-        {{ dateExt($class->date) }}
+        {{ appConfig('classTypes')[$class->type]['label']  }} - {{ appConfig('classStatus')[$class->status]['label']  }}
     </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span>&times;</span>
@@ -27,12 +27,13 @@
 
                         <div class="">
                             <div class="mb-2">
-                                <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }}
+                                {{ $class->registration->plan->name }} <span class="mx-1 text-light">|</span>
+                                <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }} 
+                                
                             </div>
                             <div class="mb-2">
                                 <i class="fas fa-clock"></i> {{ $class->time }} <span class="mx-1 text-light">|</span>
-                                <i class="fas fa-calendar"></i> {{ dateDMY($class->date) }} <span
-                                    class="mx-1 text-light">|</span>
+                                <i class="fas fa-calendar"></i> {{ dateDMY($class->date) }} <span class="mx-1 text-light">|</span>
                                 <i class="fa fa-user-circle"></i> {{ $class->instructor->user->name }}
                             </div>
                         </div>
@@ -58,10 +59,7 @@
                         </div>
 
                         <div>
-                            <span
-                                class="badge badge-pill badge-{{ appConfig('classStatus')[$class->status]['color'] }}">
-                                {{ appConfig('classStatus')[$class->status]['label'] }}
-                            </span>
+                            
 
                             @if($class->student->hasInstallmentsToPayToday)
                             <span class="badge badge-pill badge-warning">
@@ -69,11 +67,7 @@
                             </span>
                             @endif
 
-                            @if($class->comments)
-                            <div class="mt-2 text-muted">
-                                <b>Comentários: </b> {{ $class->comments }}
-                            </div>
-                            @endif
+                       
 
                         </div>
                     </div>
@@ -84,7 +78,7 @@
 
     <br>
 
-    <ul class="nav nav-tabs nav-justiefied" id="myTab2" role="tablist">
+    <ul class="nav nav-tabs nav-justified" id="myTab2" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home2" role="tab" aria-controls="home" aria-selected="true">
                 <i class="fas fa-calendar-check    "></i>
@@ -116,10 +110,11 @@
     <div class="tab-content tab-bordeered" id="myTab3Content">
 
         <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab2">
-            <table class="table table-ssm table-striped datatables w-100" id="table-def">
+            <table class="table table-sm table-striped datatables w-100" id="table-def">
                 <thead class="">
                     <tr>
                         <th>Data</th>
+                        <th>Tipo</th>
                         <th>Instrutor</th>
                         <th>Status</th>
                     </tr>
@@ -127,9 +122,18 @@
                 <tbody>
                     @foreach($class->student->lastClasses as $cls)
                     <tr>
-                        <td>{{ date('d/m/Y', strtotime($cls->date)) }} {{ $cls->time }}</td>
-                        <td>{{ $cls->instructor->user->name }}</td>
-                        <td>{!! $cls->statusClass !!}</td>
+                        <td>{{ date('d/m/Y', strtotime($cls->date)) }} {{ date('H:i', strtotime($cls->time)) }}</td>
+                        <td>{{ appConfig('classTypes')[$cls->type]['label'] }}</td>
+                        <td>
+                            <figure class="avatar mr-2 avatar-sm">
+                                <img src="{{ imageProfile($cls->instructor->user->image) }}" alt="...">
+                              </figure>
+                            {{ $cls->instructor->user->name }}
+                        </td>
+                        <td>
+                            {!! $cls->statusClass !!}
+                   
+                       </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -137,7 +141,7 @@
         </div>
 
         <div class="tab-pane fade" id="profile2" role="tabpanel" aria-labelledby="profile-tab2">
-            <table class="table table-ssm table-striped datatables w-100" id="table-def">
+            <table class="table table-sm table-striped datatables w-100" id="table-def">
                 <thead class="">
                     <tr>
                         <th>Data</th>
@@ -180,7 +184,7 @@
             <div class="form-group">
                 <select id="select-evolution" class="form-control" name="" onchange="">
                     @foreach($class->student->evolutions as $evolution)
-                    <option value="{{ $evolution->id }}">{{ dateDMY($evolution->classes->date) }}</option>
+                    <option value="{{ $evolution->id }}">{{ dateDMY($evolution->classes->date) }} - {{ $evolution->instructor->user->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -189,15 +193,19 @@
             <div id="evolution-{{ $evolution->id }}" class="evolutions">
 
                 <p>{{ $evolution->classes->comments }}</p>
-
+                <ul>
                 @foreach($evolution->exercices as $exercice)
                 
-                    <h6> <i class="fa fa-circle" aria-hidden="true"></i> {{ $exercice->exercice->name }}</h6>
-                    {!! $exercice->comments !!}
+                    {{-- <h6> {{ $exercice->exercice->name }}</h6> --}}
+                    
+                        <li class="mb-2"><b>{{ $exercice->exercice->name }}: </b>{!! $exercice->comments !!}</li>
+                    
                 
                 @endforeach
+            </ul>
                 <hr>
                 Avaliado por
+                
                 <span class="font-weight-bold font-13">
                     {{ $evolution->instructor->user->name }}
                 </span>
@@ -316,6 +324,9 @@
     $(".datatables2").dataTable({...config, ressponsive:false, pageLength: 1, bLengthChange: false});
 
 
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
 
     showEvolution($('#select-evolution').val())
 

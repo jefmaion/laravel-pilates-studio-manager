@@ -56,8 +56,7 @@
 
                 <div class="dropdown d-inline">
 
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </button>
 

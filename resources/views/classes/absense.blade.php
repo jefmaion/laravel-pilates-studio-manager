@@ -77,7 +77,7 @@
 
                         <div class="col-12 form-group notice">
                             <label for="">Motivo da Falta</label>
-                            <x-form-input type="textarea" rows="30" name="comments" />
+                            <x-form-input type="textarea" rows="5" name="comments" />
                         </div>
 
                     </div>

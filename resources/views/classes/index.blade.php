@@ -15,7 +15,7 @@
                 @include('classes.calendar')
             </div>
 
-            <div class="col-2">
+            <div class="col-3">
 
                 <div class="dropdown d-inline mr-2">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -57,11 +57,7 @@
 
                 <hr>
 
-                @foreach(appConfig('classTypes') as $key => $type)
-                <div>
-                <span class="badge badge-pill badge-dark p-1 m-1">{{ $key  }}</span>{{ $type['label'] }}
-            </div>
-                @endforeach
+              
             </div>
         </div>
        
@@ -72,7 +68,7 @@
 
 @section('outbody')
     <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 
             </div>
