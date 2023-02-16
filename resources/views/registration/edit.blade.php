@@ -18,7 +18,7 @@
 
                         <div class="col-12">
 
-                                <div class="row">
+                                {{-- <div class="row">
 
                                     <div class="col-12 form-group">
                                         <label>Aluno</label>
@@ -55,7 +55,8 @@
                                         <x-form-input type="text" classs="money" name="final_value" value="{{ $registration->final_value }}" />
                                     </div>
 
-                                </div>
+                                </div> --}}
+                                @include('registration.form')
 
                         </div>
 

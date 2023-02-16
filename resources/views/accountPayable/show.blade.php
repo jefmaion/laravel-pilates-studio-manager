@@ -13,7 +13,6 @@
                 </h4>
             </div>
 
-
             <div class="card-body">
 
                 <h5>{{ $account->description }}</h5>
@@ -57,15 +56,7 @@
                         </a>
                     </div>
                 </div>
-
-
-
-
-
-
             </div>
-
-
         </div>
     </div>
 </div>

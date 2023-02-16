@@ -10,6 +10,7 @@ use App\Http\Controllers\RegistrationClassController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use App\Models\RegistrationClass;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+
+
+Route::get('/profileimage/{id}', function ($id) {
+    return imageProfile(User::find($id)->image);
+})->name('profile.image');
 
 Route::resource('/plan', PlanController::class);
 

@@ -33,6 +33,7 @@ class CreateAccountPayablesTable extends Migration
 
             $table->integer('status')->default(0);
             $table->integer('order')->nullable();
+            $table->text('comments')->nullable();
 
             $table->foreign('registration_id')->references('id')->on('registrations');
             $table->foreign('student_id')->references('id')->on('students');

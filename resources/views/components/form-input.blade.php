@@ -14,6 +14,7 @@
 
 
     @case('select')
+    
         <select class="form-control {{ $class }} @error($nameDot) is-invalid @enderror" name="{{ $name }}" {{ $multiple }}>
             <option></option>
             @if(isset($options))
@@ -21,8 +22,9 @@
                     <option value="{{ $key }}" {{ ((string) $key === (string) $value) ? 'selected' : ''  }}>{{ $option }}</option>
                 @endforeach
             @endif
-            
         </select>
+                
+       
         @break
 
     @default

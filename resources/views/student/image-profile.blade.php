@@ -4,6 +4,12 @@
 <div class="row">
     <div class="col-4">
         <div class="card author-box">
+            <div class="card-header">
+                <h4>
+                    <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
+                    Foto do Aluno - {{ $student->user->name }}
+                </h4>
+            </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('student.profile.store', $student) }}" enctype="multipart/form-data">
                     @csrf

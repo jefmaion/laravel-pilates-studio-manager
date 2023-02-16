@@ -37,7 +37,7 @@ class RegistrationClassController extends Controller
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         };
 
-        $instructors = $this->toSelectBox(Instructor::all(), 'id', 'name');
+        $instructors = $this->toImageSelectBox(Instructor::all());
 
 
         // if($request->isMethod('post')) {

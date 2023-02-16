@@ -21,16 +21,18 @@
             </div>
 
             <div class="card-body">
-                <table class="table table-striped w-100" id="table-def" style="font-size:14px">
+                <x-data-table>
                     <thead>
                         <tr>
+                            <th>Foto</th>
                             <th>Nome</th>
                             <th>Telefone</th>
                             <th>Telefone 2</th>
                             <th>Data de Cadastro</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
-                </table>
+                </x-data-table>
             </div>
         </div>
     </div>
@@ -40,27 +42,25 @@
 
 
 @section('css')
-<link rel="stylesheet" href="assets/bundles/datatables/datatables.min.css">
-<link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+    @include('layouts.plugins.datatables', ['file' => 'css'])
 @endsection
 
 @section('scripts')
-<script src="assets/bundles/datatables/datatables.min.js"></script>
-<script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-<script src="assets/bundles/jquery-ui/jquery-ui.min.js"></script>
-<script src="{{ asset('assets/js/page/datatables.js') }}"></script>
-<script src="{{ asset('js/datatables.config.js') }}"></script>
-<script>
-    $("#table-def").dataTable({...config,
-        ajax:'/student',
-        columns: [
-            {data: 'name'},
-            {data: 'phone_wpp'},
-            {data: 'phone2'},
-            {data: 'created_at'},
-            // {data: 'registration'},
-            // {data: 'status'},
-        ]
-    });
-</script>
+    @include('layouts.plugins.datatables', ['file' => 'js'])
+    <script src="{{ asset('js/datatables.config.js') }}"></script>
+    <script>
+        $(".datatables").dataTable({...config,
+            ajax:'/student',
+            columns: [
+                {data: 'image'},
+                {data: 'name'},
+                {data: 'phone_wpp'},
+                {data: 'phone2'},
+                {data: 'created_at'},
+                {data: 'status'},
+                // {data: 'registration'},
+                // {data: 'status'},
+            ]
+        });
+    </script>
 @endsection

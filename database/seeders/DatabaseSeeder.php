@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             InstructorSeeder::class,
             // RegistrationSeeder::class
             ExerciceSeeder::class,
-            PaymentMethodSeeder::class
+            PaymentMethodSeeder::class,
+            HolidaySeeder::class
         ]);
     }
 }

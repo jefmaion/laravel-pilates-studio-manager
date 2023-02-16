@@ -25,12 +25,29 @@ class Controller extends BaseController
 
 
 
-    public function toSelectBox($objects, $key, $value)  {
+    public function toSelectBox($objects, $key='id', $value='name')  {
 
         $options= [];
 
         foreach($objects as $item) {
             $options[$item->{$key}] = $item->{$value};
+        }
+
+        return $options;
+
+
+    }
+
+    public function toImageSelectBox($objects, $key='id', $value='name', $image='image')  {
+
+        $options= [];
+
+        foreach($objects as $item) {
+            $options[$item->{$key}] = [
+                'id' => $item->{$key},
+                'label' => $item->{$value},
+                'image' => imageProfile($item->{$image}, false),
+            ];
         }
 
         return $options;

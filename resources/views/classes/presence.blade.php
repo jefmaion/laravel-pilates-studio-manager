@@ -56,25 +56,14 @@
                 <div class="row">
                     <div class="form-group col">
                         <label for="">Professor</label>
-                        <x-form-input type="select" class="select2 class-props"   name="instructor_id" value="{{ $class->instructor_id }}"  :options="$instructors" />
+                        {{-- <x-form-input type="select" class="select2 class-props"   name="instructor_id" value="{{ $class->instructor_id }}"  :options="$instructors" /> --}}
+                        <x-select2-image name="instructor_id" value="{{ $class->instructor_id }}" :options="$instructors" />
                     </div>
 
                     <div class="col-12 form-group notice">
                         <label for="">Comentários da aula</label>
                         <x-form-input type="textarea" rows="5" name="comments" />
                     </div>
-
-                    {{-- <div class="form-group col-12">
-                        <label for="">Exercícios/Aparelhos Utilizados</label>
-                        <x-form-input type="select" class="select2 class-props" multiple="multiple" name="exercice_id[]" value=""  :options="$exercices" />
-                        @if($errors->has('exercice_id'))
-                        <div class="text-danger">{{ $errors->first('exercice_id') }}</div>
-                        @endif
-                    </div>
-            
-                    <div class="form-group col-12">
-                        <textarea class="form-control summernote-simple" name="evolution"></textarea>
-                    </div> --}}
 
                 </div>
 
@@ -96,46 +85,15 @@
   
 </div>
 
-
-<!-- Button trigger modal -->
-
-
-
 </form>
 
 @endsection
 
-@section('outbody')
-
-
-@endsection
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/bundles/select2/dist/css/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/bundles/summernote/summernote-bs4.css') }}">
 @endsection
 
 @section('scripts')
 <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
-<script src="{{ asset('assets/bundles/summernote/summernote-bs4.js') }}"></script>
-<script>
-if (jQuery().select2) {
-    $(".select2").select2();
-}
-if (jQuery().summernote) {
-    $(".summernote").summernote({
-      dialogsInBody: true,
-      minHeight: 250
-    });
-    $(".summernote-simple").summernote({
-      dialogsInBody: true,
-      minHeight: 150,
-      toolbar: [
-        ["style", ["bold", "italic", "underline", "clear"]],
-        ["font", ["strikethrough"]],
-        ["para", ["paragraph"]]
-      ]
-    });
-  }
-</script>
 @endsection

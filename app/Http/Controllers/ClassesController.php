@@ -135,8 +135,8 @@ class ClassesController extends Controller
             return responseRedirect('class.index', $this->classService::MSG_NOT_FOUND, 'error');
         }
 
-        $instructors = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
-        $exercices   = $this->toSelectBox($this->exerciceService->list(), 'id', 'name');
+        $instructors = $this->toImageSelectBox($this->instructorService->list());
+        $exercices   = $this->toSelectBox($this->exerciceService->list());
 
         return view('classes.presence', compact('class', 'instructors', 'exercices'));
     }

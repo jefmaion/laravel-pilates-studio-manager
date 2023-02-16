@@ -91,10 +91,4 @@
 <script src="{{ asset('assets/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('assets/js/page/datatables.js') }}"></script>
 <script src="{{ asset('js/datatables.config.js') }}"></script>
-<script>
-if (jQuery().select2) {
-    $(".select2").select2();
-}
-</script>
-
 @stop

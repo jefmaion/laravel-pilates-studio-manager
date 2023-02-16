@@ -26,15 +26,18 @@
                         </div>
 
                         <div class="">
-                            <div class="mb-2">
-                                {{ $class->registration->plan->name }} <span class="mx-1 text-light">|</span>
-                                <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }} 
-                                
-                            </div>
+                            
                             <div class="mb-2">
                                 <i class="fas fa-clock"></i> {{ $class->time }} <span class="mx-1 text-light">|</span>
                                 <i class="fas fa-calendar"></i> {{ dateDMY($class->date) }} <span class="mx-1 text-light">|</span>
-                                <i class="fa fa-user-circle"></i> {{ $class->instructor->user->name }}
+                                <figure class="avatar mr-2 avatar-xs">
+                                    <img src="{{ imageProfile($class->instructor->user->image) }}" alt="...">
+                                  </figure> {{ $class->instructor->user->name }}
+                            </div>
+                            <div class="mb-2">
+                                <i class="fas fa-boxes"></i> {{ $class->registration->plan->name }} <span class="mx-1 text-light">|</span>
+                                <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }} 
+                                
                             </div>
                         </div>
 
@@ -76,9 +79,8 @@
         </div>
     </div>
 
-    <br>
-
-    <ul class="nav nav-tabs nav-justified" id="myTab2" role="tablist">
+    <ul class="nav nav-tabs nav-justifised" id="myTab2" role="tablist">
+        @if($class->student->lastClasses)
         <li class="nav-item">
             <a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home2" role="tab" aria-controls="home" aria-selected="true">
                 <i class="fas fa-calendar-check    "></i>
@@ -86,28 +88,39 @@
             </a>
         </li>
 
+        @endif
+
         @if($class->student->registration->lateInstallments->count() > 0)
         <li class="nav-item">
             <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile" aria-selected="false">
-                <i class="fas fa-money-bill-wave"></i> Mensalidades
                 @if($class->student->hasLateInstallments)
                     <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
+                    @else
+                    <i class="fas fa-money-bill-wave"></i> 
                 @endif
+
+                Mensalidades
+                
             </a>
         </li>
         @endif
 
+        @if($class->student->evolutions)
         <li class="nav-item">
             <a class="nav-link" id="contact-tab2" data-toggle="tab" href="#contact2" role="tab" aria-controls="contact" aria-selected="false">
-                <i class="fas fa-chart-line"></i> Evoluções
                 @if(!$class->evolution && $class->status == 1)
                     <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
+                    @else
+                    <i class="fas fa-chart-line"></i>
                 @endif
+                 Evoluções
+
             </a>
         </li>
+        @endif
     </ul>
 
-    <div class="tab-content tab-bordeered" id="myTab3Content">
+    <div class="tab-content tab-bordsered" id="myTab3Content">
 
         <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab2">
             <table class="table table-sm table-striped datatables w-100" id="table-def">

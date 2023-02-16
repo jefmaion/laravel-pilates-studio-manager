@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-6">
         <div class="card">
             <div class="card-header">
                 <h4>
@@ -18,59 +18,7 @@
 
                         <div class="col-12">
 
-                                <div class="row">
-
-                                    <div class="col-9 form-group form-group-lg">
-                                        <label>Aluno</label>
-                                        <x-form-input type="select" class="select2 input-lg" name="student_id" :options="$students" />
-                                    </div>
-            
-                                    <div class="col-3 form-group">
-                                        <label>Inicio das Aulas</label>
-                                        <x-form-input type="date" name="start" value="{{ date('Y-m-d') }}" />
-                                    </div>
-            
-                                    <div class="col-2 form-group">
-                                        <label>Dia de Vencimento</label>
-                                        <x-form-input type="number" name="due_date" />
-                                    </div>
-            
-                                    <div class="col-4 form-group">
-                                        <label>Plano</label>
-                                        <x-form-input type="select" class="select2" name="plan_id" :options="$plans" />
-                                    </div>
-            
-                                    <div class="col-2 form-group">
-                                        <label>Valor</label>
-                                        <x-form-input type="text" classs="money" name="value" />
-                                    </div>
-            
-                                    <div class="col-2 form-group">
-                                        <label>Desconto</label>
-                                        <x-form-input type="number" name="discount" />
-                                    </div>
-            
-                                    <div class="col-2 form-group">
-                                        <label>Valor Final</label>
-                                        <x-form-input type="text" classs="money" name="final_value" />
-                                    </div>
-
-                                    <div class="col-6 form-group">
-                                        <label>Pagamento da 1º Mensalidade</label>
-                                        <x-form-input type="select" class="select2" name="first_payment_method" :options="$paymentMethods" />
-                                    </div>
-
-                                    <div class="col-6 form-group">
-                                        <label>Pagamento das demais mensalidades</label>
-                                        <x-form-input type="select" class="select2" name="other_payment_method" :options="$paymentMethods" />
-                                    </div>
-
-                                    <div class="col-12 form-group">
-                                        <label>Observações</label>
-                                        <x-form-input type="textarea" rows="5" class="sselect2" name="comments"  />
-                                    </div>
-
-                                </div>
+                                @include('registration.form')
 
                         </div>
 {{-- 
@@ -152,16 +100,8 @@
 
 
 <!-- Button trigger modal -->
-
-
-
-
-
 @endsection
 
-@section('outbody')
-@include('classes.modalcalendar')
-@endsection
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/bundles/select2/dist/css/select2.min.css') }}">
@@ -172,24 +112,6 @@
 <script>
     let plan
     let discount
-
-    // Select2
-  if (jQuery().select2) {
-    // function formatState (state) {
-    //     if (!state.id) {
-    //         return state.text;
-    //     }
-    //     var baseUrl = "/user/pages/images/flags";
-    //     var $state = $(
-    //        ' '<span><img src="' + baseUrl + '/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>''
-    //     );
-    //     return $state;
-    //     };
-
-
-    $(".select2").select2();
-  }
-
     $('[name=plan_id]').change(function (e) { 
         e.preventDefault();
         $.ajax({

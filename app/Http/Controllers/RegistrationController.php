@@ -41,44 +41,27 @@ class RegistrationController extends Controller
         $this->instructorService   = $instructorService;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-
         if($this->request->ajax()) {
             return $this->list();
         }
 
         return view('registration.index');
-     
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
 
-        $students    = $this->toSelectBox($this->studentService->list(), 'id', 'name');
-        $plans       = $this->toSelectBox($this->planService->list(), 'id', 'name');
-        $instructors = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
+        $registration   = new Registration();
+        $plans          = $this->toSelectBox($this->planService->list(), 'id', 'name');
+        $instructors    = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
         $paymentMethods = $this->toSelectBox(PaymentMethod::all(), 'id', 'name');
+        $students       = $this->toImageSelectBox($this->studentService->listAllNotRegistrations(), 'id', 'name', 'image');
 
-        return view('registration.create', compact('students', 'plans', 'instructors', 'paymentMethods'));
+        return view('registration.create', compact('students', 'plans', 'instructors', 'paymentMethods', 'registration'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreRegistrationRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreRegistrationRequest $request)
     {
         $data = requestData($request);
@@ -91,15 +74,8 @@ class RegistrationController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Registration  $registration
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-
         if(!$registration = $this->registrationService->find($id)) {
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         }
@@ -108,40 +84,29 @@ class RegistrationController extends Controller
         return view('registration.show', compact('registration', 'instructors'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Registration  $registration
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Registration $registration)
+    public function edit($id)
     {
-        // if($registration->scheduledClasses()->count() > 0) {
-        //     return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_RENEW_CLASS, 'warning');
-        // }
+        if(!$registration = $this->registrationService->find($id)) {
+            return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
+        }
 
-        $students    = $this->toSelectBox($this->studentService->list(), 'id', 'name');
-        $plans       = $this->toSelectBox($this->planService->list(), 'id', 'name');
-        $instructors = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
+        if($registration->installmentsToPay()->count() > 0) {
+            return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_RENEW_CLASS, 'warning');
+        }
 
-        return view('registration.edit', compact('students', 'plans', 'instructors', 'registration'));
+        if($newRegistration = $this->registrationService->renewRegistration($registration)) {
+            return responseRedirect(['registration.show', $newRegistration], 'Renovação Realizada com Sucesso');
+        }
+
+        return responseRedirect(['registration.show', $registration], 'Houve um erro ao renovar', 'error');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateRegistrationRequest  $request
-     * @param  \App\Models\Registration  $registration
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
 
         if(!$registration = $this->registrationService->find($id)) {
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         }
-
-
 
         $this->registrationService->updateClassWeek($registration, $request->get('class'));
 
@@ -150,16 +115,11 @@ class RegistrationController extends Controller
 
     public function classes(Request $request, $id) {
 
-
-
-
-
         if(!$registration = $this->registrationService->find($id)) {
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         };
 
         $instructors = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
-
 
         if($request->isMethod('post')) {
             $this->registrationService->addClasses($registration, $request->all());
@@ -178,7 +138,6 @@ class RegistrationController extends Controller
 
 
         $new = $registration->replicate();
-
         $new->start = $registration->end;
         $new->first_payment_method = 1;
         $new->other_payment_method = 1;
@@ -194,20 +153,14 @@ class RegistrationController extends Controller
         } 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Registration  $registration
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id, Request $request)
     {
 
         if(!$registration = $this->registrationService->find($id)) {
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         }
-
-        $this->registrationService->cancelRegistration($registration,  $request->get('cancellation_reason'));
+        
+        $this->registrationService->cancelRegistration($registration,  $request->get('cancellation_reason'), $request->get('delete_installments'), $request->get('delete_scheduled_classes'));
         return responseRedirect('registration.index', $this->registrationService::MSG_CANCEL);
     }
 
@@ -224,7 +177,8 @@ class RegistrationController extends Controller
             $user = $registration->student->user;
 
             $data[] = [
-                'student' =>  sprintf('<a href="%s"><img alt="image" src="'.imageProfile($user->image).'" class="rounded-circle" width="45" data-toggle="title" title=""> %s</a>', route('registration.show', $registration), $user->name),
+                'image' => '<img alt="image" src="'.imageProfile($user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
+                'student' =>  sprintf('<a href="%s"> %s</a>', route('registration.show', $registration), $user->name),
                 'phone'   => $user->phone_wpp,
                 'status'  => $registration->statusRegistration,
                 'renew'   => $registration->renewPeriod,
@@ -276,7 +230,7 @@ class RegistrationController extends Controller
             $plan = $plans[rand(0, count($plans)-1)];
             $pay1 = $plans[rand(0, count($payments)-1)];
             $pay2 = $plans[rand(0, count($payments)-1)];
-            $start = date('Y-m-d', strtotime(Carbon::parse('2023-01-01')->addDays(rand(1, 365))));
+            $start = date('Y-m-d', strtotime(Carbon::parse('2022-10-01')->addDays(rand(1, 365))));
 
             $data = [];
             $data['plan_id']     = $plan->id;
@@ -298,7 +252,7 @@ class RegistrationController extends Controller
 
             $classes = [];
 
-            for($i=0;$i<=$plan->class_per_week; $i++) {
+            for($i=0;$i<$plan->class_per_week; $i++) {
                 $registration->addClasses($reg, [
                     'instructor_id' => $instructors[rand(0, count($instructors)-1)]->id,
                     'weekday'   => rand(1,6),

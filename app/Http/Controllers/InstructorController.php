@@ -162,7 +162,8 @@ class InstructorController extends Controller
             $user = $instructor->user;
 
             $instructors[$i] = [
-                'name'       =>  sprintf('<a href="%s">%s</a>', route('instructor.show', $instructor), $user->name),
+                'image' => '<img alt="image" src="'.imageProfile($instructor->user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
+                'name'       =>  sprintf('<a href="%s"> %s</a>', route('instructor.show', $instructor), $user->name),
                 'status'     => component(new BadgeStatus($instructor->enabled)),
                 'profession' => $instructor->profession,
                 'phone_wpp'  => $user->phone_wpp,

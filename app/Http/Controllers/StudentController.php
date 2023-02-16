@@ -5,20 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProfilePhotoRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
-use App\Models\Instructor;
-use App\Models\Plan;
-use App\Models\Student;
 use App\Services\InstructorService;
 use App\Services\PlanService;
-use App\Services\RegistrationService;
 use App\Services\StudentService;
 use App\Traits\Viacep;
 use App\View\Components\BadgeStatus;
-use Carbon\Carbon;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-
-
 
 class StudentController extends Controller
 {
@@ -34,11 +27,6 @@ class StudentController extends Controller
         $this->request = $request;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if($this->request->ajax()) {
@@ -48,23 +36,12 @@ class StudentController extends Controller
         return view('student.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $student = $this->studentService->new(['enabled' => 1]);
         return  view('student.create', compact('student'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreStudentRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreStudentRequest $request)
     {
         $data = requestData($request);
@@ -76,12 +53,6 @@ class StudentController extends Controller
         } 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Plan  $student
-     * @return \Illuminate\Http\Response
-     */
     public function show($student, PlanService $planService, InstructorService $instructorService)
     {
 
@@ -92,12 +63,6 @@ class StudentController extends Controller
         return view('student.show', compact('student'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Plan  $student
-     * @return \Illuminate\Http\Response
-     */
     public function edit($student)
     {
         if(!$student = $this->studentService->find($student)) {
@@ -107,13 +72,6 @@ class StudentController extends Controller
         return  view('student.edit', compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateStudentRequest  $request
-     * @param  \App\Models\Plan  $student
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateStudentRequest $request, $student)
     {
     
@@ -129,12 +87,6 @@ class StudentController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Plan  $student
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($student)
     {
         if(!$student = $this->studentService->find($student)) {
@@ -150,7 +102,6 @@ class StudentController extends Controller
     }
 
     public function profile(StoreProfilePhotoRequest $request, $id) {
-
 
         $student = $this->studentService->find($id);
 
@@ -169,7 +120,7 @@ class StudentController extends Controller
 
     public function list()
     {
-        $students = $this->studentService->list();
+        $students = $this->studentService->listOrderByCreatedAt();
 
         foreach($students as $i => $student) {
 
@@ -177,10 +128,12 @@ class StudentController extends Controller
 
 
             $students[$i] = [
-                'name'       =>  sprintf('<a href="%s"><img alt="image" src="'.imageProfile($student->user->image).'" class="rounded-circle" width="45" data-toggle="title" title=""> %s</a>', route('student.show', $student), $user->name),
+                'image'      =>'<img alt="image" src="'.imageProfile($student->user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
+                'name'       =>  sprintf('<a href="%s"> %s</a>', route('student.show', $student), $user->name),
                 'phone_wpp'  => $user->phone_wpp,
                 'phone2'     => $user->phone2,
                 'created_at' => date('d/m/Y', strtotime($student->created_at)),
+                'status'     => component(new BadgeStatus($student->enabled)),
             ];
         }
 

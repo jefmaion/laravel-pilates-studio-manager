@@ -48,7 +48,6 @@ class Services {
 
         $item->fill($data);
 
-
         if($item->save()) {
             return true;
         }
@@ -78,6 +77,24 @@ class Services {
         }
 
         return $this->model->orderBy('id','desc')->get();
+    }
+
+    public function listOrderByCreatedAt($enabled=null) {
+
+        if($enabled !== null) {
+            return $this->model->where('enabled', $enabled);
+        }
+
+        return $this->model->orderBy('created_at','desc')->get();
+    }
+
+    public function listOrderBy($field=null, $order='asc', $enabled=null) {
+
+        if($enabled !== null) {
+            return $this->model->where('enabled', $enabled);
+        }
+
+        return $this->model->orderBy($field,$order)->get();
     }
 
 }

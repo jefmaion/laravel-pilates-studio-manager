@@ -20,6 +20,10 @@ class Student extends Model
         return $this->user->name;
     }
 
+    public function getImageAttribute() {
+        return $this->user->image;
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }
@@ -38,6 +42,10 @@ class Student extends Model
 
     public function classes() {
         return $this->hasMany(classes::class);
+    }
+
+    public function classesFinished() {
+        return $this->hasMany(classes::class)->where('status', 1);
     }
 
     public function evolutions() {

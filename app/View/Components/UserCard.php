@@ -6,7 +6,7 @@ use Illuminate\View\Component;
 
 class UserCard extends Component
 {
-
+    public $title;
     public $user;
 
     /**
@@ -14,8 +14,9 @@ class UserCard extends Component
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($title=null, $user)
     {
+        $this->title = $title;
         $this->user = $user;
     }
 

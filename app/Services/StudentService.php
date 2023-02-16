@@ -78,6 +78,10 @@ class StudentService extends Services {
         return $student->user()->update(['image' => $fileName]);
     }
 
+    public function listAllNotRegistrations() {
+        return $this->student->doesntHave("registration")->get();
+    }
+
 
 
 }

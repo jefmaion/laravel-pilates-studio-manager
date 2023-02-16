@@ -27,7 +27,8 @@
 
                     <div class="col-5 form-group">
                         <label>Aluno</label>
-                        <x-form-input type="select" class="calendar-comp" name="student_id" :options="$students" />
+                        <x-select2-image name="student_id" class="calendar-comp" :options="$students" />
+                        {{-- <x-form-input type="select" class="calendar-comp" name="student_id" :options="$students" /> --}}
                     </div>
                 </div>
                 @include('classes.calendar')

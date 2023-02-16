@@ -22,7 +22,7 @@ class InstructorSeeder extends Seeder
         $faker->addProvider(new Person($faker));
         $faker->addProvider(new PhoneNumber($faker));
 
-        $max = 5;
+        $max = 3;
 
         for($i=0;$i<=$max;$i++) {
 

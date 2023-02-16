@@ -1,41 +1,34 @@
 @extends('layouts.main')
 
 @section('content')
-
-
 <div class="row">
     <div class="col-12 col-lg-4 col-md-8 col-sm-12">
-
-
         <div class="card author-box">
-
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
                     Matrícula de {{ $registration->student->user->name }}
                 </h4>
             </div>
-
             <div class="card-body">
-
                 <div class="author-box-left">
-                    <img alt="image" src="{{ imageProfile($registration->student->user->image) }}"
-                        class="rounded-circle author-box-picture">
+                    <img alt="image" src="{{ imageProfile($registration->student->user->image) }}" class="rounded-circle author-box-picture">
                     <div class="clearfix"></div>
                 </div>
-
                 <div class="author-box-details">
                     <div class="author-box-name">
                         <a href="{{ route('student.show', $registration->student) }}">{{$registration->student->user->name }}</a>
                     </div>
-                    <div class="author-box-description">
+                    <div class="author-box-description mt-0">
+                    
                         <div>
                             <strong><i class="fa fa-phone" aria-hidden="true"></i></strong>
-                            {{ $registration->student->user->phone_wpp }} | {{ $registration->student->user->phone2 }}
+                            {{ $registration->student->user->phone_wpp }}<span class="mx-1 text-light">/</span> 
+                            {{ $registration->student->user->phone2 }}
                         </div>
                         <div>
-                            <strong><i class="fa fa-phone" aria-hidden="true"></i></strong>
-                            {{ $registration->student->user->email }}
+                            <i class="fas fa-caret-square-right"></i>
+                            {{ $registration->plan->name }}
                         </div>
                     </div>
                 </div>
@@ -43,7 +36,7 @@
         </div>
 
 
-        <div class="card">
+        <div class="card ">
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
@@ -54,10 +47,10 @@
                 </div>
             </div>
 
-            <div class="card-body">
+            <div class="card-body h-100">
 
-
-                <div class="py-4">
+             
+                <div class="pys-4">
                     <p class="clearfix">
                         <div class="row text-dark">
                             <div class="col">
@@ -73,7 +66,7 @@
                             </div>
                         </div>
                     </p>
-                    <hr>
+
 
                     <p class="clearfix">
 
@@ -93,7 +86,6 @@
                         
                         
                     </p>
-                    <hr>
 
                     <p class="clearfix">
                         <div class="row text-dark">
@@ -113,7 +105,6 @@
                        
                      
                     </p>
-                    <hr>
 
                     <p class="clearfix">
                         <div class="row text-dark">
@@ -125,10 +116,9 @@
                             <div class="col">
                                 <span class="float-right text-muted text-right">
 
-                                    @if(empty($registration->classWeek))
-                                    <a name="" id="" class="btn btn-primary" href="{{ route('registration.class.index', $registration) }}" >
-                                        Adicionar/Alterar Aulas
-                                    </a>
+                                    @if($registration->classWeek()->count() == 0)
+
+                                    <a href="{{ route('registration.class.index', $registration) }}" class="badge badge-warning">Adicionar Aulas</a>
                                     @endif
 
 
@@ -139,7 +129,7 @@
                             </div>
                         </div>
                     </p>
-                    <hr>
+                    
 
                     @if($registration->status == 1)
                     <p class="clearfix">
@@ -157,7 +147,7 @@
                         </div>
                         
                     </p>
-                    <hr>
+                    
                     @endif
 
                     @if($registration->status == 0)
@@ -179,7 +169,7 @@
                         
                     </p>
                     
-                    <hr>
+                    
                     @endif
                     <p class="clearfix">
                         <div class="row text-dark">
@@ -199,8 +189,6 @@
 
                 </div>
 
-
-
                 @if($registration->canCancel)
                     <a name="" id="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal-cancel-registration" href="#" role="button">
                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -218,21 +206,18 @@
             </div>
         </div>
 
-        <a name="" id="" class="btn btn-secondary" href="{{ url()->previous() }}" role="button">
-            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-            Voltar
-        </a>
+
     </div>
 
-    <div class="col-12 col-lg-8 col-sm-12">
+    <div class="col-12 col-lg-8 col-sm-12 d-flex">
 
 
 
-        <div class="card">
+        <div class="card flex-fill">
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
-                    Informações
+                    Informações da Matrícula
                 </h4>
             </div>
 
@@ -251,9 +236,9 @@
                     </li>
                 </ul>
 
-                <div class="tab-content" id="myTabContent">
+                <div class="tab-content tab-bordsred" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <table class="table tabsle-sm table-striped datatables w-100" id="table-def" style="font-size:12px">
+                        <x-data-table>
                             <thead class="">
                                 <tr>
                                     {{-- <th>Nº Mensalidade</th> --}}
@@ -286,7 +271,7 @@
                                 </tr>
                                 @endforeach
                             </tbody>
-                        </table>
+                        </x-data-table>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
@@ -297,12 +282,14 @@
                             </a>
                         </p>
 
-                        <table class="table tabsle-sm table-striped datatables w-100" style="font-size:12px">
+                        
+                        <x-data-table>
                             <thead>
                                 <tr>
                                     <th>Data</th>
-                                    <th>Dia</th>
+                                    
                                     <th>Hora</th>
+                                    <th>Dia</th>
                                     <th>Instrutor</th>
                                     <th>Status</th>
                                 </tr>
@@ -310,9 +297,10 @@
                             <tbody>
                                 @foreach($registration->classes as $class)
                                 <tr>
-                                    <td>{{ date('d/m/Y', strtotime($class->date)) }}</td>
+                                    <td data-search="{{ date('d/m/Y', strtotime($class->date)) }}">{{ date('d/m/Y', strtotime($class->date)) }}</td>
+                                    <td data-search="{{ $class->time }}">{{ $class->time }}</td>
                                     <td>{{ $class->weekdayName }}</td>
-                                    <td>{{ $class->time }}</td>
+                                    
                                     <td>
                                         <figure class="avatar mr-2 avatar-sm">
                                             <img src="{{ imageProfile($class->instructor->user->image) }}" alt="...">
@@ -325,7 +313,7 @@
                                 </tr>
                                 @endforeach
                             </tbody>
-                        </table>
+                        </x-data-table>
 
                     </div>
                     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -346,10 +334,10 @@
 </div>
 
 
-
-
-
-
+<a name="" id="" class="btn btn-secondary" href="{{ url()->previous() }}" role="button">
+    <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+    Voltar
+</a>
 @endsection
 
 
@@ -376,9 +364,20 @@
                     </b>
                         <x-form-input type="textarea" name="cancellation_reason" />
                     <br>
-                    <div class="alert alert-light" role="alert">
+
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1" name="delete_installments" value="1">
+                        <label class="custom-control-label" for="customCheck1">Excluir mensalidades futuras em aberto</label>
+                      </div>
+
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck2" name="delete_scheduled_classes" value="1">
+                        <label class="custom-control-label" for="customCheck2">Excluir aulas agendadas futuras</label>
+                      </div>
+
+                    {{-- <div class="alert alert-light" role="alert">
                         <strong>Atenção: </strong> As aulas não realizadas e as mensalidades am aberto serão excluídas!
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     @csrf
@@ -441,7 +440,7 @@
 
 
 <div class="modal fade show" id="modal-re-enroll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-    <div class="modal-dialog modal-dialog-centered mosdal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modsal-sm" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -452,7 +451,10 @@
             </div>
 
             <div class="modal-body">
-                <h6>Plano</h6>
+
+                Manter o mesmo plano e os mesmos horários de aulas?
+
+                {{-- <h6>Plano</h6>
                 <ul>
                     <li>{{ $registration->plan->name }}</li>
                     <li>
@@ -484,13 +486,14 @@
                    </li>
                    @endif
                    
-                </ul>
+                </ul> --}}
             </div>
 
             <div class="modal-footer bg-whitesmoke">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times    "></i> Fechar</button>
-                <button type="submit" class="btn btn-primary"> <i class="fas fa-trash    "></i> Alterar Informações</button>
-                <a name="" id="" class="btn btn-primary" href="#" role="button"><i class="fas fa-trash    "></i> Renovar Matricula</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times    "></i> Não</button>
+                <a name="" id="" class="btn btn-success" href="{{ route('registration.edit', $registration) }}" role="button">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> Sim, Renovar
+                </a>
             </div>
 
         </div>

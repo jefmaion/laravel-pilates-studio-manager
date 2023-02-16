@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\Models\AccountPayable;
-
+use Carbon\Carbon;
 
 class AccountPayableService extends Services {
+
+    const FEE = 2;
+    const DAY_FEE = 0.033;
 
     protected $plan;
    
@@ -14,6 +17,21 @@ class AccountPayableService extends Services {
         parent::__construct(new AccountPayable());
     }
 
+    public function calculateFees(AccountPayable $account, $dateToPay) {
+
+        
+        
+        $daysLate  = Carbon::parse($dateToPay)->diffInDays($account->due_date);
+        $fees      = ($daysLate * self::DAY_FEE) / 100;
+
+        $account->pay_date = $dateToPay;
+        $account->fees = $fees;
+        $account->delay_days = $daysLate;
+        $account->fee_value = ($account->value * (self::FEE / 100)) + ($account->fees * $account->value);
+        $account->value = $account->value +  $account->fee_value;
+
+        return $account;
+    }
 
     public function list($enabled=null) {
 
@@ -23,6 +41,8 @@ class AccountPayableService extends Services {
 
         return $this->model->orderBy('due_date','ASC')->get();
     }
+
+    
 
 
 }

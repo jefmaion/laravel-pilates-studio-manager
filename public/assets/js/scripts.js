@@ -1,7 +1,9 @@
 "use strict";
 
+
+
 $(window).on("load", function () {
-  $(".loader").fadeOut();
+  $(".loader").fadeOut(100);
 });
 
 feather.replace();
@@ -317,9 +319,25 @@ $(function () {
     container: "body"
   });
 
+  
+
   // Select2
   if (jQuery().select2) {
     $(".select2").select2();
+
+
+    $(".select2-image").select2({
+      templateResult: function formatState (state) {
+        if (!state.id) {
+            return state.text;
+        }
+        var image = $(state.element).data('image');
+        var $state = $(
+            '<span><img alt="image" src="http://127.0.0.1:8000/profiles/'+image+'" class="rounded-circle" width="35" data-toggle="title" title=""> ' + state.text + '</span>'
+        );
+        return $state;
+      }
+    });
   }
 
   // Selectric

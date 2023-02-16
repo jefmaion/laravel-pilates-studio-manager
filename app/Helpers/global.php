@@ -73,19 +73,29 @@ if(!function_exists('requestData')) {
 
 if(!function_exists('imageProfile')) {
     
-    function imageProfile($image=null) {
+    function imageProfile($image=null, $fullPath=true) {
 
-        $default = '/profiles/no-photo.jpg';
+        $noPhotoImage = 'no-photo.jpg';
+        $folder = '/profiles/';
+        $path         = asset($folder) . '/';
+
+
+
+        if(!$fullPath) {
+            $path = '';
+        }
+
+        $default      = $path .  $noPhotoImage;
 
         if(empty($image)) {
-            return asset($default);
+            return $default;
         }
 
-        if(file_exists(public_path() . '/profiles/' . $image)) {
-            return asset('/profiles/' . $image);
+        if(file_exists(public_path() . $folder . $image)) {
+            return $path . $image;
         }
 
-        return asset($default);
+        return $default;
     }
 }
 

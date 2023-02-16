@@ -25,6 +25,11 @@ class Instructor extends Model
         return $this->user->name;
     }
 
+
+    public function getImageAttribute() {
+        return $this->user->image;
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

@@ -14,7 +14,7 @@ class RegistrationService extends Services {
 
     const MSG_CANCEL   = 'Registro Cancelado';
     const MSG_UPDATE_CLASSES = 'Aulas reajustadas!';
-    const MSG_RENEW_CLASS = 'Existem aulas agendadas para essa matrícula. Por favor, finalize-as antes de renovar';
+    const MSG_RENEW_CLASS = 'Não é possível renovar a matrícula! Existem mensalidades a serem pagas!';
 
     private $classService;
     private $accountPayableService;
@@ -48,15 +48,41 @@ class RegistrationService extends Services {
         }
 
         $this->generateInstallments($registration, $data);
-        // $this->generateClasses($registration, $data['class']);
+        
+        if(isset($data['class'])) {
+            $this->generateClasses($registration, $data['class']);
+        }
 
         
         return $registration;
     }
 
-    public function cancelRegistration(Registration $registration, $comments=null) {
-        $registration->installmentsToPay()->delete();
-        $registration->scheduledClasses()->delete();
+    public function renewRegistration(Registration $registration) {
+        $registration->start = $registration->end;
+
+        $newRegistration        = $registration->replicate();
+        $newRegistration->start =  $registration->end;
+        $newRegistration->class = $registration->classWeek->toArray();
+        $newRegistration->isPaid = 1;
+
+        if($newRegistration = $this->makeRegistration($newRegistration->toArray())) {
+            $registration->update(['status' => 2]);
+            return $newRegistration;
+        }
+
+        return false;
+    }
+
+    public function cancelRegistration(Registration $registration, $comments=null, $deleteInstallments=false, $deleteScheduledClasses=false) {
+
+        if($deleteInstallments) {
+            $registration->installmentsToPay()->delete();
+        }
+        
+        if($deleteScheduledClasses) {
+            $registration->scheduledClasses()->delete();
+        }
+       
         $this->save($registration, [
             'status'              => 0,
             'current'             => 0,
@@ -203,7 +229,13 @@ class RegistrationService extends Services {
 
             if($i === 1) {
                 $paymentMethod = $data['first_payment_method'];
-                $status = 1;
+
+
+                if(isset($data['isPaid'])) {
+                    $status = 1;
+                }
+
+                
             }
 
             $this->accountPayableService->create([
@@ -229,7 +261,7 @@ class RegistrationService extends Services {
     }
 
     public function listActiveRegistrations() {
-        return Registration::where('status', 1)->get();
+        return Registration::where('status', 1)->orderBy('created_at', 'desc')->get();
     }
 
 

@@ -10,21 +10,14 @@
         <x-form-input name="description" value="{{ $account->description }}" />
     </div>
 
-   
-
     <div class="col-6 form-group">
         <label>Valor</label>
         <x-form-input name="value" class="money" value="{{ $account->value }}" />
     </div>
 
-    
-    
-
     <div class="col-12 form-group">
         <x-form-input type="switch" name="status" label="Conta Paga" value="{{ $account->status }}" />
     </div>
-
-    
 
 </div>
 
@@ -37,7 +30,6 @@
     <i class="fas fa-check-circle"></i>
     Salvar
 </button>
-
 
 @section('scripts')
     <script src="{{ asset('js/jquery.mask.min.js') }}"></script>

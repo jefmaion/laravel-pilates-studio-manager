@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Classes;
 use App\Models\ClassExercice;
 use App\Models\Evolution;
+use App\Models\Holiday;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 
@@ -101,6 +102,17 @@ class ClassService extends Services
         $params = $request->except(['_', 'start', 'end']);
 
         $classes = Classes::whereBetween('date', [$start, $end]);
+        $holidays = Holiday::whereBetween('date', [$start, $end])->get();
+
+
+        $arrHoliday = [];
+        if($holidays) {
+            foreach($holidays as $hol) {
+                $arrHoliday[$hol->date] = $hol->holiday;
+            }
+        }
+
+        // dd($arrHoliday);
 
         foreach ($params as $key => $value) {
             if ($value == "") continue;
@@ -117,15 +129,15 @@ class ClassService extends Services
             $bg   = Config::get('application.classStatus')[$class->status]['color'];
 
             if (!$class->hasScheduledReplacementClass) {
-                $icon = '<i class="fa fa-exclamation-circle fa-lg text-danger m-1" aria-hidden="true"></i>';
+                $icon = '<i class="fa fa-exclamation-circle fa-lg text-warning m-1" aria-hidden="true"></i>';
             }
 
             if ($class->status ==1 && !$class->evolution) {
-                $icon = '<i class="fa fa-exclamation-circle fa-lg text-danger m-1" aria-hidden="true"></i>';
+                $icon = '<i class="fa fa-exclamation-circle fa-lg text-warning m-1" aria-hidden="true"></i>';
             }
 
             if ($class->student->hasLateInstallments) {
-                $icon = '<span class="text-warning"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>';
+                $icon = '<span class="text-warning m-1"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>';
             }
 
             $badge =  '<span class=" badge badge-secondary p-0 px-1">
@@ -152,8 +164,12 @@ class ClassService extends Services
                 'start'     => $class->date .  'T' . $class->time,
                 'end'       => $class->date .  'T' . $time,
                 'className' => ['bg-' . $bg],
+                'color' => (isset($holidays[$class->date])) ? '#000' : 'null'
+
+                
             ];
         }
+
 
         return $calendar;
     }

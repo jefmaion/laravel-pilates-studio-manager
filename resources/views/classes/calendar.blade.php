@@ -48,6 +48,7 @@
                     maxTime: "21:00:00",
                     slotDuration: '00:60:00',
                     // eventLimit: true,
+                    nowIndicator:true,
                     timeFormat: 'H(:mm)',
                     slotEventOverlap:false,
                     hiddenDays: [0],
@@ -85,6 +86,9 @@
                         // change the day's background color just for fun
                         // $(this).css('background-color', 'red');
 
+                    },
+                    eventAfterRender: function(event, element, view) {
+                        // alert('sd');
                     }
                     
                 });
@@ -104,7 +108,6 @@
 
         
                 $('.calendar-comp').change(function (e) { 
-                    console.log(calendar)
                     calendar.fullCalendar('refetchEvents');
                 });
 

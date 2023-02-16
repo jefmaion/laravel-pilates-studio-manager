@@ -1,108 +1,58 @@
+
 <div class="row">
 
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-body">
+    <input type="hidden" name="renovation" value="{{ $registration->renovation }}">
 
-                <div class="row">
-
-                    <div class="col-4 form-group">
-                        <label>Inicio das Aulas</label>
-                        <x-form-input type="date" name="start_registration" value="{{ date('Y-m-d') }}" />
-                    </div>
-
-                    {{-- <div class="col-8 form-group">
-                        <label>Plano</label>
-                        <x-form-input type="select" name="plan_id" :options="$plans"   />
-                    </div> --}}
-
-                    <div class="col-3 form-group">
-                        <label>Dia de Vencimento</label>
-                        <x-form-input type="number" name="due_date" />
-                    </div>
-
-                    <div class="col-3 form-group">
-                        <label>Valor</label>
-                        <x-form-input type="text" classs="money" name="value" />
-                    </div>
-
-                    <div class="col-3 form-group">
-                        <label>Desconto</label>
-                        <x-form-input type="number" name="discount" />
-                    </div>
-
-                    <div class="col-3 form-group">
-                        <label>Valor Final</label>
-                        <x-form-input type="text" classs="money" name="final_value" />
-                    </div>
-
-                </div>
-
-
-                
-                <a name="" id="" class="btn btn-secondary" href="{{ route('plan.index') }}" role="button">
-                    <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-                    Voltar
-                </a>
-
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-check-circle"></i>
-                    Salvar
-                </button>
-
-            </div>
-
-        </div>
-
+    <div class="col-12 form-group form-group-lg">
+        <label>Aluno</label>
+          <x-select2-image name="student_id" value="{{ $registration->student_id }}" :options="$students" />
     </div>
-   
+
+    <div class="col-3 form-group">
+        <label>Inicio das Aulas</label>
+        <x-form-input type="date" name="start"  value="" />
+    </div>
+
+    <div class="col-9 form-group">
+        <label>Plano</label>
+        <x-form-input type="select" class="select2" name="plan_id" value="{{ $registration->plan_id }}" :options="$plans" />
+    </div>
+
+    <div class="col-3 form-group">
+        <label>Dia de Vencimento</label>
+        <x-form-input type="number" name="due_date" value="{{ $registration->due_date }}" />
+    </div>
+
     
 
+    <div class="col-3 form-group">
+        <label>Valor</label>
+        <x-form-input type="text" classs="money" name="value" value="{{ $registration->value }}" />
+    </div>
+
+    <div class="col-3 form-group">
+        <label>Desconto</label>
+        <x-form-input type="number" name="discount" value="{{ $registration->discount }}" />
+    </div>
+
+    <div class="col-3 form-group">
+        <label>Valor Final</label>
+        <x-form-input type="text" classs="money" name="final_value" value="{{ $registration->final_value }}" />
+    </div>
+
+    <div class="col-12 form-group">
+        <label>Observações</label>
+        <x-form-input type="textarea" rows="5" class="sselect2" name="comments"  />
+    </div>
+
+    <div class="col-12">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck1" name="isPaid" value="1">
+            <label class="custom-control-label" for="customCheck1">Definir como "Pago" a primeira mensalidade</label>
+          </div>
+    
+    </div>
+
+
+
 </div>
-
-
-
-@section('scripts')
-    <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.mask.config.js') }}"></script>
-    <script>
-
-        let plan
-        let discount
-
-        $('[name=plan_id]').change(function (e) { 
-            e.preventDefault();
-            $.ajax({
-                type: "get",
-                url: "/plan/" + $(this).val(),
-                dataType: "json",
-                success: function (response) {
-                    plan = response
-                    $('[name=value]').val(plan.value)
-                    $('[name=discount]').val(0)
-                    $('[name=final_value]').val(plan.value)
-                }
-            });
-        });
-
-        $('[name=discount]').keyup(function (e) { 
-            e.preventDefault();
-            value = $(this).val();
-            discount = value
-            calculateDiscount()
-            
-        });
-
-        function calculateDiscount() {
-
-            total = plan.value
-
-            if(discount || discount != 0)  {
-                total = plan.value - (plan.value * (discount/100))
-            }
-
-
-            $('[name=final_value]').val(total)
-        }
-    </script>
-@endsection

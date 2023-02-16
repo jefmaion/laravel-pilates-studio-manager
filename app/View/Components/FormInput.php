@@ -21,7 +21,7 @@ class FormInput extends Component
     //textarea
     public $rows;
 
-    public $options;
+    public $options = null;
     public $multiple;
 
     /**
