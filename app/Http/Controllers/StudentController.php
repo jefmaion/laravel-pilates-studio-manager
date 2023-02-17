@@ -105,15 +105,24 @@ class StudentController extends Controller
 
         $student = $this->studentService->find($id);
 
+        $user = $student->user;
+
+        $routes = [
+            'save-image' => route('student.profile.store', $student),
+            'back' => route('student.show', $student)
+        ];
+
         if($request->isMethod('get')) {
-            return view('student.image-profile', compact('student'));
+            return view('user.image-profile-upload', compact('user', 'routes'));
         }
+
 
         if(!$this->studentService->saveProfilePhoto($student, $request->profile_image)) {
-            return responseRedirect(['student.profile', $student],'Erro ao salvar', 'error');
+            return redirect()->route('student.profile', $student)->with('error', 'Erro ao Salvar');
         }
 
-        return responseRedirect(['student.show', $student],'Foto adicionada com sucesso!');
+        return redirect()->route('student.show', $student)->with('success', 'Foto adicionada com sucesso');
+        
         
     }
 

@@ -21,6 +21,10 @@ class Evolution extends Model
         return $this->belongsTo(Instructor::class);
     }
 
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
+
     public function exercices() {
         return $this->hasMany(EvolutionExercice::class);
     }

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classes;
 use App\Models\Evolution;
 use App\Models\EvolutionExercice;
 use App\Models\Exercice;
-use App\Models\Student;
 use App\Services\ClassService;
 use Illuminate\Http\Request;
 
@@ -17,7 +15,7 @@ class EvolutionController extends Controller
 
     public function __construct(ClassService $classService)
     {
-        $this->classService = $classService;
+        $this->classService        = $classService;
     }
 
     /**
@@ -39,18 +37,17 @@ class EvolutionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-       
-
-        $classes = Classes::where('status', 1)->all();
-
+        if (!$class = $this->classService->find($id)) {
+            return responseRedirect('class.index', $this->classService::MSG_NOT_FOUND, 'error');
+        }
 
         $exercices = $this->toSelectBox(Exercice::all(), 'id', 'name');
         $exercice  = new EvolutionExercice();
         
 
-        return view('evolution.create', compact('exercices', 'exercice', 'students'));
+        return view('evolution.create', compact('class', 'exercices', 'exercice'));
     }
 
     /**

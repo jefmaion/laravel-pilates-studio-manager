@@ -3,23 +3,90 @@
 @section('content')
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-4">
         <div class="card">
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
-                    Adicionar Evolução
+                    Evolução de Aula
                 </h4>
             </div>
             <div class="card-body">
+        
                 <div class="row">
-
-                    <div class="col-12 form-group">
-                        <label>Aluno</label>
-                        <x-select2-image name="student_id"  :options="$students" />
+                    <div class="col-12">
+                        <ul class="list-unstyled list-unstyled-border list-unstyled-noborder">
+        
+                            <li class="media">
+        
+                                <figure class="avatar mr-2 avatar-xl mr-4">
+                                    <img src="{{ imageProfile($class->student->user->image) }}" alt="...">
+                                </figure>
+        
+                                <div class="media-body">
+        
+                                    <div class="media-title mb-3">
+                                        <a href="{{ route('student.show', $class->student) }}" class="h5">{{
+                                            $class->student->user->name }}</a>
+                                        <div class=""></div>
+                                    </div>
+        
+                                    <div class="tesxt-time">
+        
+                                        <div class="mb-2">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                            {{ date('d/m/Y', strtotime($class->date)) }} |
+                                            <i class="fas fa-clock"></i>{{ $class->time }} |
+                                            {{ Config::get('application.classTypes')[$class->type]['label']}}
+                                        </div>
+        
+                                        <div class="mb-2">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                            {{ $class->instructor->user->name }}
+                                        </div>
+                                    </div>
+        
+                                </div>
+                            </li>
+        
+                        </ul>
                     </div>
-                 
+                    {{-- <div class="col-7">
+                        <p><b>Comentários da Aula</b></p>
+                        {{ $class->comments }}
+                    </div> --}}
+        
                 </div>
+        
+        
+                <div classs="p-4">
+                    @if(empty($exercice->id))
+                    <form action="{{ route('evolution.store', $class) }}" method="post">
+                        @else
+                        <form action="{{ route('evolution.update', [$class, $exercice]) }}" method="post">
+                            @method('PUT')
+                            @endif
+                            @csrf
+                            <div class="row">
+        
+                                <div class="form-group col-12">
+                                    <label for="">Exercícios/Aparelhos Utilizados</label>
+                                    <x-form-input type="select" class="select2" name="exercice_id"
+                                        value="{{ $exercice->exercice_id }}" :options="$exercices" />
+                                </div>
+        
+                                <div class="form-group col-12">
+                                    <label for="">Comentários da execução</label>
+                                    <textarea class="form-control" rows="4" name="comments">{{ $exercice->comments }}</textarea>
+                                </div>
+        
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg">Adicionar Ação</button>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+        
             </div>
         </div>
         

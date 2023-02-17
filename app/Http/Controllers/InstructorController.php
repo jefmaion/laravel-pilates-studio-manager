@@ -141,15 +141,22 @@ class InstructorController extends Controller
 
         $instructor = $this->instructorService->find($id);
 
+        $user = $instructor->user;
+
+        $routes = [
+            'save-image' => route('instructor.profile.store', $instructor),
+            'back' => route('instructor.show', $instructor)
+        ];
+
         if($request->isMethod('get')) {
-            return view('instructor.image-profile', compact('instructor'));
+            return view('user.image-profile-upload', compact('user', 'routes'));
         }
 
         if(!$this->instructorService->saveProfilePhoto($instructor, $request->profile_image)) {
-            return responseRedirect(['instructor.profile', $instructor],'Erro ao salvar', 'error');
+            return redirect()->route('instructor.profile', $instructor)->with('error', 'Erro ao Salvar');
         }
 
-        return responseRedirect(['instructor.profile', $instructor],'Foto adicionada com sucesso!');
+        return redirect()->route('instructor.show', $instructor)->with('success', 'Foto adicionada com sucesso');
         
     }
 

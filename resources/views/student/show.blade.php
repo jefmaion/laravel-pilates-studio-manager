@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="row">
     <div class="col-3">
 
@@ -16,7 +17,11 @@
 
                 <div class="dropdown-menu" x-placement="bottom-start">
 
-                    <a class="dropdown-item has-icon" href="{{ route('student.profile', $student) }}">
+                    {{-- <a class="dropdown-item has-icon" href="{{ route('student.profile', $student) }}">
+                        <i class="fas fa-image    "></i> Alterar Foto de Perfil
+                    </a> --}}
+
+                    <a class="dropdown-item has-icon" href="#" id="change-photo">
                         <i class="fas fa-image    "></i> Alterar Foto de Perfil
                     </a>
 
@@ -236,6 +241,8 @@
     Voltar
 </a>
 
+@include('user.image-profile-upload', ['route' => route('student.profile.store', $student)])
+
 @endsection
 
 @section('css')
@@ -245,5 +252,4 @@
 @section('scripts')
     @include('layouts.plugins.datatables', ['file' => 'js'])
     <script src="{{ asset('js/datatables.config.js') }}"></script>
-    <script>$(".datatables").dataTable({...config});</script>
 @endsection    

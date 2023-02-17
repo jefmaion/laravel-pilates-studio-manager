@@ -6,6 +6,7 @@
     <div class="col-3">
         <x-user-card title="Professor"   :user="$instructor->user">
 
+
             <a name="" id="" class="btn btn-secondary" href="{{ route('instructor.index') }}" role="button">
                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
                 Voltar
@@ -13,6 +14,7 @@
 
             <div class="dropdown d-inline">
 
+                
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Ações
@@ -20,7 +22,7 @@
 
                 <div class="dropdown-menu" x-placement="bottom-start">
 
-                    <a class="dropdown-item has-icon" href="{{ route('instructor.profile', $instructor) }}">
+                    <a class="dropdown-item has-icon" href="#" id="change-photo">
                         <i class="fas fa-image    "></i> Alterar Foto de Perfil
                     </a>
 
@@ -187,3 +189,13 @@
 </div>
 @endsection
 
+@include('user.image-profile-upload', ['route' => route('instructor.profile.store', $instructor)])
+
+@section('css')
+    @include('layouts.plugins.datatables', ['file' => 'css'])
+@endsection
+
+@section('scripts')
+    @include('layouts.plugins.datatables', ['file' => 'js'])
+    <script src="{{ asset('js/datatables.config.js') }}"></script>
+@endsection    

@@ -72,8 +72,8 @@ Route::post('/class/{id}/replacement/store', [ClassesController::class, 'storeRe
 
 Route::resource('/class', ClassesController::class);
 
-Route::resource('/class/{id}/evolution', EvolutionController::class);
-
+// Route::resource('/class/{id}/evolution', EvolutionController::class);
+Route::resource('/evolution', EvolutionController::class);
 // Route::resource('/class/{id}/evolution/{id}/exercices', EvolutionExercicesController::class);
 
 

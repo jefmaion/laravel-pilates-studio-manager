@@ -9,8 +9,7 @@
     @endif
     <div class="card-body ">
         <div class="author-box-center">
-            <img alt="image" src="{{ imageProfile($user->image) }}"
-                class="rounded-circle author-box-picture">
+            <img alt="image" src="{{ imageProfile($user->image) }}" heisght="60" class="rounded-circle author-box-picture">
             <div class="clearfix"></div>
             <div class="author-box-name">
                 <a href="#">{{ $user->name }}</a>
@@ -25,7 +24,8 @@
             </div>
 
             <div class="w-100 d-sm-none"></div>
-            {{ $slot }}
+            <div>{{ $slot }}</div>
+            
         </div>
     </div>
 </div>

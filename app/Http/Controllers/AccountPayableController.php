@@ -119,6 +119,7 @@ class AccountPayableController extends Controller
         foreach($accounts as $i => $account) {
 
             $accounts[$i] = [
+                'created_at' => dateDMY($account->created_at),
                 'description'       =>  sprintf('<a href="%s">%s</a>', route('payable.show', $account), $account->description)  ,
                 'value'  =>  'R$ '. USD_BRL($account->value),
                 'due_date' => dateDMY($account->due_date),

@@ -51,12 +51,12 @@
                 <form action="{{ route('registration.class.store', $registration) }}" method="post">
                     @csrf
                     <div class="row">
-                        <div class="col-7 form-group">
+                        <div class="col-12 form-group">
                             <label>Dia da Semana</label>
                             <x-form-input type="select" class="select2" name="weekday"
                                 :options="appConfig('weekdays')" />
                         </div>
-                        <div class="col-5 form-group">
+                        <div class="col-12 form-group">
                             <label>Horário</label>
                             <x-form-input type="select" class="select2" name="time"
                                 :options="appConfig('class_time')" />
@@ -70,7 +70,7 @@
                             
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Adicionar Dia de Aula ({{ $registration->plan->class_per_week - $registration->classWeek->count() }})</button>
+                    <button type="submit" class="btn btn-primary btn-block">Adicionar Aula ({{ $registration->plan->class_per_week - $registration->classWeek->count() }})</button>
                 </form>
                 @endif
                 <br>
@@ -110,7 +110,7 @@
                     </li>
                 </ul>
 
-                <div class="tab-content tab-bordered" id="myTabContent">
+                <div class="tab-content tab-bosrdered" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <table class="table table-sm table-striped datatables w-100">
                             <thead>
@@ -140,8 +140,8 @@
                                     </td>
         
                                     <td>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-{{ $class->id }}">
-                                          Excluir
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-delete-{{ $class->id }}">
+                                          <i class="fas fa-trash    "></i>
                                         </button>
                                         
                                         @section('outbody')
@@ -151,23 +151,23 @@
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Excluir</h5>
+                                                            <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-trash"></i> Excluir</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">×</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body text-center">
                                                             <p>Deseja excluir esse dia de aula?</p>
-                                                            <p class="text-warning">
-                                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                                As aulas normais agendadas que ainda não foram realizadas serão excluídas!</p>
+                                                            
+                                                            
                                                         </div>
                                                         <div class="modal-footer bg-whitesmoke br">
                                                             <form action="{{ route('registration.class.destroy', [$registration, $class]) }}" method="post">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger"> <i class="fas fa-trash"></i>Excluir</button>
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times"></i> Fechar</button>
+                                                                <button type="submit" class="btn btn-danger"> <i class="fas fa-trash"></i> Excluir</button>
+
                                                             </form>
                                                         </div>
                                                     </div>

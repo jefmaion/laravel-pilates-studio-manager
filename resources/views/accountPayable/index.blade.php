@@ -22,10 +22,11 @@
                     <table class="table table-striped w-100" id="table-def">
                         <thead>
                             <tr>
+                                <th>Data Cadastro</th>     
+                                <th>Vencimento</th>                      
                                 <th>Descrição</th>                           
                                 <th>Valor</th>
                                 <th>Forma de Pagamento</th>
-                                <th>Vencimento</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -47,10 +48,12 @@
         $("#table-def").dataTable({...config,
             ajax:'/account/payable',
             columns: [
+                {data: 'created_at'},
+                {data: 'due_date'},
                 {data: 'description'},
                 {data: 'value'},
                 {data: 'payment_method'},
-                {data: 'due_date'},
+                
                 {data: 'status'},
             ]
         });

@@ -17,16 +17,23 @@
         </li>
 
         <li class="actives">
-            <a class="nav-link" href="{{ route('student.index') }}">
+            <a class="nav-link" href="{{ route('registration.index') }}">
                 <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
-                <span>Alunos</span>
+                <span>Matrículas</span>
             </a>
         </li>
 
         <li class="actives">
-            <a class="nav-link" href="{{ route('registration.index') }}">
+            <a class="nav-link" href="{{ route('evolution.index') }}">
                 <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
-                <span>Matrículas</span>
+                <span>Evoluções</span>
+            </a>
+        </li>
+
+        <li class="actives">
+            <a class="nav-link" href="{{ route('student.index') }}">
+                <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
+                <span>Alunos</span>
             </a>
         </li>
 
