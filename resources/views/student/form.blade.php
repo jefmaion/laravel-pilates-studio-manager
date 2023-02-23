@@ -101,6 +101,13 @@
     Salvar
 </button>
 
+@if(!isset($student->registration))
+{{-- <button type="submit" class="btn btn-success">
+    <i class="fas fa-check-circle"></i>
+    Salvar e Matricular
+</button> --}}
+@endif
+
 @section('scripts')
 <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
 <script src="{{ asset('js/jquery.mask.config.js') }}"></script>

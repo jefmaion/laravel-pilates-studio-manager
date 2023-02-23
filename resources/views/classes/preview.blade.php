@@ -141,7 +141,7 @@
                             <figure class="avatar mr-2 avatar-sm">
                                 <img src="{{ imageProfile($cls->instructor->user->image) }}" alt="...">
                               </figure>
-                            {{ $cls->instructor->user->name }}
+                            {{ $cls->instructor->user->nickname }}
                         </td>
                         <td>
                             {!! $cls->statusClass !!}

@@ -42,6 +42,22 @@ class AccountPayableService extends Services {
         return $this->model->orderBy('due_date','ASC')->get();
     }
 
+
+    public function sumAccountToPay() {
+        return AccountPayable::where('due_date',  '>', date('Y-m-d'))->where('status', 0)->sum('value');
+    }
+
+    public function sumAccountLate() {
+        return AccountPayable::where('due_date',  '<', date('Y-m-d'))->where('status', 0)->sum('value');
+    }
+
+    public function sumAccountPayed() {
+        return AccountPayable::where('status', 1)->sum('value');
+    }
+
+    public function sumAccountPayToday() {
+        return AccountPayable::where('due_date',  '=', date('Y-m-d'))->where('status', 0)->sum('value');
+    }
     
 
 

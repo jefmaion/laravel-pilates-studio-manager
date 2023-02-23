@@ -20,12 +20,9 @@ class PlanSeeder extends Seeder
             ['name' => 'Mensal (3x)', 'value' => '290.00', 'class_per_week' => 3, 'duration' => 1, 'enabled' => rand(1,0)],
 
             ['name' => 'Trimestral (1x)', 'value' => '185.00', 'class_per_week' => 1, 'duration' => 3, 'enabled' => rand(1,0)],
-            ['name' => 'Trimestral (2x)', 'value' => '240.00', 'class_per_week' => 2, 'duration' => 3, 'enabled' => rand(1,0)],
-            ['name' => 'Trimestral (3x)', 'value' => '280.00', 'class_per_week' => 3, 'duration' => 3, 'enabled' => rand(1,0)],
+            ['name' => 'Trimestral (2x)', 'value' => '235.00', 'class_per_week' => 2, 'duration' => 3, 'enabled' => rand(1,0)],
+            ['name' => 'Trimestral (3x)', 'value' => '275.00', 'class_per_week' => 3, 'duration' => 3, 'enabled' => rand(1,0)],
 
-            ['name' => 'Anual (1x)', 'value' => '150.00',  'class_per_week' => 1, 'duration' => 12, 'enabled' => rand(1,0)],
-            ['name' => 'Anual (2x)', 'value' => '230.00', 'class_per_week' => 2, 'duration' => 12, 'enabled' => rand(1,0)],
-            ['name' => 'Anual (3x)', 'value' => '260.00', 'class_per_week' => 3, 'duration' => 12, 'enabled' => rand(1,0)],
         ];
 
 

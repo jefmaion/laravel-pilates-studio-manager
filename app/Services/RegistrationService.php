@@ -62,6 +62,7 @@ class RegistrationService extends Services {
 
         $newRegistration        = $registration->replicate();
         $newRegistration->start =  $registration->end;
+        $newRegistration->end   = date('Y-m-d', strtotime($registration->end . ' +'.$registration->plan->duration.' months'));
         $newRegistration->class = $registration->classWeek->toArray();
         $newRegistration->isPaid = 1;
 

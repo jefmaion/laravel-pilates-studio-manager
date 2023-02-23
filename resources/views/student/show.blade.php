@@ -4,7 +4,7 @@
 
 
 <div class="row">
-    <div class="col-3">
+    <div class="col-4">
 
         <x-user-card title="Aluno"   :user="$student->user">
             

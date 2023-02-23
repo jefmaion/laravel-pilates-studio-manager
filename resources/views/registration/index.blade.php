@@ -29,7 +29,7 @@
 
 
                 
-                <table class="table table-sm table-striped w-100" id="table-def" style="font-size:14px">
+                <x-data-table id="table-def">
                     <thead>
                         <tr>
                             <th>Aluno</th>
@@ -41,7 +41,7 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                </table>
+                </x-data-table>
             </div>
         </div>
     </div>

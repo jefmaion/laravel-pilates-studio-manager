@@ -2,13 +2,28 @@
 
 @section('content')
 <div class="row">
-    <div class="col-12 col-lg-4 col-md-8 col-sm-12">
+    <div class="col-12 col-lg-12 col-md-8 col-sm-12">
         <div class="card author-box">
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
                     Matrícula de {{ $registration->student->user->name }}
                 </h4>
+
+                <div class="card-header-action">
+                    @if($registration->canCancel)
+                        <a name="" id="" class="btn btn-danger btn-bslock" data-toggle="modal" data-target="#modal-cancel-registration" href="#" role="button">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Cancelar Matrícula
+                        </a>
+                    @endif
+                    @if($registration->canRenew)
+                        <a name="" id="" class="btn btn-success btn-blsock" data-toggle="modal" data-target="#modal-re-enroll" href="#">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Renovar Matrícula
+                        </a>
+                    @endif
+                </div>
             </div>
             <div class="card-body">
                 <div class="author-box-left">
@@ -27,13 +42,119 @@
                         </div>
                         <div>
                             <i class="fas fa-caret-square-right"></i>
-                            {{ $registration->plan->name }}
+                            {{ $registration->plan->name }} <span class="mx-1 text-light">/</span>  {{ date('d/m/y', strtotime($registration->start)) }} até {{ date('d/m/y', strtotime($registration->end)) }}
                         </div>
+                        <div>
+                            <i class="fas fa-caret-square-right"></i>
+                            @foreach($registration->classWeek as $week)
+                                {{ Config::get('application.weekdays')[$week->weekday] }} às {{ Config::get('application.class_time')[$week->time] }} <span class="mx-1 text-light">/</span>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link  active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                            Grade de Aulas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                            Mensalidades
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content tab-bordsred" id="myTabContent">
+                    <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                        <p class="my-4">
+                            <a name="" id="" class="btn btn-success" href="{{ route('registration.class.index', $registration) }}" role="button">
+                                Editar Plano de Aulas
+                            </a>
+                        </p>
+
+                        @if(!$registration->classes()->count())
+
+                            <p>Não existem aulas para essa matrícula. <a href="{{ route('registration.class.index', $registration) }}">Criar plano de aulas</a></p>
+
+                        @else
+                            <x-data-table>
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Hora</th>
+                                        <th>Dia</th>
+                                        <th>Instrutor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($registration->classes as $class)
+                                    <tr>
+                                        <td data-search="{{ date('d/m/Y', strtotime($class->date)) }}">{{ date('d/m/Y', strtotime($class->date)) }}</td>
+                                        <td data-search="{{ $class->time }}">{{ $class->time }}</td>
+                                        <td>{{ $class->weekdayName }}</td>
+                                        
+                                        <td>
+                                            <figure class="avatar mr-2 avatar-sm">
+                                                <img src="{{ imageProfile($class->instructor->user->image) }}" alt="...">
+                                            </figure>
+                                            {{ $class->instructor->user->name }}
+                                        </td>
+                                        <td>
+                                            {!! $class->statusClass !!}
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </x-data-table>
+
+                        @endif
+
+                    </div>
+
+                    <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <x-data-table>
+                            <thead class="">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Forma de Pagamento</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($registration->installments as $inst)
+                                <tr>
+                                    <td>{{ date('d/m/Y', strtotime($inst->due_date)) }}</td>
+                                    <td>{{ $inst->paymentMethod->name }}</td>
+                                    <td>R$ {{ USD_BRL($inst->value) }}</td>
+                                    <td>
+
+                                        @if($inst->isLate)
+                                            <a href="{{ route('payable.receive', $inst) }}">
+                                                {!! $inst->status_label !!}
+                                            </a>
+                                        @else
+
+                                        {!! $inst->status_label !!}
+
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </x-data-table>
+                    </div>
+
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                     </div>
                 </div>
             </div>
         </div>
-
+{{-- 
         <div class="card ">
             <div class="card-header">
                 <h4>
@@ -195,19 +316,21 @@
                 @endif
 
                 @if($registration->canRenew)
-                        <a name="" id="" class="btn btn-success btn-block" data-toggle="modal" data-target="#modal-re-enroll" href="#">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            Renovar Matrícula
-                        </a>
-                    @endif
+                    <a name="" id="" class="btn btn-success btn-block" data-toggle="modal" data-target="#modal-re-enroll" href="#">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Renovar Matrícula
+                    </a>
+                @endif
 
             </div>
-        </div>
+        </div> --}}
 
 
     </div>
 
-    <div class="col-12 col-lg-8 col-sm-12 d-flex">
+{{-- 
+
+    <div class="col-12 col-lg-12 col-sm-12 d-flex">
         <div class="card flex-fill">
             <div class="card-header">
                 <h4>
@@ -316,7 +439,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 
 

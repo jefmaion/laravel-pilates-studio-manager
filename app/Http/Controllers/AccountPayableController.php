@@ -23,7 +23,16 @@ class AccountPayableController extends Controller
             return $this->list();
         }
 
-        return view('accountPayable.index');
+        $boxes = [
+            'toPay' => USD_BRL($this->accountPayable->sumAccountToPay()),
+            'late' => USD_BRL($this->accountPayable->sumAccountLate()),
+            'payed' => USD_BRL($this->accountPayable->sumAccountPayed()),
+            'today' => USD_BRL($this->accountPayable->sumAccountPayToday()),
+        ];
+
+
+
+        return view('accountPayable.index', compact('boxes'));
     }
 
     public function create()

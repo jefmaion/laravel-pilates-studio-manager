@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-3">
+    <div class="col-4">
         <x-user-card title="Professor"   :user="$instructor->user">
 
 

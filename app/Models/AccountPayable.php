@@ -37,6 +37,8 @@ class AccountPayable extends Model
 
         return false;
     }
+    
+    
 
     public function getStatusLabelAttribute() {
         $badge = '<span class="badge badge-pill badge-%s"><span></span> %s</span>';
@@ -51,7 +53,7 @@ class AccountPayable extends Model
             return sprintf($badge, 'warning',  'Pagar Hoje');
         }
 
-        if($this->due_date > date('Y-m-d')) {
+        if($this->due_date > date('Y-m-d') && $this->status == 0) {
             return sprintf($badge, 'light',  'Aberto');
         }
 
