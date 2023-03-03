@@ -1,6 +1,6 @@
 <div class="modal-header bg-whitesmoke p-3">
     <h5 class="modal-title">
-        {{ appConfig('classTypes')[$class->type]['label']  }} - {{ appConfig('classStatus')[$class->status]['label']  }}
+        {{ appConfig('classTypes')[$class->type]['label'] }} - {{ appConfig('classStatus')[$class->status]['label'] }}
     </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span>&times;</span>
@@ -8,7 +8,7 @@
 </div>
 
 <div class="modal-body">
-    
+
     <div class="row">
         <div class="col-12">
             <ul class="list-unstyled list-unstyled-border list-unstyled-noborder">
@@ -26,18 +26,25 @@
                         </div>
 
                         <div class="">
-                            
+
                             <div class="mb-2">
                                 <i class="fas fa-clock"></i> {{ $class->time }} <span class="mx-1 text-light">|</span>
-                                <i class="fas fa-calendar"></i> {{ dateDMY($class->date) }} <span class="mx-1 text-light">|</span>
+                                <i class="fas fa-calendar"></i> {{ dateDMY($class->date) }} <span
+                                    class="mx-1 text-light">|</span>
                                 <figure class="avatar mr-2 avatar-xs">
                                     <img src="{{ imageProfile($class->instructor->user->image) }}" alt="...">
-                                  </figure> {{ $class->instructor->user->name }}
+                                </figure> {{ $class->instructor->user->name }}
                             </div>
                             <div class="mb-2">
-                                <i class="fas fa-boxes"></i> {{ $class->registration->plan->name }} <span class="mx-1 text-light">|</span>
-                                <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }} 
-                                
+                                <i class="fas fa-boxes"></i> {{ $class->registration->plan->name }} <span
+                                    class="mx-1 text-light">|</span>
+                                <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }} <span
+                                    class="mx-1 text-light">|</span>
+                                {{-- <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                                    aria-controls="collapseExample">
+                                    + Informações
+                                </a> --}}
+
                             </div>
                         </div>
 
@@ -62,7 +69,7 @@
                         </div>
 
                         <div>
-                            
+
 
                             @if($class->student->hasInstallmentsToPayToday)
                             <span class="badge badge-pill badge-warning">
@@ -70,7 +77,7 @@
                             </span>
                             @endif
 
-                       
+
 
                         </div>
                     </div>
@@ -79,216 +86,167 @@
         </div>
     </div>
 
-    <ul class="nav nav-tabs nav-justifised" id="myTab2" role="tablist">
-        @if($class->student->lastClasses)
-        <li class="nav-item">
-            <a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home2" role="tab" aria-controls="home" aria-selected="true">
-                <i class="fas fa-calendar-check    "></i>
-                Aulas Realizadas
-            </a>
-        </li>
+    <div class="cosllapse mt-4" id="collapseExample">
+        <ul class="nav nav-tabs nav-justifised" id="myTab2" role="tablist">
+            @if($class->student->lastClasses)
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home2" role="tab"
+                    aria-controls="home" aria-selected="true">
+                    <i class="fas fa-calendar-check    "></i>
+                    Aulas Realizadas
+                </a>
+            </li>
 
-        @endif
+            @endif
 
-        @if($class->student->registration->lateInstallments->count() > 0)
-        <li class="nav-item">
-            <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile" aria-selected="false">
-                @if($class->student->hasLateInstallments)
+            @if($class->student->registration->lateInstallments->count() > 0)
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile2" role="tab"
+                    aria-controls="profile" aria-selected="false">
+                    @if($class->student->hasLateInstallments)
                     <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
                     @else
-                    <i class="fas fa-money-bill-wave"></i> 
-                @endif
+                    <i class="fas fa-money-bill-wave"></i>
+                    @endif
 
-                Mensalidades
-                
-            </a>
-        </li>
-        @endif
+                    Mensalidades
 
-        @if($class->student->evolutions)
-        <li class="nav-item">
-            <a class="nav-link" id="contact-tab2" data-toggle="tab" href="#contact2" role="tab" aria-controls="contact" aria-selected="false">
-                @if(!$class->evolution && $class->status == 1)
+                </a>
+            </li>
+            @endif
+
+            @if($class->student->evolutions)
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab2" data-toggle="tab" href="#contact2" role="tab"
+                    aria-controls="contact" aria-selected="false">
+                    @if(!$class->evolution && $class->status == 1)
                     <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
                     @else
                     <i class="fas fa-chart-line"></i>
-                @endif
-                 Evoluções
+                    @endif
+                    Evoluções
 
-            </a>
-        </li>
-        @endif
-    </ul>
-
-    <div class="tab-content tab-bordsered" id="myTab3Content">
-
-        <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab2">
-            <table class="table table-sm table-striped datatables w-100" id="table-def">
-                <thead class="">
-                    <tr>
-                        <th>Data</th>
-                        <th>Tipo</th>
-                        <th>Instrutor</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($class->student->lastClasses as $cls)
-                    <tr>
-                        <td>{{ date('d/m/Y', strtotime($cls->date)) }} {{ date('H:i', strtotime($cls->time)) }}</td>
-                        <td>{{ appConfig('classTypes')[$cls->type]['label'] }}</td>
-                        <td>
-                            <figure class="avatar mr-2 avatar-sm">
-                                <img src="{{ imageProfile($cls->instructor->user->image) }}" alt="...">
-                              </figure>
-                            {{ $cls->instructor->user->nickname }}
-                        </td>
-                        <td>
-                            {!! $cls->statusClass !!}
-                   
-                       </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <div class="tab-pane fade" id="profile2" role="tabpanel" aria-labelledby="profile-tab2">
-            <table class="table table-sm table-striped datatables w-100" id="table-def">
-                <thead class="">
-                    <tr>
-                        <th>Data</th>
-                        <th>Valor</th>
-                        <th>Forma de Pagamento</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($class->student->registration->lateInstallments as $inst)
-
-
-
-                    <tr>
-                        <td>{{ date('d/m/Y', strtotime($inst->due_date)) }}</td>
-                        <td>R$ {{ USD_BRL($inst->value) }}</td>
-                        <td>{{ $inst->paymentMethod->name }}</td>
-                        <td>
-                            @if($inst->isLate)
-                                <a href="{{ route('payable.receive', $inst) }}">{!! $inst->status_label !!}</a>
-                            @else
-                                {!! $inst->status_label !!}
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <div class="tab-pane fade" id="contact2" role="tabpanel" aria-labelledby="contact-tab2">
-
-            @if(!$class->evolution && $class->status == 1)
-                <div class="alert alert-warning" role="alert">
-                A evolução desta aula ({{ dateDMY($class->date) }}) ainda não foi registrada!
-                <a href="{{ route('evolution.create', $class) }}" class="badge badge-primary">Cadastrar Evolução</a>
-                </div>
+                </a>
+            </li>
             @endif
+        </ul>
 
-            <div class="form-group">
-                <select id="select-evolution" class="form-control" name="" onchange="">
-                    @foreach($class->student->evolutions as $evolution)
-                    <option value="{{ $evolution->id }}">{{ dateDMY($evolution->classes->date) }} - {{ $evolution->instructor->user->name }}</option>
-                    @endforeach
-                </select>
+        <div class="tab-content tab-bordsered" id="myTab3Content">
+
+            <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab2">
+                <table class="table table-sm table-striped datatasbles w-100" id="table-def">
+                    <thead class="">
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Instrutor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($class->student->lastClasses as $cls)
+                        <tr>
+                            <td>{{ date('d/m/Y', strtotime($cls->date)) }} {{ date('H:i', strtotime($cls->time)) }}</td>
+                            <td>{{ appConfig('classTypes')[$cls->type]['label'] }}</td>
+                            <td>
+                                <figure class="avatar mr-2 avatar-sm">
+                                    <img src="{{ imageProfile($cls->instructor->user->image) }}" alt="...">
+                                </figure>
+                                {{ $cls->instructor->user->nickname }}
+                            </td>
+                            <td>
+                                {!! $cls->statusClass !!}
+
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
 
-            @foreach($class->student->evolutions as $evolution)
-            <div id="evolution-{{ $evolution->id }}" class="evolutions">
+            <div class="tab-pane fade" id="profile2" role="tabpanel" aria-labelledby="profile-tab2">
+                <table class="table table-sm table-striped datatablses w-100" id="table-def">
+                    <thead class="">
+                        <tr>
+                            <th>Data</th>
+                            <th>Valor</th>
+                            <th>Forma de Pagamento</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($class->student->registration->lateInstallments as $inst)
 
-                <p>{{ $evolution->classes->comments }}</p>
-                <ul>
-                @foreach($evolution->exercices as $exercice)
-                
-                    {{-- <h6> {{ $exercice->exercice->name }}</h6> --}}
-                    
+
+
+                        <tr>
+                            <td>{{ date('d/m/Y', strtotime($inst->due_date)) }}</td>
+                            <td>R$ {{ USD_BRL($inst->value) }}</td>
+                            <td>{{ $inst->paymentMethod->name }}</td>
+                            <td>
+                                @if($inst->isLate)
+                                <a href="{{ route('payable.receive', $inst) }}">{!! $inst->status_label !!}</a>
+                                @else
+                                {!! $inst->status_label !!}
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="contact2" role="tabpanel" aria-labelledby="contact-tab2">
+
+                @if(!$class->evolution && $class->status == 1)
+                <div class="alert alert-warning" role="alert">
+                    A evolução desta aula ({{ dateDMY($class->date) }}) ainda não foi registrada!
+                    <a href="{{ route('evolution.create', $class) }}" class="badge badge-primary">Cadastrar Evolução</a>
+                </div>
+                @endif
+
+                <div class="form-group">
+                    <select id="select-evolution" class="form-control" name="" onchange="">
+                        @foreach($class->student->evolutions as $evolution)
+                        <option value="{{ $evolution->id }}">{{ dateDMY($evolution->classes->date) }} - {{
+                            $evolution->instructor->user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                @foreach($class->student->evolutions as $evolution)
+                <div id="evolution-{{ $evolution->id }}" class="evolutions">
+
+                    <p>{{ $evolution->classes->comments }}</p>
+                    <ul>
+                        @foreach($evolution->exercices as $exercice)
+
+                        {{-- <h6> {{ $exercice->exercice->name }}</h6> --}}
+
                         <li class="mb-2"><b>{{ $exercice->exercice->name }}: </b>{!! $exercice->comments !!}</li>
-                    
-                
+
+
+                        @endforeach
+                    </ul>
+                    <hr>
+                    Avaliado por
+
+                    <span class="font-weight-bold font-13">
+                        {{ $evolution->instructor->user->name }}
+                    </span>
+                    &nbsp;&nbsp; - {{ $evolution->created_at->diffForHumans()}}
+
+                </div>
                 @endforeach
-            </ul>
-                <hr>
-                Avaliado por
-                
-                <span class="font-weight-bold font-13">
-                    {{ $evolution->instructor->user->name }}
-                </span>
-                &nbsp;&nbsp; - {{ $evolution->created_at->diffForHumans()}}
+
+
+
 
             </div>
-            @endforeach
 
-            
-
-            
         </div>
-
-      </div>
-
-{{-- 
-    @if(isset($class->student->lastEvol->evolution) && $class->status == 0)
-
-    <div><b>Última Evolução</b> ({{ dateDMY($class->student->lastEvolution()->date) }})</div>
-    <hr class="m-0 mb-2">
-
-    {!! $class->student->lastEvol->evolution->evolution !!}
-
-    <div class="my-3">
-        @foreach($class->student->lastEvolution()->exercices as $exercice)
-
-        <span class="badge badge-pill badge-light m-1"><small>
-                {{ $exercice->exercice->name }}</small></span>
-        @endforeach
     </div>
-
-    <small class="text-muted">
-        Avaliado por
-        <span class="font-weight-bold font-13">
-            {{ $class->student->lastEvolution()->instructor->user->name }}
-        </span>
-        &nbsp;&nbsp; - {{ $class->student->lastEvolution()->updated_at->diffForHumans()}}
-    </small>
-
-
-    @endif
-
-    @if($class->evolution && $class->status == 1)
-    <div><b>Evolução da Aula</b></div>
-    <hr class="m-0 mb-2">
-
-    {!! $class->evolution->evolution !!}
-
-    <div class="my-3">
-        <div>Exercícios/Aparelhos Utilizados: </div>
-        @foreach($class->student->lastEvolution()->exercices as $exercice)
-        <span class="badge badge-pill badge-light mr-1 mt-1"><small>
-                {{ $exercice->exercice->name }}</small>
-        </span>
-        @endforeach
-    </div>
-
-    <small class="text-muted">
-        Avaliado por
-        <span class="font-weight-bold font-13">
-            {{ $class->student->lastEvolution()->instructor->user->name }}
-        </span>
-        &nbsp;&nbsp; - {{ $class->student->lastEvolution()->updated_at->diffForHumans()}}
-    </small>
-
-
-    @endif --}}
-
-
-
+    
 
 </div>
 <div class="modal-footer bg-whitesmoke br">

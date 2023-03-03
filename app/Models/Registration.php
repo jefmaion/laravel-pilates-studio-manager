@@ -44,6 +44,14 @@ class Registration extends Model
     public function lateInstallments() {
         return $this->hasMany(AccountPayable::class)->where('status', 0)->where('due_date', '<', date('Y-m-d'));
     }
+
+    public function getPresenceClassesAttribute() {
+        return $this->classes()->where('status', 1)->where('finished', 1)->count();
+    }
+
+    public function getAbsenseClassesAttribute() {
+        return $this->classes()->where('status', 3)->where('finished', 1)->count();
+    }
     
     public function getDaysToRenewAttribute() {
         return now()->diffInDays(Carbon::parse($this->end), false);

@@ -50,26 +50,7 @@
                 @else
                 <form action="{{ route('registration.class.store', $registration) }}" method="post">
                     @csrf
-                    <div class="row">
-                        <div class="col-12 form-group">
-                            <label>Dia da Semana</label>
-                            <x-form-input type="select" class="select2" name="weekday"
-                                :options="appConfig('weekdays')" />
-                        </div>
-                        <div class="col-12 form-group">
-                            <label>Horário</label>
-                            <x-form-input type="select" class="select2" name="time"
-                                :options="appConfig('class_time')" />
-                        </div>
-                        <div class="col-12 form-group">
-                            <label>Professor</label>
-                            {{-- <x-form-input type="select" class="select2" name="instructor_id" :options="$instructors" /> --}}
-                            
-                            {{-- <x-form-input type="select" class="select2-image input-lg" name="student_id" :options="$students" /> --}}
-                            <x-select2-image name="instructor_id" :options="$instructors" />
-                            
-                        </div>
-                    </div>
+                    @include('registration.class-form')
                     <button type="submit" class="btn btn-primary btn-block">Adicionar Aula ({{ $registration->plan->class_per_week - $registration->classWeek->count() }})</button>
                 </form>
                 @endif
@@ -234,13 +215,95 @@
             </div>
         </div>
     </div>
+
+
+    <div class="col-8">
+        
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
+                    Aulas/Professores
+                </h4>
+
+                <div class="card-header-action">
+                    <a data-collapse="#mycard-collapse" class="btn btn-iscon btn-info" href="#"><i class="fas fa-minus"></i></a>
+                  </div>
+            </div>
+            <div class="collapse show" id="mycard-collapse" style="">
+                
+            <div class="card-body">
+
+                    
+                <table class="table table-strsiped table-bordered tabzle-sm">
+                    <thead>
+                        <tr>
+                            <th class=>Horário</th>
+                            @foreach($calendar['weekdays'] as $item)
+                            <th class="text-center">{{ $item }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($calendar['classes'] as $time => $item)
+
+                        <tr>
+                            <th>{{ $time }}</th>
+                            @foreach($item as $k => $classes)
+                            
+                            <td class="text-center">
+                                {!! $classes !!}
+                            </td>
+                            @endforeach
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
+
+
+
 
 <a name="" id="" class="btn btn-secondary" href="{{ route('registration.show', $registration) }}" role="button">
     <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
     Voltar
 </a>
 
+
+@endsection
+
+@section('outbody')
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="{{ route('registration.class.store', $registration) }}" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                
+                    @csrf
+                    @include('registration.class-form')
+                    <button type="submit" class="btn btn-primary btn-block">Adicionar Aula ({{ $registration->plan->class_per_week - $registration->classWeek->count() }})</button>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -258,4 +321,19 @@
 <script src="{{ asset('assets/js/page/datatables.js') }}"></script>
 <script src="{{ asset('js/datatables.config.js') }}"></script>
 <script>$(".datatables").dataTable({...config});</script>
+
+<script>
+
+    $('.day').click(function (e) { 
+        e.preventDefault();
+
+        time = $(this).data('time')
+        weekday = $(this).data('weekday')
+
+        $('[name="time"]').val(time).change();
+        $('[name="weekday"]').val(weekday).change();
+        $('#modelId').modal('show')
+    });
+
+</script>
 @endsection

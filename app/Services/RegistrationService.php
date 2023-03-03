@@ -248,7 +248,8 @@ class RegistrationService extends Services {
                 'pay_date' => $dueDate,
                 'value' => $registration->final_value,
                 'initial_value' => $registration->final_value,
-                'description' => 'Mensalidade '.$i.'/'.$registration->plan->duration.' de '. $registration->student->user->name,
+                // 'description' => 'Mensalidade '.$i.'/'.$registration->plan->duration.' de '. $registration->student->user->name,
+                'description' => $registration->student->user->name . ' ('.$i.'/'.$registration->plan->duration.')',
                 'status' => $status,
                 'order' => $i
             ]);

@@ -14,4 +14,8 @@ class RegistrationClass extends Model
     public function instructor() {
         return $this->belongsTo(Instructor::class);
     }
+
+    public function registration() {
+        return $this->belongsTo(Registration::class);
+    }
 }

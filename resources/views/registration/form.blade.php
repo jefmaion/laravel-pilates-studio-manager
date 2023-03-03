@@ -10,7 +10,7 @@
 
     <div class="col-3 form-group">
         <label>Inicio das Aulas</label>
-        <x-form-input type="date" name="start"  value="" />
+        <x-form-input type="date" name="start"  value="{{ date('Y-m-d') }}" />
     </div>
 
     <div class="col-9 form-group">
@@ -20,7 +20,7 @@
 
     <div class="col-3 form-group">
         <label>Dia de Vencimento</label>
-        <x-form-input type="number" name="due_date" value="{{ $registration->due_date }}" />
+        <x-form-input type="number" name="due_date" value="{{ $registration->due_date ?? date('d') }}" />
     </div>
 
     

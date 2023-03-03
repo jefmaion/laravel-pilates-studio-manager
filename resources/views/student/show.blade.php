@@ -101,7 +101,7 @@
     </div>
     <div class="card-body">
 
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
 
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"aria-selected="true">Evoluções</a>
@@ -155,6 +155,9 @@
                             <th>Início</th>
                             <th>Fim</th>
                             <th>Valor</th>
+                            <th>Total de Aulas</th>
+                            <th>Nº Presenças</th>
+                            <th>Nº Faltas</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -166,6 +169,9 @@
                             <td>{{ dateDMY($registration->start) }}</td>
                             <td>{{ dateDMY($registration->end) }}</td>
                             <td>R$ {{ USD_BRL($registration->final_value) }}</td>
+                            <td>{{ $registration->classes->count() }}</td>
+                            <td>{{ $registration->presenceClasses }}</td>
+                            <td>{{ $registration->absenseClasses }}</td>
                             <td>{!!$registration->statusRegistration!!}</td>
                         </tr>
                         @endforeach
@@ -187,7 +193,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($student->classesFinished as $class)
+                        @foreach($student->classes as $class)
                         <tr>
                             <td scope="row">{{ date('Y', strtotime($class->created_at)) }}</td>
                             <td>{{ $class->date }}</td>

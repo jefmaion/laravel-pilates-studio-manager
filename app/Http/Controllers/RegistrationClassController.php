@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRegistrationClassRequest;
 use App\Models\Instructor;
 use App\Models\Registration;
 use App\Models\RegistrationClass;
@@ -39,14 +40,42 @@ class RegistrationClassController extends Controller
 
         $instructors = $this->toImageSelectBox(Instructor::all());
 
-
         // if($request->isMethod('post')) {
         //     $this->registrationService->addClasses($registration, $request->all());
         //     return redirect()->route('registration.classes', $registration);
         // }
 
+        $classes = RegistrationClass::all();
+
+        $calendar = [];
+        $weekClasses = [];
+
+        foreach($classes as $class) {
+
+            $student = '<span class="badge badge-pill badge-light mb-2">' .  $class->registration->student->name . '</span>';
+
+            if($class->registration->student_id == $registration->student_id) {
+                $student = '<span class="badge badge-pill badge-primary mb-2">'.$class->registration->student->name.'</span>';
+            }
+
+            $weekClasses[$class->time][$class->weekday][] = $student;
+        }
+
+        $calendar['weekdays'] = appConfig('weekdays');
+        foreach(appConfig('class_time') as $t => $time) {
+            foreach(appConfig('weekdays') as $w => $weekday) {
+
+
+
+
+                $calendar['classes'][$time][] = isset($weekClasses[$t][$w]) ? '<div>' . implode("</div><div>", $weekClasses[$t][$w]) . '</div>' : null ;
+            }
+        }
         
-        return view('registration.class', compact('registration', 'instructors'));
+        
+      
+        
+        return view('registration.class', compact('registration', 'instructors', 'calendar'));
     }
 
     /**
@@ -65,7 +94,7 @@ class RegistrationClassController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(StoreRegistrationClassRequest $request, $id)
     {
 
         if(!$registration = $this->registrationService->find($id)) {
