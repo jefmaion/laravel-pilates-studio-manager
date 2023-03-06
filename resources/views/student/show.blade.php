@@ -1,5 +1,15 @@
 @extends('layouts.main')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb ml-0">
+    <ol class="breadcrumb mt-0">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('student.index') }}">Alunos</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ $student->user->name }} </li>
+    </ol>
+  </nav>
+@endsection
+
 @section('content')
 
 
@@ -8,18 +18,13 @@
 
         <x-user-card title="Aluno"   :user="$student->user">
             
-
             <div class="dropdown d-inline">
 
-                <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary btn-bslock dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Ações
                 </button>
 
                 <div class="dropdown-menu" x-placement="bottom-start">
-
-                    {{-- <a class="dropdown-item has-icon" href="{{ route('student.profile', $student) }}">
-                        <i class="fas fa-image    "></i> Alterar Foto de Perfil
-                    </a> --}}
 
                     <a class="dropdown-item has-icon" href="#" id="change-photo">
                         <i class="fas fa-image    "></i> Alterar Foto de Perfil
@@ -123,6 +128,7 @@
 
         <div class="tab-content" id="myTabContent">
             
+            {{-- Evoluções --}}
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <table class="table table-sm table-striped datatables w-100">
                     <thead>
@@ -146,6 +152,7 @@
                 </table>
             </div>
 
+            {{-- Matrículas --}}
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <table class="table table-sm table-striped datatables w-100">
                     <thead>
@@ -179,6 +186,7 @@
                 </table>
             </div>
 
+            {{-- Aulas --}}
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                 <table class="table table-sm table-striped datatables w-100">
                     <thead>
@@ -208,6 +216,7 @@
                 </table>
             </div>
 
+            {{-- Mensalidades --}}
             <div class="tab-pane fade" id="contact3" role="tabpanel" aria-labelledby="contact-tab">
                 <table class="table table-sm table-striped datatables w-100" id="table-def" stylse="font-size:13px">
                     <thead class="">

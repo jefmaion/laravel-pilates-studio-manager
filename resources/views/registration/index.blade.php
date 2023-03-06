@@ -1,14 +1,17 @@
 @extends('layouts.main')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb mr-0">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Matrículas</li>
+    </ol>
+</nav>
+@endsection
+
 @section('content')
-
-
 <div class="row">
     <div class="col-12">
-
-
-
-
         <div class="card">
             <div class="card-header">
                 <h4>
@@ -23,19 +26,13 @@
                     </a>
                 </div>
             </div>
-
             <div class="card-body">
-
-
-
-                
                 <x-data-table id="table-def">
                     <thead>
                         <tr>
                             <th>Aluno</th>
                             <th>Aluno</th>
-                            <th>Telefones</th>
-                            <th>Valor</th>
+                            <th>Plano</th>
                             <th>Vencimento</th>
                             <th>Renovação</th>
                             <th>Status</th>
@@ -57,19 +54,16 @@
     @include('layouts.plugins.datatables', ['file' => 'js'])
     <script src="{{ asset('js/datatables.config.js') }}"></script>
     <script>
-
         $("#table-def").dataTable({...config,
             ajax:'/registration',
             columns: [
                 {data: 'image'},
                 {data: 'student'},
-                {data: 'phone'},
-                {data: 'value'},
+                {data: 'plan'},
                 {data: 'end'},
                 {data: 'renew'},
                 {data: 'status'},
             ]
         });
-
     </script>
 @endsection

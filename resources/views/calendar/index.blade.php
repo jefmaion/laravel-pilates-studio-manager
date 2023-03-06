@@ -30,7 +30,7 @@
             <div class="tab-pane fade active show pt-3" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="row">
                     <div class="col">
-                        @include('classes.calendar')
+                        @include('calendar.calendar')
                     </div>
 
                     <div class="col-3">

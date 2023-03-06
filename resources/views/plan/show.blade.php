@@ -1,5 +1,16 @@
 @extends('layouts.main')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb ml-0">
+    <ol class="breadcrumb mt-0">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('plan.index') }}">Professores</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Detalhes do Plano - {{ $plan->name }} </li>
+    </ol>
+  </nav>
+@endsection
+
+
 @section('content')
 
 

@@ -24,7 +24,7 @@ class StudentController extends Controller
     public function __construct(Request $request, StudentService $studentService)
     {
         $this->studentService = $studentService;
-        $this->request = $request;
+        $this->request        = $request;
     }
 
     public function index()
@@ -109,7 +109,7 @@ class StudentController extends Controller
 
         $routes = [
             'save-image' => route('student.profile.store', $student),
-            'back' => route('student.show', $student)
+            'back'       => route('student.show', $student)
         ];
 
         if($request->isMethod('get')) {

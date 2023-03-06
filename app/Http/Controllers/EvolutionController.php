@@ -43,14 +43,12 @@ class EvolutionController extends Controller
     {
        
 
-        $classes = Classes::where('status', 1)->all();
-
-
+        $classes = Classes::where('status', 1)->get();
         $exercices = $this->toSelectBox(Exercice::all(), 'id', 'name');
         $exercice  = new EvolutionExercice();
         
 
-        return view('evolution.create', compact('exercices', 'exercice', 'students'));
+        return view('evolution.create', compact('exercices', 'exercice'));
     }
 
     /**

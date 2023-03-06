@@ -63,7 +63,7 @@ class PlanController extends Controller
         $plan = $this->planService->create($data);
 
         if($plan) {
-            return responseRedirect(['plan.show', $plan], $this->planService::MSG_CREATE_SUCCESS . ' (<a href="'.route('plan.create').'">Adicionar outro plano</a>)');
+            return responseRedirect(['plan.show', $plan], $this->planService::MSG_CREATE_SUCCESS . ' (<a class="" href="'.route('plan.create').'">Adicionar outro plano</a>)');
         } 
     }
 

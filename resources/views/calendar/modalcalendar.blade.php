@@ -31,7 +31,7 @@
                         {{-- <x-form-input type="select" class="calendar-comp" name="student_id" :options="$students" /> --}}
                     </div>
                 </div>
-                @include('classes.calendar')
+                @include('calendar.calendar')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

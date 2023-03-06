@@ -50,9 +50,7 @@
             <input type="checkbox" class="custom-control-input" id="customCheck1" name="isPaid" value="1">
             <label class="custom-control-label" for="customCheck1">Definir como "Pago" a primeira mensalidade</label>
           </div>
-    
     </div>
-
-
-
 </div>
+
+

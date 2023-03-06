@@ -1,17 +1,5 @@
 @extends('layouts.main')
 
-@section('breadcrumb')
-<nav aria-label="breadcrumb mr-0">
-    <ol class="breadcrumb mt-0">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('registration.index') }}">Matrículas</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('registration.show', $registration) }}">{{ $registration->student->user->name }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Agendamento de Aulas</li>
-    </ol>
-</nav>
-@endsection
-
-
 @section('content')
 <style>
     .table-single-hover td:hover {
@@ -19,8 +7,8 @@
 }
 </style>
 <div class="row">
-    <div class="col-4 d-flex">
-        <div class="card author-box flex-fill">
+    <div class="col-4">
+        <div class="card author-box">
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
@@ -68,10 +56,7 @@
                 <form action="{{ route('registration.class.store', $registration) }}" method="post">
                     @csrf
                     @include('registration.class-form')
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modelId">
-                        Agenda De Matrículas
-                      </button>
-                    <button type="submit" class="btn btn-primary btn-blocsk">Adicionar Aula ({{ $registration->plan->class_per_week - $registration->classWeek->count() }})</button>
+                    <button type="submit" class="btn btn-primary btn-block">Adicionar Aula ({{ $registration->plan->class_per_week - $registration->classWeek->count() }})</button>
                 </form>
                 @endif
                 <br>
@@ -114,6 +99,11 @@
                 <div class="tab-content tab-bosrdered" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
+                        <p>
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modelId">
+                                Agenda De Matrículas
+                              </button>
+                        </p>
 
                         <table class="table table-sm table-striped datatables w-100">
                             <thead>
@@ -239,7 +229,29 @@
     </div>
 
 
-    
+    <div class="col-12">
+        
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
+                    Aulas/Professores
+                </h4>
+
+                <div class="card-header-action">
+                    <a data-collapse="#mycard-collapse" class="btn btn-iscon btn-info" href="#"><i class="fas fa-minus"></i></a>
+                  </div>
+            </div>
+            <div class="collapse show" id="mycard-collapse" style="">
+                
+            <div class="card-body">
+
+                    
+                
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
 
 <!-- Button trigger modal -->
@@ -263,7 +275,7 @@
         <div class="modal-content">
             <form action="{{ route('registration.class.store', $registration) }}" method="post">
             <div class="modal-header">
-                <h5 class="modal-title">Agenda De Matrículas</h5>
+                <h5 class="modal-title">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -289,7 +301,7 @@
                             <?php $i=0 ?>
                             @foreach($item as $k => $classes)
                             
-                            <td class="day text-center align-middle {{ ($i%2) ? 'table-light' : '' }}" data-time="{{ $time }}" data-weekday="{{ $k }}">
+                            <td class="text-center align-middle {{ ($i%2) ? 'tablse-light' : '' }}">
                                 {!! $classes !!}
                             </td>
                             <?php $i++?>
@@ -303,7 +315,8 @@
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </form>
         </div>
@@ -337,7 +350,7 @@
 
         $('[name="time"]').val(time).change();
         $('[name="weekday"]').val(weekday).change();
-        $('#modelId').modal('hide')
+        $('#modelId').modal('show')
     });
 
 </script>

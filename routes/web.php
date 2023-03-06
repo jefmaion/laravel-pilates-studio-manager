@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountPayableController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\EvolutionController;
 use App\Http\Controllers\ExerciceController;
@@ -60,22 +61,28 @@ Route::get('/registration/_seeder', [RegistrationController::class, '__seederReg
 // Route::get('/registration/{id}/renew', [RegistrationController::class, 'renew'])->name('registration.renew');
 
 Route::resource('/registration', RegistrationController::class);
-Route::resource('/registation/{id}/class', RegistrationClassController::class)->names('registration.class');
+Route::resource('/registration/{id}/class', RegistrationClassController::class)->names('registration.class');
 
-Route::get('/class/{id}/presence', [ClassesController::class, 'presence'])->name('class.presence');
-Route::post('/class/{id}/presence', [ClassesController::class, 'storePresence'])->name('class.presence.store');
-Route::get('/class/{id}/replacement', [ClassesController::class, 'replacement'])->name('class.replacement');
-Route::get('/class/{id}/absense', [ClassesController::class, 'absense'])->name('class.absense');
-// Route::get('/class/{id}/evolution', [ClassesController::class, 'evolution'])->name('class.evolution');
-// Route::post('/class/{id}/evolution', [ClassesController::class, 'storeEvolution'])->name('class.evolution.store');
-Route::post('/class/{id}/replacement/store', [ClassesController::class, 'storeReplacement'])->name('class.replace.store');
-
+// Route::get('/class/{id}/presence', [ClassesController::class, 'presence'])->name('class.presence');
+// Route::post('/class/{id}/presence', [ClassesController::class, 'storePresence'])->name('class.presence.store');
+// Route::get('/class/{id}/replacement', [ClassesController::class, 'replacement'])->name('class.replacement');
+// Route::get('/class/{id}/absense', [ClassesController::class, 'absense'])->name('class.absense');
+// Route::post('/class/{id}/replacement/store', [ClassesController::class, 'storeReplacement'])->name('class.replace.store');
 Route::resource('/class', ClassesController::class);
 
-// Route::resource('/class/{id}/evolution', EvolutionController::class);
-Route::resource('/evolution', EvolutionController::class);
-// Route::resource('/class/{id}/evolution/{id}/exercices', EvolutionExercicesController::class);
 
+
+Route::get('/calendar/{id}/presence', [CalendarController::class, 'presence'])->name('calendar.presence');
+Route::post('/calendar/{id}/presence', [CalendarController::class, 'storePresence'])->name('calendar.presence.store');
+Route::get('/calendar/{id}/replacement', [CalendarController::class, 'replacement'])->name('calendar.replacement');
+Route::get('/calendar/{id}/absense', [CalendarController::class, 'absense'])->name('calendar.absense');
+Route::post('/calendar/{id}/replacement/store', [CalendarController::class, 'storeReplacement'])->name('calendar.replace.store');
+Route::post('/calendar/exercice/add', [CalendarController::class, 'addExerciceOnClass'])->name('calendar.exercice.add');
+Route::resource('/calendar', CalendarController::class);
+
+
+
+Route::resource('/evolution', EvolutionController::class);
 
 Route::get('/instructor/list', [InstructorController::class, 'list']);
 Route::get('/instructor/zipcode/{zipcode}', [InstructorController::class, 'zipcodeData']);

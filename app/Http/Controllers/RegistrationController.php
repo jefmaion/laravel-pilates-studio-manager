@@ -47,6 +47,7 @@ class RegistrationController extends Controller
             return $this->list();
         }
 
+
         return view('registration.index');
     }
 
@@ -54,7 +55,7 @@ class RegistrationController extends Controller
     {
 
         $registration   = new Registration();
-        $plans          = $this->toSelectBox($this->planService->list(), 'id', 'name');
+        $plans          = $this->toSelectBox($this->planService->list(true), 'id', 'name');
         $instructors    = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
         $paymentMethods = $this->toSelectBox(PaymentMethod::all(), 'id', 'name');
         $students       = $this->toImageSelectBox($this->studentService->listAllNotRegistrations(), 'id', 'name', 'image');
@@ -179,7 +180,7 @@ class RegistrationController extends Controller
             $data[] = [
                 'image' => '<img alt="image" src="'.imageProfile($user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
                 'student' =>  sprintf('<a href="%s"> %s</a>', route('registration.show', $registration), $user->name),
-                'phone'   => $user->phone_wpp,
+                'plan'    => $registration->plan->name,
                 'status'  => $registration->statusRegistration,
                 'renew'   => $registration->renewPeriod,
                 'end'     => date('d/m/Y', strtotime($registration->end)),

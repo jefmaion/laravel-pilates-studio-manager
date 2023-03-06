@@ -35,7 +35,7 @@
 	<i class="fas fa-exclamation-circle    "></i> Ooops! Verifique os error abaixo
 </div>
 
-{!! implode('', $errors->all()) !!}
+{{-- {!! implode('', $errors->all()) !!} --}}
 
 
 @endif

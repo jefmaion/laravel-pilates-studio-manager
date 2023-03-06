@@ -15,11 +15,15 @@
             <div class="main-sidebar sidebar-style-2">
                 @include('layouts.includes.sidebar')
             </div>
+
+
             <!-- Main Content -->
             <div class="main-content">
+                @yield('breadcrumb')
                 <section class="section">
                     <div class="section-body">
                         @include('layouts.alerts')
+                        
                         @yield('content')
                     </div>
                 </section>
@@ -30,9 +34,5 @@
     </div>
     @include('layouts.includes.scripts')
 </body>
-
-
-
-<!-- blank.html  21 Nov 2019 03:54:41 GMT -->
 
 </html>

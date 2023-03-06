@@ -14,10 +14,10 @@
             <div class="card-body">
                 <div class="row">
 
-                    <div class="col-12 form-group">
+                    {{-- <div class="col-12 form-group">
                         <label>Aluno</label>
                         <x-select2-image name="student_id"  :options="$students" />
-                    </div>
+                    </div> --}}
                  
                 </div>
             </div>

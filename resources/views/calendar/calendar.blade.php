@@ -56,7 +56,7 @@
                         'HH:mm', // top level of text
                         ],
                     events: {
-                        url: '{{ route('class.index') }}',
+                        url: '{{ route('calendar.index') }}',
                         data: function() {
                             obj = {}
                             $('.calendar-comp').each(function (index, element) {
@@ -99,7 +99,7 @@
 
                 function getEvents() {
                     return  {
-                         url: '{{ route('class.index') }}',
+                         url: '{{ route('calendar.index') }}',
                         data: {
                             instructor: $('[name=instructor]').val()
                         }
@@ -116,7 +116,7 @@
     function showClass(id) {
         $.ajax({
                 type: "get",
-                url: "class/" + id,
+                url: "calendar/" + id,
                 success: function (response) {
 
                     // $('#modelId').modal('hide');

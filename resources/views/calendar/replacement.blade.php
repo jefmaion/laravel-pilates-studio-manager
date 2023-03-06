@@ -50,7 +50,7 @@
                 </ul>
 
 
-                <form action="{{ route('class.replace.store', $class) }}" method="post">
+                <form action="{{ route('calendar.replace.store', $class) }}" method="post">
                     @csrf
                     <div class="row">
 
@@ -79,7 +79,7 @@
 
                    
 
-                    <a name="" id="" class="btn btn-secondary" href="{{ route('class.index') }}" role="button">
+                    <a name="" id="" class="btn btn-secondary" href="{{ route('calendar.index') }}" role="button">
                         <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
                         Voltar
                     </a>

@@ -9,6 +9,7 @@ use App\Models\Registration;
 use App\Models\RegistrationClass;
 use App\Models\Student;
 use Carbon\Carbon;
+use Monolog\Registry;
 
 class RegistrationService extends Services {
 
@@ -262,8 +263,54 @@ class RegistrationService extends Services {
 
     }
 
+    public function generateClassCalendar(Registration $registration) {
+
+
+        $calendar    = [];
+        $weekClasses = [];
+
+        $classes = RegistrationClass::whereHas('registration', function($query) {
+            $query->where('status', 1);
+        })->get();
+
+    
+        foreach($classes as $class) {
+            $student = '<span class="text-muted mbs-2">' .  $class->registration->student->name . '</span>';
+            if($class->registration->student_id == $registration->student_id) {
+                $student = '<span class="badge badge-pill badge-primary msb-2">'.$class->registration->student->name.'</span>';
+            }
+
+            $weekClasses[$class->time][$class->weekday][] = $student;
+        }
+
+        $calendar['weekdays'] = appConfig('weekdays');
+        foreach(appConfig('class_time') as $t => $time) {
+            foreach(appConfig('weekdays') as $w => $weekday) {
+                $calendar['classes'][$t][$w] = isset($weekClasses[$t][$w]) ? '<div>' . implode("</div><div>", $weekClasses[$t][$w]) . '</div>' : null ;
+            }
+        }
+
+        return $calendar;
+
+    }
+
+    public function removeRegistrationClass(Registration $registration, $idClass = 0) {
+        $class =  RegistrationClass::find($idClass);
+
+        $registration->classes()->where('type', 'AN')->where('status', 0)->where('weekday', $class->weekday)->where('time', $class->time)->delete();
+        $registration->classWeek()->where('id', $idClass)->delete();
+    }
+
     public function listActiveRegistrations() {
         return Registration::where('status', 1)->orderBy('created_at', 'desc')->get();
+    }
+
+    public function countActiveRegistrations() {
+        return Registration::where('status', 1)->count();
+    }
+
+    public function countRenewRegistrations() {
+        return Registration::where('status', 1)->where('end', '<=', Carbon::now()->subDays(5)->toDateTimeString())->count();
     }
 
 

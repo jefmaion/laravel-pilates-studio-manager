@@ -14,5 +14,14 @@
 <!-- Custom style CSS -->
 <link rel="stylesheet" href="{{ asset("assets/css/custom.css") }}">
 <link rel="stylesheet" href="{{ asset("css/custom.css") }}">
+<style>
+    .main-content {
+        padding-top: 100px;
+    }
+
+    .is-invalid-select2 {
+        border-color: rgb(185, 74, 72) !important;
+    }
+</style>
 
 <link rel='shortcut icon' type='image/x-icon' href='{{ asset("assets/img/favicon.ico") }}' />

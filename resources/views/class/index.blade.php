@@ -1,15 +1,15 @@
 @extends('layouts.main')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb mr-0">
+    <ol class="breadcrumb mt-0">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Aulas</li>
+    </ol>
+  </nav>
+@endsection
+
 @section('content')
-
-<style>
-    .border-3 {
-    border-left-width:4px !important;
-}
-</style>
-
-
-
 
 <div class="row">
     <div class="col-12">
@@ -17,14 +17,14 @@
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
-                    Evoluções
+                    Aulas
                 </h4>
 
                 <div class="card-header-action">
-                    <a name="" id="" class="btn btn-success btn-lg" href="{{  route('evolution.create')  }}" role="button">
+                    {{-- <a name="" id="" class="btn btn-success btn-lg" href="{{  route('class.create')  }}" role="button">
                         <i class="fa fa-plus" aria-hidden="true"></i>
-                        Cadastrar Nova Evolução
-                    </a>
+                        Cadastrar Novo Plano
+                    </a> --}}
                 </div>
             </div>
 
@@ -32,9 +32,10 @@
                 <table class="table table-striped w-100" id="table-def">
                     <thead>
                         <tr>
-                            <th>Aula</th>
+                            <th>Data</th>
+                            <th>Hora</th>
                             <th>Aluno</th>
-                            <th>Instrutor</th>
+                            <th>Professor</th>
                         </tr>
                     </thead>
                 </table>
@@ -42,10 +43,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 @endsection
 
 
@@ -58,9 +55,10 @@
     <script src="{{ asset('js/datatables.config.js') }}"></script>
     <script>
         $("#table-def").dataTable({...config,
-            ajax:'/evolution',
+            ajax:'/class',
             columns: [
                 {data: 'date'},
+                {data: 'time'},
                 {data: 'student'},
                 {data: 'instructor'},
             ]

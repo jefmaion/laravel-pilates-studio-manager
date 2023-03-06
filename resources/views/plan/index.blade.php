@@ -1,5 +1,14 @@
 @extends('layouts.main')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb mr-0">
+    <ol class="breadcrumb mt-0">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Planos</li>
+    </ol>
+  </nav>
+@endsection
+
 @section('content')
 
 <div class="row">
@@ -20,7 +29,7 @@
             </div>
 
             <div class="card-body">
-                <table class="table table-striped w-100" id="table-def">
+                <table class="table table-striped w-100 table-sm" id="table-def">
                     <thead>
                         <tr>
                             <th>Plano</th>
@@ -33,10 +42,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 @endsection
 
 

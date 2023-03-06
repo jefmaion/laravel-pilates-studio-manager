@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRegistrationClassRequest;
 use App\Models\Instructor;
 use App\Models\Registration;
 use App\Models\RegistrationClass;
+use App\Services\InstructorService;
 use App\Services\RegistrationService;
 use Illuminate\Http\Request;
 
@@ -20,10 +21,12 @@ class RegistrationClassController extends Controller
 
 
     public function __construct(
-        RegistrationService $registrationService
+        RegistrationService $registrationService,
+        InstructorService $instructorService
     )
     {
         $this->registrationService = $registrationService;
+        $this->instructorService = $instructorService;
     }
 
 
@@ -38,54 +41,10 @@ class RegistrationClassController extends Controller
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         };
 
-        $instructors = $this->toImageSelectBox(Instructor::all());
-
-        // if($request->isMethod('post')) {
-        //     $this->registrationService->addClasses($registration, $request->all());
-        //     return redirect()->route('registration.classes', $registration);
-        // }
-
-        $classes = RegistrationClass::all();
-
-        $calendar = [];
-        $weekClasses = [];
-
-        foreach($classes as $class) {
-
-            $student = '<span class="badge badge-pill badge-light mb-2">' .  $class->registration->student->name . '</span>';
-
-            if($class->registration->student_id == $registration->student_id) {
-                $student = '<span class="badge badge-pill badge-primary mb-2">'.$class->registration->student->name.'</span>';
-            }
-
-            $weekClasses[$class->time][$class->weekday][] = $student;
-        }
-
-        $calendar['weekdays'] = appConfig('weekdays');
-        foreach(appConfig('class_time') as $t => $time) {
-            foreach(appConfig('weekdays') as $w => $weekday) {
-
-
-
-
-                $calendar['classes'][$time][] = isset($weekClasses[$t][$w]) ? '<div>' . implode("</div><div>", $weekClasses[$t][$w]) . '</div>' : null ;
-            }
-        }
-        
-        
-      
+        $instructors = $this->toImageSelectBox($this->instructorService->listEnabled());
+        $calendar    = $this->registrationService->generateClassCalendar($registration);
         
         return view('registration.class', compact('registration', 'instructors', 'calendar'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -103,8 +62,34 @@ class RegistrationClassController extends Controller
 
         $this->registrationService->addClasses($registration, $request->all());
         return redirect()->route('registration.class.index', $registration);
+    }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id, $idClass)
+    {
 
+        if(!$registration = $this->registrationService->find($id)) {
+            return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
+        };
+
+        $this->registrationService->removeRegistrationClass($registration, $idClass);
+
+        return redirect()->route('registration.class.index', $registration);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -141,21 +126,5 @@ class RegistrationClassController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id, $idClass)
-    {
-
-        $registration = Registration::find($id);
-        $class       =  RegistrationClass::find($idClass);
-
-        $registration->classes()->where('type', 'AN')->where('status', 0)->where('weekday', $class->weekday)->where('time', $class->time)->delete();
-        $registration->classWeek()->where('id', $idClass)->delete();
-
-        return redirect()->route('registration.class.index', $registration);
-    }
+    
 }

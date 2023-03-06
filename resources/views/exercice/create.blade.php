@@ -1,5 +1,15 @@
 @extends('layouts.main')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb mr-0">
+    <ol class="breadcrumb mt-0">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('exercice.index') }}">Exercícios/Aparelhos</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Novo Exercício/Aparelho</li>
+    </ol>
+  </nav>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-8">

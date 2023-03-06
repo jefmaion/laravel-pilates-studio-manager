@@ -79,6 +79,10 @@ class Services {
         return $this->model->orderBy('id','desc')->get();
     }
 
+    public function listEnabled() {
+        return $this->model->where('enabled', 1)->orderBy('id','desc')->get();
+    }
+
     public function listOrderByCreatedAt($enabled=null) {
 
         if($enabled !== null) {

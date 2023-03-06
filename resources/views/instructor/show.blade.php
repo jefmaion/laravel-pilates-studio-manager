@@ -1,5 +1,16 @@
 @extends('layouts.main')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb ml-0">
+    <ol class="breadcrumb mt-0">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('instructor.index') }}">Professores</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ $instructor->user->name }} </li>
+    </ol>
+  </nav>
+@endsection
+
+
 @section('content')
 
 <div class="row">
@@ -31,10 +42,6 @@
                     <a class="dropdown-item has-icon" href="{{ route('instructor.edit', $instructor) }}">
                         <i class="fas fa-edit    "></i> Editar Professor
                     </a>
-
-                    {{-- <a class="dropdown-item has-icon" href="#" data-toggle="modal" data-target="#basicModal">
-                        <i class="fas fa-trash    "></i> Excluir Professor
-                    </a> --}}
 
                     <x-modal-delete route="{{ route('instructor.destroy', $instructor) }}" message="Deseja excluir esse professor?">
                         <a class="dropdown-item has-icon" href="#" data-toggle="modal" data-target="#basicModal">

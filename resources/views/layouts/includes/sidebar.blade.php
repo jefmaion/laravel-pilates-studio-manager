@@ -10,9 +10,16 @@
     <ul class="sidebar-menu">
 
         <li class="actives">
-            <a class="nav-link" href="{{ route('class.index') }}">
+            <a class="nav-link" href="{{ route('calendar.index') }}">
                 <i class="fa fa-address-book" aria-hidden="true"></i>
                 <span>Agenda</span>
+            </a>
+        </li>
+
+        <li class="actives">
+            <a class="nav-link" href="{{ route('class.index') }}">
+                <i class="fa fa-address-book" aria-hidden="true"></i>
+                <span>Aulas</span>
             </a>
         </li>
 

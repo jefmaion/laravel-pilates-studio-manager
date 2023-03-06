@@ -257,14 +257,14 @@
     </button>
 
     @if(!$class->hasScheduledReplacementClass)
-    <a name="" id="" class="btn btn-success" href="{{ route('class.replacement', $class) }}">
+    <a name="" id="" class="btn btn-success" href="{{ route('calendar.replacement', $class) }}">
         <i class="fa fa-calendar" aria-hidden="true"></i>
         Agendar Reposição
     </a>
     @endif
 
     @if(!$class->evolution && $class->status == 1)
-    <a name="" id="" class="btn btn-success" href="{{ route('class.replacement', $class) }}">
+    <a name="" id="" class="btn btn-success" href="{{ route('calendar.replacement', $class) }}">
         <i class="fa fa-calendar" aria-hidden="true"></i>
         Registrar Evolução
     </a>
@@ -272,13 +272,13 @@
 
     @if($class->status === 0)
 
-    <a name="" id="" class="btn btn-danger text-white" href="{{ route('class.absense', $class) }}">
+    <a name="" id="" class="btn btn-danger text-white" href="{{ route('calendar.absense', $class) }}">
         <i class="fa fa-times-circle" aria-hidden="true"></i>
         Registrar Falta
     </a>
 
 
-    <a name="" id="" class="btn btn-success" href="{{ route('class.presence', $class) }}">
+    <a name="" id="" class="btn btn-success" href="{{ route('calendar.presence', $class) }}">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
         Registrar Presença
     </a>

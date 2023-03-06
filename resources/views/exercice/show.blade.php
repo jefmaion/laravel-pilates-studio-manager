@@ -1,10 +1,17 @@
 @extends('layouts.main')
 
+
+@section('breadcrumb')
+<nav aria-label="breadcrumb mr-0">
+    <ol class="breadcrumb mt-0">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('exercice.index') }}">Exercícios</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ $exercice->name }}</li>
+    </ol>
+  </nav>
+@endsection
+
 @section('content')
-
-<h4 class="mb-4">Exercício - Detalhes</h4>
-
-
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -15,28 +22,6 @@
                 <p>{{ $exercice->description }}</p>
 
                 <p><small>Criado em {{ $exercice->created_at->diffForHumans() }} | Atualizado em {{ $exercice->updated_at->diffForHumans() }}</small></p>
-
-                {{-- <div class="row">
-                    <div class="col-2">
-                        <div class="">
-                            <p class="clearfix">
-                                <span class="float-left">Duração do Plano</span>
-                                <span class="float-right text-muted">{{ $exercice->duration }} Mês(es)</span>
-                            </p>
-                            <p class="clearfix">
-                                <span class="float-left">Aulas por semana</span>
-                                <span class="float-right text-muted">{{ $exercice->class_per_week }}</span>
-                            </p>
-                            <p class="clearfix">
-                                <span class="float-left">Valor</span>
-                                <span class="float-right text-muted">R$ {{ USD_BRL($exercice->value) }}</span>
-                            </p>
-
-
-        
-                        </div>
-                    </div>
-                </div> --}}
 
                 <hr>
 

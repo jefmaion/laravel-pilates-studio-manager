@@ -20,4 +20,6 @@
                 $('.alert-autohide').fadeOut();
         }, 10000); // <-- time in milliseconds
     }
+
+    $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 </script>
