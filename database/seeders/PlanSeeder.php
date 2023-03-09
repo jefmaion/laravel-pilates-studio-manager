@@ -15,13 +15,13 @@ class PlanSeeder extends Seeder
     public function run()
     {
         $plans = [
-            ['name' => 'Mensal (1x)', 'value' => '195.00', 'class_per_week' => 1, 'duration' => 1, 'enabled' => rand(1,0)],
-            ['name' => 'Mensal (2x)', 'value' => '250.00', 'class_per_week' => 2, 'duration' => 1, 'enabled' => rand(1,0)],
-            ['name' => 'Mensal (3x)', 'value' => '290.00', 'class_per_week' => 3, 'duration' => 1, 'enabled' => rand(1,0)],
+            ['name' => 'Mensal (1x)', 'value' => '195.00', 'class_per_week' => 1, 'duration' => 1, 'enabled' => 1],
+            ['name' => 'Mensal (2x)', 'value' => '250.00', 'class_per_week' => 2, 'duration' => 1, 'enabled' => 1],
+            ['name' => 'Mensal (3x)', 'value' => '290.00', 'class_per_week' => 3, 'duration' => 1, 'enabled' => 1],
 
-            ['name' => 'Trimestral (1x)', 'value' => '185.00', 'class_per_week' => 1, 'duration' => 3, 'enabled' => rand(1,0)],
-            ['name' => 'Trimestral (2x)', 'value' => '235.00', 'class_per_week' => 2, 'duration' => 3, 'enabled' => rand(1,0)],
-            ['name' => 'Trimestral (3x)', 'value' => '275.00', 'class_per_week' => 3, 'duration' => 3, 'enabled' => rand(1,0)],
+            ['name' => 'Trimestral (1x)', 'value' => '185.00', 'class_per_week' => 1, 'duration' => 3, 'enabled' => 1],
+            ['name' => 'Trimestral (2x)', 'value' => '235.00', 'class_per_week' => 2, 'duration' => 3, 'enabled' => 1],
+            ['name' => 'Trimestral (3x)', 'value' => '275.00', 'class_per_week' => 3, 'duration' => 3, 'enabled' => 1],
 
         ];
 

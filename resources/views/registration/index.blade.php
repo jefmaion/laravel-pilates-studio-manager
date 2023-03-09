@@ -30,7 +30,7 @@
                 <x-data-table id="table-def">
                     <thead>
                         <tr>
-                            <th>Aluno</th>
+                            <th width="1%">Aluno</th>
                             <th>Aluno</th>
                             <th>Plano</th>
                             <th>Vencimento</th>

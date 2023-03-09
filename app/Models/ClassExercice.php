@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ClassExercice extends Model
 {
     use HasFactory;
-    protected $fillable = ['classes_id', 'exercice_id', 'comments'];
+    protected $fillable = ['classes_id', 'exercice_id', 'student_id', 'comments'];
 
 
     public function exercice() {

@@ -17,10 +17,12 @@ class CreateClassExercicesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('classes_id');
+            // $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('exercice_id');
-            $table->text('comments')->nullable();
+            // $table->text('comments')->nullable();
 
             $table->foreign('classes_id')->references('id')->on('classes');
+            // $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('exercice_id')->references('id')->on('exercices');
         });
     }

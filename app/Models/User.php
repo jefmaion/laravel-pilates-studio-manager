@@ -72,4 +72,6 @@ class User extends Authenticatable
     public function getAgeAttribute() {
         return Carbon::parse($this->birth_date)->age;
     }
+
+  
 }

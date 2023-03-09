@@ -5,7 +5,7 @@
 
     <div class="col-12 form-group form-group-lg">
         <label>Aluno</label>
-          <x-select2-image name="student_id" value="{{ $registration->student_id }}" :options="$students" />
+          <x-select2-image name="student_id" value="{{ app('request')->input('s') }}" :options="$students" />
     </div>
 
     <div class="col-3 form-group">

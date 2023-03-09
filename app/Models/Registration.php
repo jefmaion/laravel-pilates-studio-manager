@@ -69,7 +69,8 @@ class Registration extends Model
    
 
     public function getCanCancelAttribute() {
-        return ($this->status == 1 && $this->daysToRenew > 0);
+        // return ($this->status == 1 && $this->daysToRenew > 0);
+        return ($this->status == 1);
     }
 
     public function getCanRenewAttribute() {
@@ -93,8 +94,8 @@ class Registration extends Model
                 return sprintf($badge, 'success', 'Matrícula Em Dia');
                 break;
 
-            case 3:
-                return sprintf($badge, 'danger', 'Falta');
+            case 2:
+                return sprintf($badge, 'light', 'Matrícula Finalizada');
                 break;
             
             case 4:

@@ -109,9 +109,14 @@ class RegistrationController extends Controller
             return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
         }
 
-        $this->registrationService->updateClassWeek($registration, $request->get('class'));
+        if($registration->installmentsToPay()->count() > 0) {
+            return responseRedirect(['registration.show', $registration], 'Existem mensalidades em aberto. Não é possível finalizar a matrícula', 'warning');
+        }
 
-        return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_UPDATE_CLASSES);
+        $this->registrationService->finishRegistration($registration,  $request->get('cancellation_reason'));
+        
+        return responseRedirect('registration.index', 'Matrícula Finalizada');
+
     }
 
     public function classes(Request $request, $id) {
@@ -131,28 +136,6 @@ class RegistrationController extends Controller
         return view('registration.class', compact('registration', 'instructors'));
     }
 
-    public function renew($id) {
-
-        if(!$registration = $this->registrationService->find($id)) {
-            return responseRedirect('registration.index', $this->registrationService::MSG_NOT_FOUND, 'error');
-        };
-
-
-        $new = $registration->replicate();
-        $new->start = $registration->end;
-        $new->first_payment_method = 1;
-        $new->other_payment_method = 1;
-        $new->class = $registration->classWeek->toArray();
-
-        $registration->update(['status' => 2]);
-        
-
-        $registration = $this->registrationService->makeRegistration($new->toArray());
-
-        if($registration) {
-            return responseRedirect(['registration.show', $registration], $this->registrationService::MSG_CREATE_SUCCESS . ' (<a href="'.route('registration.create').'">Matricular Outro</a>)');
-        } 
-    }
 
     public function destroy($id, Request $request)
     {
@@ -178,7 +161,7 @@ class RegistrationController extends Controller
             $user = $registration->student->user;
 
             $data[] = [
-                'image' => '<img alt="image" src="'.imageProfile($user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
+                'image'   => '<img alt="image" src="'.imageProfile($user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
                 'student' =>  sprintf('<a href="%s"> %s</a>', route('registration.show', $registration), $user->name),
                 'plan'    => $registration->plan->name,
                 'status'  => $registration->statusRegistration,

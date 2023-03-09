@@ -148,9 +148,24 @@ class CalendarController extends Controller
             return responseRedirect('class.index', $this->calendarService::MSG_NOT_FOUND, 'error');
         }
 
-        $classExercice = ClassExercice::create($request->except('_token'));
+        $exercice = Exercice::find($request->get('exercice_id'));
+        $comments = $request->get('comments');
 
-        return redirect()->route('calendar.presence', $class);
+        $data = [
+            'studentId'  => $class->student_id,
+            'exerciceId' => $exercice->id,
+            'exerciceName' => $exercice->name,
+            'comments'   => $comments,
+        ];
+
+
+        return view('calendar.add-exercice', $data)->render();
+
+
+
+        // $classExercice = ClassExercice::create($request->except('_token'));
+
+        // return redirect()->route('calendar.presence', $class);
     }
 
     /**
@@ -167,9 +182,9 @@ class CalendarController extends Controller
         }
 
         $instructors = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
-        $execices = $this->toSelectBox(Exercice::all(), 'id', 'name');
+        // $execices = $this->toSelectBox(Exercice::all(), 'id', 'name');
 
-        return view('calendar.absense', compact('class', 'instructors', 'exercices'));
+        return view('calendar.absense', compact('class', 'instructors'));
     }
 
     public function evolution($id) {
@@ -264,11 +279,11 @@ class CalendarController extends Controller
 
         if (!$class = $this->calendarService->find($class)) {
             return responseRedirect('class.index', $this->calendarService::MSG_NOT_FOUND, 'error');
-        }
+        }       
 
         $this->calendarService->storePresence($class, $request->except('_token'));
 
-        return responseRedirect('class.index', 'Presença Marcada');
+        return responseRedirect('calendar.index', 'Presença Marcada');
     }
 
     public function storeAbsense()

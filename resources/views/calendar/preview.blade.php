@@ -77,6 +77,18 @@
                             </span>
                             @endif
 
+                            @if($class->student->hasLateInstallments)
+                            <span class="badge badge-pill badge-danger">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Mensalidade Atrasada
+                            </span>
+                            @endif
+
+                            @if($class->registration->canRenew)
+                            <span class="badge badge-pill badge-warning">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Renovação de Matrícula
+                            </span>
+                            @endif
+
 
 
                         </div>
@@ -124,7 +136,7 @@
                     @else
                     <i class="fas fa-chart-line"></i>
                     @endif
-                    Evoluções
+                    Evolução da Aula
 
                 </a>
             </li>
@@ -198,49 +210,18 @@
 
             <div class="tab-pane fade" id="contact2" role="tabpanel" aria-labelledby="contact-tab2">
 
-                @if(!$class->evolution && $class->status == 1)
-                <div class="alert alert-warning" role="alert">
-                    A evolução desta aula ({{ dateDMY($class->date) }}) ainda não foi registrada!
-                    <a href="{{ route('evolution.create', $class) }}" class="badge badge-primary">Cadastrar Evolução</a>
-                </div>
-                @endif
+                @if(empty($class->evolution))
 
-                <div class="form-group">
-                    <select id="select-evolution" class="form-control" name="" onchange="">
-                        @foreach($class->student->evolutions as $evolution)
-                        <option value="{{ $evolution->id }}">{{ dateDMY($evolution->classes->date) }} - {{
-                            $evolution->instructor->user->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                @foreach($class->student->evolutions as $evolution)
-                <div id="evolution-{{ $evolution->id }}" class="evolutions">
-
-                    <p>{{ $evolution->classes->comments }}</p>
-                    <ul>
-                        @foreach($evolution->exercices as $exercice)
-
-                        {{-- <h6> {{ $exercice->exercice->name }}</h6> --}}
-
-                        <li class="mb-2"><b>{{ $exercice->exercice->name }}: </b>{!! $exercice->comments !!}</li>
-
-
-                        @endforeach
-                    </ul>
-                    <hr>
-                    Avaliado por
-
-                    <span class="font-weight-bold font-13">
-                        {{ $evolution->instructor->user->name }}
-                    </span>
-                    &nbsp;&nbsp; - {{ $evolution->created_at->diffForHumans()}}
-
-                </div>
+ 
+                @else
+        
+                @foreach($class->exercices as $exercice)
+                    <span class="badge badge-pill badge-light">{{ $exercice->exercice->name }}</span>
                 @endforeach
 
+                {!! $class->evolution  !!}
 
-
+                @endif
 
             </div>
 

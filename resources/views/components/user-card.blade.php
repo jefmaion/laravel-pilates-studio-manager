@@ -1,4 +1,4 @@
-<div class="card author-box flex-fill">
+<div {{ $attributes->merge(['class' => 'card author-box flex-fill']) }}>
     @if($title)
     <div class="card-header">
         <h4>

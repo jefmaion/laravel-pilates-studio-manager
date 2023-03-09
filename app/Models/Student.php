@@ -41,19 +41,19 @@ class Student extends Model
     }
 
     public function classes() {
-        return $this->hasMany(classes::class);
+        return $this->hasMany(Classes::class);
     }
 
     public function classesFinished() {
-        return $this->hasMany(classes::class)->where('status', 1);
+        return $this->classes()->where('status', 1);
     }
 
     public function evolutions() {
-        return $this->hasMany(Evolution::class)->orderBy('created_at', 'desc');
+        return $this->classes()->whereNotNull('evolution');
     }
 
     public function getLastClassesAttribute() {
-        return $this->classes()->where('finished', 1)->orderBy('date', 'desc')->get();
+        return $this->evolutions()->where('finished', 1)->orderBy('date', 'desc')->get();
     }
 
     public function lastEvolution() {

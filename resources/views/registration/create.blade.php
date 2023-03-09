@@ -26,6 +26,9 @@
                     @csrf
                     <div class="row">
                         <div class="col-12">
+
+
+                            
                             @include('registration.form')
                         </div>
 

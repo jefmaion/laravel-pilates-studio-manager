@@ -11,11 +11,9 @@
 
 
 @section('content')
-
-
 <div class="row">
     <div class="col-12">
-        <div class="card">
+        <div class="card card-secondary">
             <div class="card-header">
                 <h4>
                     <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
@@ -30,11 +28,13 @@
                 </div>
             </div>
 
+            
+
             <div class="card-body">
                 <x-data-table>
                     <thead>
                         <tr>
-                            <th>Foto</th>
+                            <th width="1%">Foto</th>
                             <th>Nome</th>
                             <th>Telefone</th>
                             <th>Telefone 2</th>
@@ -68,8 +68,6 @@
                 {data: 'phone2'},
                 {data: 'created_at'},
                 {data: 'status'},
-                // {data: 'registration'},
-                // {data: 'status'},
             ]
         });
     </script>

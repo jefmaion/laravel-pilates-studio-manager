@@ -16,12 +16,12 @@
             </a>
         </li>
 
-        <li class="actives">
+        {{-- <li class="actives">
             <a class="nav-link" href="{{ route('class.index') }}">
                 <i class="fa fa-address-book" aria-hidden="true"></i>
                 <span>Aulas</span>
             </a>
-        </li>
+        </li> --}}
 
         <li class="actives">
             <a class="nav-link" href="{{ route('registration.index') }}">
@@ -30,12 +30,12 @@
             </a>
         </li>
 
-        <li class="actives">
+        {{-- <li class="actives">
             <a class="nav-link" href="{{ route('evolution.index') }}">
                 <i class="{{ Config::get('icons.student.index') }}" aria-hidden="true"></i>
                 <span>Evoluções</span>
             </a>
-        </li>
+        </li> --}}
 
         <li class="actives">
             <a class="nav-link" href="{{ route('student.index') }}">

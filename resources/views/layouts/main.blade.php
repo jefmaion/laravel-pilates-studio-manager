@@ -7,6 +7,7 @@
 </head>
 @yield('outbody')
 <body class="light theme-white dark-sidebar">
+{{-- <body class="dark dark-sidebar theme-black"> --}}
     <div class="loader"></div>
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
@@ -20,6 +21,7 @@
             <!-- Main Content -->
             <div class="main-content">
                 @yield('breadcrumb')
+                
                 <section class="section">
                     <div class="section-body">
                         @include('layouts.alerts')

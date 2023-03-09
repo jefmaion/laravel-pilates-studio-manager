@@ -28,7 +28,7 @@ class StoreStudentRequest extends FormRequest
         
         return [
             'name' => 'required',
-            'cpf' => 'required|unique:users',
+            // 'cpf' => 'required|unique:users',
             'phone_wpp' => 'required'
         ];
     }

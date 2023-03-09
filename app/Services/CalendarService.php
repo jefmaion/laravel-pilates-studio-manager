@@ -43,7 +43,7 @@ class CalendarService extends Services
 
         $class->classRelated()->associate($newClass);
 
-        if($class->update()) {
+        if ($class->update()) {
             return true;
         }
 
@@ -51,44 +51,53 @@ class CalendarService extends Services
     }
 
 
-    public function storePresence(Classes $class, $data) {
+    public function storePresence(Classes $class, $data)
+    {
 
         $data['finished'] = 1;
 
         $class->fill($data)->update();
 
-    
-        if(isset($data['evolution'])) {
-            Evolution::create([
-                'instructor_id' => $class->instructor_id,
-                'classes_id' => $class->id,
-                'student_id' => $class->student_id,
-                'evolution' => $data['evolution']
-            ]);
-        }
 
-        if(isset($data['exercice_id'])) {
-            foreach($data['exercice_id'] as $exercice_id) {
-                ClassExercice::create([
-                    'exercice_id' => $exercice_id,
-                    'classes_id' => $class->id
-                ]);            
+        if (isset($data['exercices'])) {
+            foreach ($data['exercices'] as $exercice) {
+                $class->exercices()->updateOrCreate([
+                    'exercice_id' => $exercice
+                ]);
             }
         }
+
+
+        // if(isset($data['evolution'])) {
+        //     Evolution::create([
+        //         'instructor_id' => $class->instructor_id,
+        //         'classes_id' => $class->id,
+        //         'student_id' => $class->student_id,
+        //         'evolution' => $data['evolution']
+        //     ]);
+        // }
+
+        // if(isset($data['exercice_id'])) {
+        //     foreach($data['exercice_id'] as $exercice_id) {
+        //         ClassExercice::create([
+        //             'exercice_id' => $exercice_id,
+        //             'classes_id' => $class->id
+        //         ]);            
+        //     }
+        // }
         return true;
-        
     }
 
-    public function storeAbsense(Classes $class, $data) {
-        
+    public function storeAbsense(Classes $class, $data)
+    {
+
         $class->finished = 1;
 
-        if($class->fill($data)->update()) {
+        if ($class->fill($data)->update()) {
             return true;
         }
 
         return false;
-
     }
 
 
@@ -106,8 +115,8 @@ class CalendarService extends Services
 
 
         $arrHoliday = [];
-        if($holidays) {
-            foreach($holidays as $hol) {
+        if ($holidays) {
+            foreach ($holidays as $hol) {
                 $arrHoliday[$hol->date] = $hol->holiday;
             }
         }
@@ -132,7 +141,7 @@ class CalendarService extends Services
                 $icon = '<i class="fa fa-exclamation-circle fa-lg text-warning m-1" aria-hidden="true"></i>';
             }
 
-            if ($class->status ==1 && !$class->evolution) {
+            if ($class->status == 1 && !$class->evolution) {
                 $icon = '<i class="fa fa-exclamation-circle fa-lg text-warning m-1" aria-hidden="true"></i>';
             }
 
@@ -148,14 +157,21 @@ class CalendarService extends Services
 
             $badge = '';
 
+            $name = $class->student->user->nickname;
+
+            if(empty($name)) {
+                $d = explode(" ", $class->student->user->name);
+                $name = array_shift($d);
+            }
+
             $time  = $class->time;
             $time  = date('H:i', strtotime($time . '+1 hour'));
             $title = '<div class="m-0 ">
-                        '. $icon  . $badge . 
-                        '<b>'  . $class->student->user->nickname . '</b> 
+                        ' . $icon  . $badge .
+                '<b>'  . $name . '</b> 
                       </div>
                       <div>
-                      '.appConfig('classTypes')[$class->type]['label'].'
+                      ' . appConfig('classTypes')[$class->type]['label'] . '
                       </div>';
 
             $calendar[] = [
@@ -166,7 +182,7 @@ class CalendarService extends Services
                 'className' => ['bg-' . $bg],
                 'color' => (isset($holidays[$class->date])) ? '#000' : 'null'
 
-                
+
             ];
         }
 

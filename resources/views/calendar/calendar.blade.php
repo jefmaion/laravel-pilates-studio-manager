@@ -44,7 +44,7 @@
                     selectable: true,
                     allDaySlot: false,
                     displayEventTime : false,
-                    minTime: "06:00:00",
+                    minTime: "07:00:00",
                     maxTime: "21:00:00",
                     slotDuration: '00:60:00',
                     // eventLimit: true,

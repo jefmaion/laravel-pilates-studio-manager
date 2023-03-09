@@ -49,7 +49,9 @@ class StudentController extends Controller
         $student = $this->studentService->create($data);
 
         if($student) {
-            return responseRedirect(['student.show', $student], $this->studentService::MSG_CREATE_SUCCESS);
+            // return responseRedirect(['student.show', $student], $this->studentService::MSG_CREATE_SUCCESS);
+
+            return redirect(route('registration.create'). '?s='.$student->id);
         } 
     }
 
@@ -59,6 +61,9 @@ class StudentController extends Controller
         if(!$student = $this->studentService->find($student)) {
             return responseRedirect('student.index', $this->studentService::MSG_NOT_FOUND, 'error');
         }
+
+
+        // dd($student->evolutionss()->get());
 
         return view('student.show', compact('student'));
     }
@@ -135,6 +140,12 @@ class StudentController extends Controller
 
             $user = $student->user;
 
+            $hasRegistration = sprintf('<span class="badge badge-pill badge-%s">%s</span>', 'success', 'Matriculado');
+
+            if(empty($student->registration)) {
+                $hasRegistration = sprintf('<span class="badge badge-pill badge-%s">%s</span>', 'light', 'Sem Matrícula');
+            }
+
 
             $students[$i] = [
                 'image'      =>'<img alt="image" src="'.imageProfile($student->user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
@@ -142,7 +153,7 @@ class StudentController extends Controller
                 'phone_wpp'  => $user->phone_wpp,
                 'phone2'     => $user->phone2,
                 'created_at' => date('d/m/Y', strtotime($student->created_at)),
-                'status'     => component(new BadgeStatus($student->enabled)),
+                'status'     =>  $hasRegistration
             ];
         }
 

@@ -90,6 +90,7 @@ class AccountPayableController extends Controller
 
         return responseRedirect('payable.index', $this->accountPayable::MSG_UPDATE_SUCCESS);
 
+
     }
 
     public function destroy($account)

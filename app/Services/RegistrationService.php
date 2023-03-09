@@ -93,6 +93,18 @@ class RegistrationService extends Services {
         ]);
     }
 
+    public function finishRegistration(Registration $registration, $comments=null ) {
+
+        $registration->scheduledClasses()->delete();
+
+        $this->save($registration, [
+            'status'              => 2,
+            'current'             => 0,
+            'cancellation_date'   => now(),
+            'cancellation_reason' => $comments
+        ]);
+    }
+
     public function updateClassWeek(Registration $registration, $data) {
 
         $registration->classWeek()->delete();

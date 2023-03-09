@@ -24,6 +24,7 @@ class StoreClassPresenceRequest extends FormRequest
     public function rules()
     {
         return [
+            'evolution' => 'required'
             // 'instructor_id' => 'required',
             // 'exercice_id' => 'required|array',
             // 'exercice_id.*' => 'required'
