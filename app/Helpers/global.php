@@ -105,9 +105,14 @@ if(!function_exists('dateDMY')) {
     function dateDMY($date) {
         return date('d/m/Y', strtotime($date));
     }
-
-
 }
+
+if(!function_exists('anchor')) {
+    function anchor($href='#', $label) {
+        return sprintf('<a href="%s">%s</a>', $href, $label);
+    }
+}
+
 
 if(!function_exists('dateExt')) {
     function dateExt($date) {
@@ -124,6 +129,26 @@ if(!function_exists('dateExt')) {
         
 
         return $weekdayName.', ' . date('j', strtotime($date)) . ' de ' . $monthName . ' de ' .$y;
+
+    }
+}
+
+if(!function_exists('toSelectBox')) {
+
+    function toSelectBox($objects, $key='id', $value='name')  {
+
+
+        
+        $options= [];
+
+        foreach($objects as $item) {
+            // $item = (is_object($item)) ? $item->toArray() : $item;
+
+            $options[$item->{$key}] = $item->{$value};
+        }
+
+        return $options;
+
 
     }
 }

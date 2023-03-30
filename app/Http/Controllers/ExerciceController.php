@@ -151,11 +151,12 @@ class ExerciceController extends Controller
 
         foreach($exercices as $i => $exercice) {
 
-            $exercice->name   = sprintf('<a href="%s">%s</a>', route('exercice.show', $exercice), $exercice->name);
-            $exercice->status = component(new BadgeStatus($exercice->enabled));
-            $exercice->type = $exercice->typeText;
-
-            $exercices[$i] = $exercice;
+            $exercices[$i] = [
+                'name'       => anchor(route('exercice.show', $exercice), $exercice->name),
+                'status'     => component(new BadgeStatus($exercice->enabled)),
+                'type'       => $exercice->typeText,
+                'created_at' => $exercice->created_at->format('d/m/Y H:i:s')
+            ];
         }
 
         return responseToDataTable($exercices);

@@ -35,7 +35,7 @@ class RegistrationController extends Controller
     )
     {
         $this->request             = $request;
-        $this->studentService      =  $studentService;
+        $this->studentService      = $studentService;
         $this->planService         = $planService;
         $this->registrationService = $registrationService;
         $this->instructorService   = $instructorService;
@@ -47,7 +47,6 @@ class RegistrationController extends Controller
             return $this->list();
         }
 
-
         return view('registration.index');
     }
 
@@ -55,9 +54,9 @@ class RegistrationController extends Controller
     {
 
         $registration   = new Registration();
-        $plans          = $this->toSelectBox($this->planService->list(true), 'id', 'name');
-        $instructors    = $this->toSelectBox($this->instructorService->list(), 'id', 'name');
-        $paymentMethods = $this->toSelectBox(PaymentMethod::all(), 'id', 'name');
+        $plans          = toSelectBox($this->planService->listEnabled());
+        $instructors    = toSelectBox($this->instructorService->list());
+        $paymentMethods = toSelectBox(PaymentMethod::all());
         $students       = $this->toImageSelectBox($this->studentService->listAllNotRegistrations(), 'id', 'name', 'image');
 
         return view('registration.create', compact('students', 'plans', 'instructors', 'paymentMethods', 'registration'));

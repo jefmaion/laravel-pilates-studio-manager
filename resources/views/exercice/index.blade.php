@@ -35,6 +35,7 @@
                             <th>Exercício</th>
                             <th>Tipo</th>
                             <th>Status</th>
+                            <th>Data de Cadastro</th>
                         </tr>
                     </thead>
                 </table>
@@ -59,6 +60,7 @@
                 {data: 'name'},
                 {data: 'type'},
                 {data: 'status'},
+                {data: 'created_at'},
             ]
         });
     </script>

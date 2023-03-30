@@ -272,7 +272,7 @@
     Voltar
 </a>
 
-@include('user.image-profile-upload', ['route' => route('student.profile.store', $student)])
+@include('user.image-profile-upload', ['user' => $student->user])
 
 @endsection
 

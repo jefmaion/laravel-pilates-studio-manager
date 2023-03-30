@@ -1,5 +1,5 @@
 <div class="d-none">
-    <form method="POST" name="send-photo" action="{{ $route }}" enctype="multipart/form-data">
+    <form method="POST" name="send-photo" action="{{ route('user.image.store', $user) }}" enctype="multipart/form-data">
         @csrf
         <x-form-input type="file" name="profile_image" />
     </form>

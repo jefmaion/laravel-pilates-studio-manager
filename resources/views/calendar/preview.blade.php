@@ -40,8 +40,8 @@
                                     class="mx-1 text-light">|</span>
                                 <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }} <span
                                     class="mx-1 text-light">|</span>
-                                {{-- <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-                                    aria-controls="collapseExample">
+                                {{-- <a data-toggle="collapse" href="#collapseExample" role="button"
+                                    aria-expanded="false" aria-controls="collapseExample">
                                     + Informações
                                 </a> --}}
 
@@ -212,14 +212,20 @@
 
                 @if(empty($class->evolution))
 
- 
+                @if($class->status === 1)
+                <a href="http://">Relatar aula</a>
+                @endif
                 @else
-        
-                @foreach($class->exercices as $exercice)
-                    <span class="badge badge-pill badge-light">{{ $exercice->exercice->name }}</span>
-                @endforeach
 
-                {!! $class->evolution  !!}
+                <div class="mb-3">
+                    @foreach($class->exercices as $exercice)
+                    <span class="badge badge-pill badge-light">{{ $exercice->exercice->name }}</span>
+                    @endforeach
+                </div>
+                {!! $class->evolution !!}
+                <hr>
+                Relatado por <strong>{{ $class->instructor->name }}</strong> em <strong>{{
+                    $class->updated_at->format('d/m/Y H:i:s') }}</strong>
 
                 @endif
 
@@ -227,7 +233,7 @@
 
         </div>
     </div>
-    
+
 
 </div>
 <div class="modal-footer bg-whitesmoke br">
@@ -236,6 +242,55 @@
         <i class="fa fa-times-circle" aria-hidden="true"></i>
         Fechar
     </button>
+
+    <div class="dropdown d-inline">
+
+        <button class="btn btn-primary btn-bslock dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Gerenciar Aula
+        </button>
+
+        <div class="dropdown-menu">
+
+            @if($class->status === 0)
+
+            <a class="dropdown-item has-icon" href="{{ route('calendar.presence', $class) }}">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                Registrar Presença
+            </a>
+
+            <a class="dropdown-item has-icon" href="{{ route('calendar.absense', $class) }}">
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                Registrar Falta
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            @endif
+
+            @if(!$class->hasScheduledReplacementClass)
+            <a class="dropdown-item has-icon" href="{{ route('calendar.replacement', $class) }}">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                Agendar Reposição
+            </a>
+            @endif
+
+            @if(!$class->evolution && $class->status == 1)
+            <a class="dropdown-item has-icon" href="{{ route('calendar.replacement', $class) }}">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                Registrar Evolução
+            </a>
+            @endif
+
+            <a class="dropdown-item has-icon" href="http://127.0.0.1:8000/student/2/edit">
+                <i class="fas fa-edit    "></i> Editar Dados da Aula
+            </a>
+
+        </div>
+    </div>
+
+
+
+  
 
     @if(!$class->hasScheduledReplacementClass)
     <a name="" id="" class="btn btn-success" href="{{ route('calendar.replacement', $class) }}">
@@ -252,7 +307,7 @@
     @endif
 
     @if($class->status === 0)
-
+{{-- 
     <a name="" id="" class="btn btn-danger text-white" href="{{ route('calendar.absense', $class) }}">
         <i class="fa fa-times-circle" aria-hidden="true"></i>
         Registrar Falta
@@ -262,7 +317,7 @@
     <a name="" id="" class="btn btn-success" href="{{ route('calendar.presence', $class) }}">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
         Registrar Presença
-    </a>
+    </a> --}}
 
     @endif
 

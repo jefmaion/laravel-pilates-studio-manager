@@ -121,6 +121,7 @@
                                     <th>Dia</th>
                                     <th>Hora</th>
                                     <th>Instrutor</th>
+                                    <th>Data de Cadastro</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -140,6 +141,10 @@
                                             <img src="{{ imageProfile($class->instructor->user->image) }}" alt="...">
                                           </figure>
                                         {{ $class->instructor->user->name }}
+                                    </td>
+
+                                    <td>
+                                        {{ $class->created_at->format('d/m/Y H:i:s') }}
                                     </td>
         
                                     <td>

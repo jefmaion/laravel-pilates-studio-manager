@@ -49,21 +49,16 @@ class StudentController extends Controller
         $student = $this->studentService->create($data);
 
         if($student) {
-            // return responseRedirect(['student.show', $student], $this->studentService::MSG_CREATE_SUCCESS);
-
-            return redirect(route('registration.create'). '?s='.$student->id);
+            return redirect()->route('student.index')->with('success', $this->studentService::MSG_CREATE_SUCCESS);
+            // return redirect(route('registration.create'). '?s='.$student->id);
         } 
     }
 
-    public function show($student, PlanService $planService, InstructorService $instructorService)
+    public function show($student)
     {
-
         if(!$student = $this->studentService->find($student)) {
-            return responseRedirect('student.index', $this->studentService::MSG_NOT_FOUND, 'error');
+            return redirect()->route('student.index')->with('error', $this->studentService::MSG_NOT_FOUND);
         }
-
-
-        // dd($student->evolutionss()->get());
 
         return view('student.show', compact('student'));
     }
@@ -71,7 +66,7 @@ class StudentController extends Controller
     public function edit($student)
     {
         if(!$student = $this->studentService->find($student)) {
-            return responseRedirect('student.index', $this->studentService::MSG_NOT_FOUND, 'error');
+            return redirect()->route('student.index')->with('error', $this->studentService::MSG_NOT_FOUND);
         }
 
         return  view('student.edit', compact('student'));
@@ -81,14 +76,14 @@ class StudentController extends Controller
     {
     
         if(!$student = $this->studentService->find($student)) {
-            return responseRedirect('student.index', $this->studentService::MSG_NOT_FOUND, 'error');
+            return redirect()->route('student.index')->with('error', $this->studentService::MSG_NOT_FOUND);
         }
 
         if(!$this->studentService->save($student, requestData($request))) {
-            return responseRedirect(['student.show', $student], $this->studentService::MSG_UPDATE_ERROR, 'error');
+            return redirect()->route('student.show', $student)->with('error', $this->studentService::MSG_UPDATE_ERROR);
         } 
 
-        return responseRedirect(['student.show', $student], $this->studentService::MSG_UPDATE_SUCCESS);
+        return redirect()->route('student.show', $student)->with('success', $this->studentService::MSG_UPDATE_SUCCESS);
 
     }
 
@@ -104,31 +99,6 @@ class StudentController extends Controller
 
         return responseRedirect('student.index',$this->studentService::MSG_DELETE_SUCCESS);
 
-    }
-
-    public function profile(StoreProfilePhotoRequest $request, $id) {
-
-        $student = $this->studentService->find($id);
-
-        $user = $student->user;
-
-        $routes = [
-            'save-image' => route('student.profile.store', $student),
-            'back'       => route('student.show', $student)
-        ];
-
-        if($request->isMethod('get')) {
-            return view('user.image-profile-upload', compact('user', 'routes'));
-        }
-
-
-        if(!$this->studentService->saveProfilePhoto($student, $request->profile_image)) {
-            return redirect()->route('student.profile', $student)->with('error', 'Erro ao Salvar');
-        }
-
-        return redirect()->route('student.show', $student)->with('success', 'Foto adicionada com sucesso');
-        
-        
     }
 
 
@@ -149,10 +119,10 @@ class StudentController extends Controller
 
             $students[$i] = [
                 'image'      =>'<img alt="image" src="'.imageProfile($student->user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
-                'name'       =>  sprintf('<a href="%s"> %s</a>', route('student.show', $student), $user->name),
+                'name'       =>  anchor(route('student.show', $student), $user->name),
                 'phone_wpp'  => $user->phone_wpp,
                 'phone2'     => $user->phone2,
-                'created_at' => date('d/m/Y', strtotime($student->created_at)),
+                'created_at' => $user->created_at->format('d/m/Y H:i:s'),
                 'status'     =>  $hasRegistration
             ];
         }

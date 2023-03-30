@@ -136,30 +136,6 @@ class InstructorController extends Controller
     }
 
 
-    public function profile(StoreProfilePhotoRequest $request, $id) {
-
-
-        $instructor = $this->instructorService->find($id);
-
-        $user = $instructor->user;
-
-        $routes = [
-            'save-image' => route('instructor.profile.store', $instructor),
-            'back' => route('instructor.show', $instructor)
-        ];
-
-        if($request->isMethod('get')) {
-            return view('user.image-profile-upload', compact('user', 'routes'));
-        }
-
-        if(!$this->instructorService->saveProfilePhoto($instructor, $request->profile_image)) {
-            return redirect()->route('instructor.profile', $instructor)->with('error', 'Erro ao Salvar');
-        }
-
-        return redirect()->route('instructor.show', $instructor)->with('success', 'Foto adicionada com sucesso');
-        
-    }
-
     public function list()
     {
         $instructors = $this->instructorService->list();
@@ -169,13 +145,13 @@ class InstructorController extends Controller
             $user = $instructor->user;
 
             $instructors[$i] = [
-                'image' => '<img alt="image" src="'.imageProfile($instructor->user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
-                'name'       =>  sprintf('<a href="%s"> %s (%s)</a>', route('instructor.show', $instructor), $user->name, $user->nickname),
+                'image'      => '<img alt="image" src="'.imageProfile($instructor->user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
+                'name'       => anchor(route('instructor.show', $instructor), $user->name),
                 'status'     => component(new BadgeStatus($instructor->enabled)),
                 'profession' => $instructor->profession,
                 'phone_wpp'  => $user->phone_wpp,
                 'phone2'     => $user->phone2,
-                'created_at' => date('d/m/Y', strtotime($instructor->created_at)),
+                'created_at' => $instructor->created_at->format('d/m/Y H:i:s'),
             ];
         }
 

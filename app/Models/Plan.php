@@ -10,4 +10,6 @@ class Plan extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'duration', 'class_per_week', 'value', 'description', 'enabled'];
+
+
 }

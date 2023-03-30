@@ -25,12 +25,8 @@
                     <div class="dropdown">
                         <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">Ações</a>
                         <div class="dropdown-menu dropdown-menu-right">
-
-
-
                             <a href="#" class="dropdown-item has-icon" data-toggle="modal" data-target="#modal-finish-registration"><i class="far fa-edit"></i> Finalizar Matrícula</a>
                             
-
                             @if($registration->canRenew)
                                 <a href="#" class="dropdown-item has-icon" data-toggle="modal" data-target="#modal-re-enroll"><i class="fas fa-sync"></i> Renovar Matrícula</a>
                             @endif
@@ -113,18 +109,24 @@
 
                         @else
                         <x-data-table>
-                            <thead>
+                            <thead class="thead-light">
                                 <tr>
+                                    <th>Dia</th>
                                     <th>Data</th>
                                     <th>Hora</th>
-                                    <th>Dia</th>
+                                    
                                     <th>Instrutor</th>
                                     <th>Status</th>
+                                    <th>Comentários</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($registration->classes as $class)
                                 <tr>
+
+                                    <td>
+                                        {{ $class->weekdayName }}
+                                    </td>
 
                                     <td data-search="{{ date('d/m/Y', strtotime($class->date)) }}">
                                         {{ date('d/m/Y', strtotime($class->date)) }}
@@ -134,9 +136,7 @@
                                         {{ $class->time }}
                                     </td>
 
-                                    <td>
-                                        {{ $class->weekdayName }}
-                                    </td>
+                                   
 
                                     <td>
                                         <figure class="avatar mr-2 avatar-sm"><img src="{{ imageProfile($class->instructor->user->image) }}"></figure>
@@ -144,6 +144,10 @@
                                     </td>
                                     <td>
                                         {!! $class->statusClass !!}
+                                    </td>
+
+                                    <td>
+                                        {{ $class->comments }}
                                     </td>
                                 </tr>
                                 @endforeach

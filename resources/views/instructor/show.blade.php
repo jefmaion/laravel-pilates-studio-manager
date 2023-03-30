@@ -196,7 +196,7 @@
 </div>
 @endsection
 
-@include('user.image-profile-upload', ['route' => route('instructor.profile.store', $instructor)])
+@include('user.image-profile-upload', ['user' => $instructor->user])
 
 @section('css')
     @include('layouts.plugins.datatables', ['file' => 'css'])

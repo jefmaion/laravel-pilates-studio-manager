@@ -35,6 +35,7 @@
                             <th>Plano</th>
                             <th>Valor</th>
                             <th>Status</th>
+                            <th>Data de Cadastro</th>
                         </tr>
                     </thead>
                 </table>
@@ -59,6 +60,7 @@
                 {data: 'name'},
                 {data: 'value'},
                 {data: 'status'},
+                {data: 'created_at'},
             ]
         });
     </script>

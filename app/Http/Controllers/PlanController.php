@@ -156,11 +156,12 @@ class PlanController extends Controller
 
         foreach($plans as $i => $plan) {
 
-            $plan->name   = sprintf('<a href="%s">%s</a>', route('plan.show', $plan), $plan->name);
-            $plan->status = component(new BadgeStatus($plan->enabled));
-            $plan->value  = USD_BRL($plan->value);
-
-            $plans[$i] = $plan;
+            $plans[$i] = [
+                'name' => anchor(route('plan.show', $plan), $plan->name),
+                'status' => component(new BadgeStatus($plan->enabled)),
+                'value' => USD_BRL($plan->value),
+                'created_at' => $plan->created_at->format('d/m/y H:i:s')
+            ];
         }
 
         return responseToDataTable($plans);

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-<nav aria-label="breadcrumb mr-0">
+<nav aria-label="breadcrumb mr-0 bg-none">
     <ol class="breadcrumb mt-0">
       <li class="breadcrumb-item"><a href="#">Home</a></li>
       <li class="breadcrumb-item active" aria-current="page">Aulas</li>

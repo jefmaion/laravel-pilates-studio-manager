@@ -20,6 +20,7 @@
 
             <!-- Main Content -->
             <div class="main-content">
+                
                 @yield('breadcrumb')
                 
                 <section class="section">
