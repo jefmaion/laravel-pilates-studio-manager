@@ -33,6 +33,7 @@
                             <th width="1%">Aluno</th>
                             <th>Aluno</th>
                             <th>Plano</th>
+                            <th>Inicio</th>
                             <th>Vencimento</th>
                             <th>Renovação</th>
                             <th>Status</th>
@@ -60,6 +61,7 @@
                 {data: 'image'},
                 {data: 'student'},
                 {data: 'plan'},
+                {data: 'start'},
                 {data: 'end'},
                 {data: 'renew'},
                 {data: 'status'},

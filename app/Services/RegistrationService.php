@@ -238,6 +238,8 @@ class RegistrationService extends Services {
 
         for($i=1; $i<= $registration->plan->duration; $i++) {
 
+            $payDate = null;
+
             $paymentMethod = $data['other_payment_method'];
             $status = 0;
 
@@ -247,6 +249,7 @@ class RegistrationService extends Services {
 
                 if(isset($data['isPaid'])) {
                     $status = 1;
+                    $payDate = $dueDate;
                 }
 
                 
@@ -258,7 +261,7 @@ class RegistrationService extends Services {
                 'initial_payment_method_id' => $paymentMethod,
                 'payment_method_id' => $paymentMethod,
                 'due_date' => $dueDate,
-                'pay_date' => $dueDate,
+                'pay_date' => $payDate,
                 'value' => $registration->final_value,
                 'initial_value' => $registration->final_value,
                 // 'description' => 'Mensalidade '.$i.'/'.$registration->plan->duration.' de '. $registration->student->user->name,

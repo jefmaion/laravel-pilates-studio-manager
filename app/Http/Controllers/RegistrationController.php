@@ -165,6 +165,7 @@ class RegistrationController extends Controller
                 'plan'    => $registration->plan->name,
                 'status'  => $registration->statusRegistration,
                 'renew'   => $registration->renewPeriod,
+                'start'     => date('d/m/Y', strtotime($registration->start)),
                 'end'     => date('d/m/Y', strtotime($registration->end)),
                 'value'   => 'R$ '. USD_BRL($registration->final_value)
             ];

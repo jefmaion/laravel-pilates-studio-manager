@@ -53,7 +53,8 @@ class Student extends Model
     }
 
     public function getLastClassesAttribute() {
-        return $this->evolutions()->where('finished', 1)->orderBy('date', 'desc')->get();
+        // return $this->evolutions()->where('finished', 1)->orderBy('date', 'desc')->get();
+        return $this->classes()->where('finished', 1)->orderBy('date', 'DESC')->limit(3)->get();
     }
 
     public function lastEvolution() {

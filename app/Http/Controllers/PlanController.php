@@ -157,9 +157,9 @@ class PlanController extends Controller
         foreach($plans as $i => $plan) {
 
             $plans[$i] = [
-                'name' => anchor(route('plan.show', $plan), $plan->name),
-                'status' => component(new BadgeStatus($plan->enabled)),
-                'value' => USD_BRL($plan->value),
+                'name'       => anchor(route('plan.show', $plan), $plan->name),
+                'status'     => component(new BadgeStatus($plan->enabled)),
+                'value'      => 'R$ ' . USD_BRL($plan->value),
                 'created_at' => $plan->created_at->format('d/m/y H:i:s')
             ];
         }
