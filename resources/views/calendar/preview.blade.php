@@ -182,25 +182,22 @@
                         <tr>
                             <th>Data</th>
                             <th>Valor</th>
-                            <th>Forma de Pagamento</th>
+                            <th>Valor c/ Juros</th>
+                            <th>Forma</th>
                             <th>Status</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($class->student->registration->lateInstallments as $inst)
-
-
-
                         <tr>
                             <td>{{ date('d/m/Y', strtotime($inst->due_date)) }}</td>
                             <td>R$ {{ USD_BRL($inst->value) }}</td>
+                            <td>R$ {{ USD_BRL($inst->calculateFees(date('Y-m-d'))) }}</td>
                             <td>{{ $inst->paymentMethod->name }}</td>
+                            <td>{!! $inst->status_label !!}</td>
                             <td>
-                                @if($inst->isLate)
-                                <a href="{{ route('payable.receive', $inst) }}">{!! $inst->status_label !!}</a>
-                                @else
-                                {!! $inst->status_label !!}
-                                @endif
+                                <a href="{{ route('payable.receive', $inst) }}">Receber Mensalidade</a>
                             </td>
                         </tr>
                         @endforeach
@@ -281,7 +278,7 @@
             </a>
             @endif
 
-            <a class="dropdown-item has-icon" href="http://127.0.0.1:8000/student/2/edit">
+            <a class="dropdown-item has-icon" href="#">
                 <i class="fas fa-edit    "></i> Editar Dados da Aula
             </a>
 

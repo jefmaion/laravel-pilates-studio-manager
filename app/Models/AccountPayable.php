@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,6 +37,16 @@ class AccountPayable extends Model
         }
 
         return false;
+    }
+
+    public function calculateFees($payDate) {
+        $fee = 2;
+        $dayFee = 0.033;
+
+        $daysLate  = Carbon::parse($payDate)->diffInDays($this->due_date);
+        $fees      = ($daysLate * $dayFee) / 100;
+
+        return $this->value + ($this->value * ($fee / 100)) + ($fees * $this->value);
     }
     
     

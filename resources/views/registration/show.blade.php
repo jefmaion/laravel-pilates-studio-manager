@@ -75,7 +75,7 @@
                                     {{ date('d/m/y', strtotime($registration->start)) }} até {{ date('d/m/y',
                                     strtotime($registration->end)) }}
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -83,13 +83,14 @@
                         <div><strong>Dias de Aulas</strong></div>
                         <ul>
                             @foreach($registration->classWeek as $week)
-                            <li>{{ Config::get('application.weekdays')[$week->weekday] }} às {{ Config::get('application.class_time')[$week->time] }}</li>
+                            <li>{{ Config::get('application.weekdays')[$week->weekday] }} às {{
+                                Config::get('application.class_time')[$week->time] }}</li>
                             @endforeach
                         </ul>
 
-                        
-                        
-                        
+
+
+
 
                     </div>
                 </div>
@@ -103,27 +104,33 @@
             <div class="card-body">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link  active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                            aria-controls="profile" aria-selected="false">
+                        <a class="nav-link  active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"aria-controls="profile" aria-selected="false">
                             Grade de Aulas
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                            aria-selected="true">
+                        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
                             Mensalidades
                         </a>
                     </li>
                 </ul>
+
                 <div class="tab-content tab-bordsred" id="myTabContent">
                     <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-                        <p class="my-4">
-                            <a name="" id="" class="btn btn-success"
-                                href="{{ route('registration.class.index', $registration) }}" role="button">
-                                Gerenciar Plano de Aulas
-                            </a>
-                        </p>
+                        <div class="row my-3">
+                            <div class="col">
+                                <h4 class="font-weight-light">Grade de Aulas</h4>
+                            </div>
+                            <div class="col text-right">
+                                <a name="" id="" class="btn btn-success"
+                                    href="{{ route('registration.class.index', $registration) }}" role="button">
+                                    Gerenciar Plano de Aulas
+                                </a>
+                            </div>
+                        </div>
+
+
 
                         @if(!$registration->classes()->count())
                         <p>
@@ -135,11 +142,9 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>Dia</th>
-
                                     <th>Data</th>
                                     <th>Hora</th>
                                     <th>Tipo de Aula</th>
-
                                     <th>Instrutor</th>
                                     <th>Status</th>
                                     <th>Comentários</th>
@@ -188,6 +193,16 @@
                     </div>
 
                     <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row my-3">
+                            <div class="col">
+                                <h4 class="font-weight-light">Mensalidades da Matrícula</h4>
+                            </div>
+                            <div class="col">
+
+                            </div>
+                        </div>
+
+                        
                         <x-data-table>
                             <thead class="">
                                 <tr>

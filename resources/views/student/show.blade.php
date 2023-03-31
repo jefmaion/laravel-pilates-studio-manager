@@ -53,6 +53,7 @@
             </div>
             <div class="card-body">
                 <div class="py-4">
+
                     <p class="clearfix">
                         <span class="float-left">
                             Endereço
@@ -69,8 +70,7 @@
                             Bairro
                         </span>
                         <span class="float-right text-muted">
-                            {{ $student->user->district }} - 
-                            {{ $student->user->city }} / {{ $student->user->state }}
+                            {{ $student->user->district }} - {{ $student->user->city }} / {{ $student->user->state }}
                         </span>
                     </p>
                     <p class="clearfix">
