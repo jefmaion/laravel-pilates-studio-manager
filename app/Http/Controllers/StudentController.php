@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProfilePhotoRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
-use App\Services\InstructorService;
-use App\Services\PlanService;
 use App\Services\StudentService;
 use App\Traits\Viacep;
-use App\View\Components\BadgeStatus;
 
 use Illuminate\Http\Request;
 
@@ -50,7 +46,6 @@ class StudentController extends Controller
 
         if($student) {
             return redirect()->route('student.index')->with('success', $this->studentService::MSG_CREATE_SUCCESS);
-            // return redirect(route('registration.create'). '?s='.$student->id);
         } 
     }
 

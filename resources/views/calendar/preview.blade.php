@@ -28,6 +28,7 @@
                         <div class="">
 
                             <div class="mb-2">
+                                <i class="fas fa-boxes"></i> {{ $class->registration->modality->name }} <span class="mx-1 text-light">|</span>
                                 <i class="fas fa-clock"></i> {{ $class->time }} <span class="mx-1 text-light">|</span>
                                 <i class="fas fa-calendar"></i> {{ dateDMY($class->date) }} <span
                                     class="mx-1 text-light">|</span>
@@ -36,8 +37,7 @@
                                 </figure> {{ $class->instructor->user->name }}
                             </div>
                             <div class="mb-2">
-                                <i class="fas fa-boxes"></i> {{ $class->registration->plan->name }} <span
-                                    class="mx-1 text-light">|</span>
+                                <i class="fas fa-boxes"></i> {{ $class->registration->planDuration }} <span class="mx-1 text-light">|</span>
                                 <i class="fa fa-phone"></i> {{ $class->student->user->phone_wpp }} <span
                                     class="mx-1 text-light">|</span>
                                 {{-- <a data-toggle="collapse" href="#collapseExample" role="button"

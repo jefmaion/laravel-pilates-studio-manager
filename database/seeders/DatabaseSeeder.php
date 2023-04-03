@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             // RegistrationSeeder::class
             ExerciceSeeder::class,
             PaymentMethodSeeder::class,
-            HolidaySeeder::class
+            HolidaySeeder::class,
+            ModalitySeeder::class
         ]);
     }
 }

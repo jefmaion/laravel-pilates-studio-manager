@@ -20,9 +20,9 @@ class InstructorSeeder extends Seeder
     {
 
         $data = [
-            ['name' => 'Gleice Reis', 'gender' => 'F', 'phone_wpp' => ''],
-            ['name' => 'Heloisa Gonçalvez', 'gender' => 'F', 'phone_wpp' => ''],
-            ['name' => 'Bianca', 'gender' => 'F', 'phone_wpp' => ''],
+            ['name' => 'Gleice Reis', 'gender' => 'F', 'phone_wpp' => '', 'email' => 'gleice@hotmail.com', 'password' => bcrypt('123456789')],
+            ['name' => 'Heloisa Gonçalvez', 'gender' => 'F', 'phone_wpp' => '', 'email' => 'heloisa@hotmail.com', 'password' => bcrypt('123456789')],
+            ['name' => 'Bianca', 'gender' => 'F', 'phone_wpp' => '', 'email' => 'bianca@hotmail.com', 'password' => bcrypt('123456789')],
         ];
 
         foreach($data as $item) {

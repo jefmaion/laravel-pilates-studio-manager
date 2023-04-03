@@ -164,6 +164,8 @@ class CalendarService extends Services
                 $name = array_shift($d);
             }
 
+            $modality = '<span class="bagde badge-dark badge-pill">'.$class->registration->modality->name.'</span>';
+
             $time  = $class->time;
             $time  = date('H:i', strtotime($time . '+1 hour'));
             $title = '<div class="m-0 ">
@@ -171,7 +173,8 @@ class CalendarService extends Services
                 '<b>'  . $name . '</b> 
                       </div>
                       <div>
-                      ' . appConfig('classTypes')[$class->type]['label'] . '
+                      ' . $modality . ' - 
+                      ' . $class->type . '
                       </div>';
 
             $calendar[] = [

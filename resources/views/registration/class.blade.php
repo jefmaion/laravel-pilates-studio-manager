@@ -47,7 +47,7 @@
 
                         <div>
                             <i class="fas fa-caret-square-right"></i>
-                            {{ $registration->plan->name }}
+                            {{ $registration->planDuration }}
                         </div>
                     
                     </div>
@@ -55,12 +55,12 @@
             </div>
 
             <div class="p-4">
-                @if($registration->classWeek->count() >= $registration->plan->class_per_week)
+                @if($registration->classWeek->count() >= $registration->class_per_week)
                     
                     <p class="text-warning text-center">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                         <b>O número de aulas por semana já está completo.</b>
-                        {{-- O plano atual ({{ $registration->plan->name }}) permite {{ $registration->plan->class_per_week }} aula(s) por semana. --}}
+                        {{-- O plano atual ({{ $registration->duration }}) permite {{ $registration->plan->class_per_week }} aula(s) por semana. --}}
                         
                     </p>
 
@@ -71,7 +71,7 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modelId">
                         Agenda De Matrículas
                       </button>
-                    <button type="submit" class="btn btn-primary btn-blocsk">Adicionar Aula ({{ $registration->plan->class_per_week - $registration->classWeek->count() }})</button>
+                    <button type="submit" class="btn btn-primary btn-blocsk">Adicionar Aula ({{ $registration->class_per_week - $registration->classWeek->count() }})</button>
                 </form>
                 @endif
                 <br>

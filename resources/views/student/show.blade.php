@@ -47,7 +47,11 @@
             </div>
         </x-user-card>
 
-        <div class="card card-secondary">
+        
+    </div>
+
+    <div class="col-8 d-flex">
+        <div class="card flex-fill card-secondary">
             <div class="card-header">
                 <h4>Dados Cadastrais</h4>
             </div>
@@ -95,9 +99,9 @@
         </div>
     </div>
 
-    <div class="col-8 d-flex">
+    <div class="col-12 ">
 
-        <div class="card flex-fill card-secondary">
+        <div class="card card-secondary">
             <div class="card-header">
                 <h4>
                     <i class="fa fa-users" aria-hidden="true"></i>
@@ -167,13 +171,12 @@
                             <thead>
                                 <tr>
                                     <th>Ano</th>
+                                    <th>Modalidade</th>
                                     <th>Plano</th>
-                                    <th>Início</th>
-                                    <th>Fim</th>
+                                    <th>Período</th>
                                     <th>Valor</th>
-                                    <th>Nº Aulas</th>
-                                    <th>Nº Presenças</th>
-                                    <th>Nº Faltas</th>
+                                    <th>Aulas/Presença/Falta</th>
+        
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -181,13 +184,11 @@
                                 @foreach($student->registrations()->orderBy('id', 'desc')->get() as $registration)
                                 <tr>
                                     <td scope="row">{{ date('Y', strtotime($registration->created_at)) }}</td>
-                                    <td>{{ $registration->plan->name }}</td>
-                                    <td>{{ dateDMY($registration->start) }}</td>
-                                    <td>{{ dateDMY($registration->end) }}</td>
+                                    <td>{{ $registration->modality->name }}</td>
+                                    <td>{{ $registration->planDuration }}</td>
+                                    <td>{{ dateDMY($registration->start) }} / {{ dateDMY($registration->end) }}</td>
                                     <td>R$ {{ USD_BRL($registration->final_value) }}</td>
-                                    <td>{{ $registration->classes->count() }}</td>
-                                    <td>{{ $registration->presenceClasses }}</td>
-                                    <td>{{ $registration->absenseClasses }}</td>
+                                    <td>{{ $registration->classes->count() }} / {{ $registration->presenceClasses }} / {{ $registration->absenseClasses }}</td>
                                     <td>{!!$registration->statusRegistration!!}</td>
                                 </tr>
                                 @endforeach
@@ -203,6 +204,7 @@
                                     <th>Ano</th>
                                     <th>Dia</th>
                                     <th>Hora</th>
+                                    <th>Modalidade</th>
                                     <th>Instrutor Agendado</th>
                                     <th>Instrutor Efetivo</th>
                                     <th>Status</th>
@@ -215,6 +217,7 @@
                                     <td scope="row">{{ date('Y', strtotime($class->created_at)) }}</td>
                                     <td>{{ $class->date }}</td>
                                     <td>{{ dateDMY($class->time) }}</td>
+                                    <td>{{ $class->registration->modality->name }}</td>
                                     <td>{{ $class->scheduledInstructor->user->name }}</td>
                                     <td>{{ $class->instructor->user->name }}</td>
                                     <td>{!!$class->statusClass!!}</td>

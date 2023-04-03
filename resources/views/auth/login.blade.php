@@ -56,7 +56,7 @@
 
                             <div class="card-body">
 
-                                <img src="{{ asset('img/logo.png') }}" alt="" height="100" class="mx-auto mx-auto d-block mb-4">
+                                {{-- <img src="{{ asset('img/logo.png') }}" alt="" height="100" class="mx-auto mx-auto d-block mb-4"> --}}
 
                                 <form method="POST" action="{{ route('login') }}">
 

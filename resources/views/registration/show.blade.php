@@ -71,7 +71,8 @@
                                 </div>
                                 <div>
                                     <i class="fas fa-caret-square-right"></i>
-                                    {{ $registration->plan->name }} <span class="mx-1 text-light">/</span>
+                                    {{ $registration->modality->name }} <span class="mx-1 text-light">/</span>
+                                    {{ $registration->planDuration }} <span class="mx-1 text-light">/</span>
                                     {{ date('d/m/y', strtotime($registration->start)) }} até {{ date('d/m/y',
                                     strtotime($registration->end)) }}
                                 </div>

@@ -35,11 +35,12 @@ class RegistrationService extends Services {
 
     public function makeRegistration($data) {
 
-        $plan    = $this->planService->find($data['plan_id']);
+        // $plan    = $this->planService->find($data['plan_id']);
         $student = $this->studentService->find($data['student_id']);
 
-        $data['end']         = date('Y-m-d', strtotime($data['start'] . ' +'.$plan->duration.' months'));
-        $data['final_value'] = $data['value'] - ($data['value'] * ($data['discount'] / 100));
+        $data['end']         = date('Y-m-d', strtotime($data['start'] . ' +'.$data['duration'].' months'));
+        // $data['value'] = $data['value'] - ($data['value'] * ($data['discount'] / 100));
+        // $data['value'] = $data['value'];
         $data['student_id']  = $student->id;
         $data['current']     = 1;
         $data['status']      = 1;
@@ -163,7 +164,7 @@ class RegistrationService extends Services {
             $order++;
         }
 
-        $registration->class_value = $registration->final_value / $numClasses;
+        $registration->class_value = $registration->value / $numClasses;
         $registration->save();
         
         return true;
@@ -218,7 +219,7 @@ class RegistrationService extends Services {
             $order++;
         }
 
-        $registration->class_value = $registration->final_value / $numClasses;
+        $registration->class_value = $registration->value / $numClasses;
         $registration->save();
         
         return true;
@@ -236,7 +237,7 @@ class RegistrationService extends Services {
             $data['first_payment_method'] = 1;
         }
 
-        for($i=1; $i<= $registration->plan->duration; $i++) {
+        for($i=1; $i<= $data['duration']; $i++) {
 
             $payDate = null;
 
@@ -262,10 +263,10 @@ class RegistrationService extends Services {
                 'payment_method_id' => $paymentMethod,
                 'due_date' => $dueDate,
                 'pay_date' => $payDate,
-                'value' => $registration->final_value,
-                'initial_value' => $registration->final_value,
+                'value' => $registration->value,
+                'initial_value' => $registration->value,
                 // 'description' => 'Mensalidade '.$i.'/'.$registration->plan->duration.' de '. $registration->student->user->name,
-                'description' => $registration->student->user->name . ' ('.$i.'/'.$registration->plan->duration.')',
+                'description' => $registration->student->user->name . ' ('.$i.'/'.$data['duration'].')',
                 'status' => $status,
                 'order' => $i
             ]);

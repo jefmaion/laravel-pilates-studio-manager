@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Registration;
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Models\Instructor;
+use App\Models\Modality;
 use App\Models\PaymentMethod;
 use App\Models\Plan;
 use App\Models\Student;
@@ -57,9 +58,10 @@ class RegistrationController extends Controller
         $plans          = toSelectBox($this->planService->listEnabled());
         $instructors    = toSelectBox($this->instructorService->list());
         $paymentMethods = toSelectBox(PaymentMethod::all());
+        $modalities = toSelectBox(Modality::all());
         $students       = $this->toImageSelectBox($this->studentService->listAllNotRegistrations(), 'id', 'name', 'image');
 
-        return view('registration.create', compact('students', 'plans', 'instructors', 'paymentMethods', 'registration'));
+        return view('registration.create', compact('students', 'plans', 'instructors', 'paymentMethods', 'registration', 'modalities'));
     }
 
     public function store(StoreRegistrationRequest $request)
@@ -162,7 +164,8 @@ class RegistrationController extends Controller
             $data[] = [
                 'image'   => '<img alt="image" src="'.imageProfile($user->image).'" class="rounded-circle" width="45" data-toggle="title" title="">',
                 'student' =>  sprintf('<a href="%s"> %s</a>', route('registration.show', $registration), $user->name),
-                'plan'    => $registration->plan->name,
+                'plan'    => $registration->planDuration,
+                'modality'    => $registration->modality->name,
                 'status'  => $registration->statusRegistration,
                 'renew'   => $registration->renewPeriod,
                 'start'     => date('d/m/Y', strtotime($registration->start)),
@@ -214,7 +217,7 @@ class RegistrationController extends Controller
             $plan = $plans[rand(0, count($plans)-1)];
             $pay1 = $plans[rand(0, count($payments)-1)];
             $pay2 = $plans[rand(0, count($payments)-1)];
-            $start = date('Y-m-d', strtotime(Carbon::parse('2022-10-01')->addDays(rand(1, 365))));
+            $start = date('Y-m-d', strtotime(Carbon::parse('2023-01-01')->addDays(rand(1, 365))));
 
             $data = [];
             $data['plan_id']     = $plan->id;

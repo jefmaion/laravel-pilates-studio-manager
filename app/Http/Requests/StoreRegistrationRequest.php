@@ -37,9 +37,13 @@ class StoreRegistrationRequest extends FormRequest
 
         return [
             'student_id' => 'required',
-            'plan_id' => 'required',
+            'modality_id' => 'required',
+            // 'plan_id' => 'required',
             'due_date' => 'required',
             'start' => 'required',
+            'class_per_week' => 'required',
+            'duration' => 'required',
+            'value' => 'required'
 
 
             // 'class' => 'array|min:'.$min.'|max:'.$min,

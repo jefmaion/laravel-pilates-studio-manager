@@ -8,37 +8,37 @@
           <x-select2-image name="student_id" value="{{ app('request')->input('s') }}" :options="$students" />
     </div>
 
-    <div class="col-3 form-group">
+    <div class="col-2 form-group">
+        <label>Modalidade</label>
+        <x-form-input type="select" class="select2" name="modality_id" value="{{ $registration->modality_id }}" :options="$modalities" />
+    </div>
+
+    <div class="col-2 form-group">
+        <label>Tipo do Plano</label>
+        <x-form-input type="select" class="select2" name="duration" value="" :options="[1 => 'Mensal', 3 => 'Trimestral']" />
+    </div>
+
+    <div class="col-2 form-group">
         <label>Inicio das Aulas</label>
         <x-form-input type="date" name="start"  value="{{ date('Y-m-d') }}" />
     </div>
 
-    <div class="col-9 form-group">
-        <label>Plano</label>
-        <x-form-input type="select" class="select2" name="plan_id" value="{{ $registration->plan_id }}" :options="$plans" />
-    </div>
-
-    <div class="col-3 form-group">
-        <label>Dia de Vencimento</label>
+    <div class="col-2 form-group">
+        <label>Dia de Vencto.</label>
         <x-form-input type="number" name="due_date" value="{{ $registration->due_date ?? date('d') }}" />
     </div>
 
-    
+    <div class="col-2 form-group">
+        <label>Aulas por Semana</label>
+        <x-form-input type="number" classss="money" name="class_per_week" value="" />
+    </div>
 
-    <div class="col-3 form-group">
-        <label>Valor</label>
+    
+    <div class="col-2 form-group">
+        <label>Valor da Mensalidade</label>
         <x-form-input type="text" classs="money" name="value" value="{{ $registration->value }}" />
     </div>
 
-    <div class="col-3 form-group">
-        <label>Desconto</label>
-        <x-form-input type="number" name="discount" value="{{ $registration->discount }}" />
-    </div>
-
-    <div class="col-3 form-group">
-        <label>Valor Final</label>
-        <x-form-input type="text" classs="money" name="final_value" value="{{ $registration->final_value }}" />
-    </div>
 
     <div class="col-12 form-group">
         <label>Observações</label>

@@ -79,7 +79,8 @@ class StudentService extends Services {
     }
 
     public function listAllNotRegistrations() {
-        return $this->student->doesntHave("registration")->get();
+        return $this->list();
+        // return $this->student->doesntHave("registration")->get();
     }
 
 

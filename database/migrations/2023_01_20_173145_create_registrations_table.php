@@ -19,13 +19,12 @@ class CreateRegistrationsTable extends Migration
             $table->softDeletes();
 
             $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('plan_id');
-            
+
             $table->integer('current')->nullable();
+            $table->integer('duration')->nullable();
+            $table->integer('class_per_week');
             $table->integer('due_date')->nullable();
             $table->float('value')->nullable();
-            $table->float('discount')->nullable();
-            $table->float('final_value')->nullable();
             $table->float('class_value')->nullable();
             $table->date('start');
             $table->date('end');
@@ -33,11 +32,7 @@ class CreateRegistrationsTable extends Migration
             $table->integer('status')->nullable();
             $table->date('cancellation_date')->nullable();
             $table->string('cancellation_reason', 1000)->nullable();
-
-
-            
             $table->foreign('student_id')->references('id')->on('students');
-            $table->foreign('plan_id')->references('id')->on('plans');
             
         });
     }

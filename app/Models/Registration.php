@@ -10,16 +10,27 @@ class Registration extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['plan_id', 'student_id', 'start', 'end', 'due_date', 'current', 'value', 'discount', 'final_value', 'status', 'cancellation_date', 'cancellation_date', 'cancellation_reason'];
+    protected $fillable = ['plan_id', 'modality_id', 'student_id',  'class_per_week', 'duration', 'start', 'end', 'due_date', 'current', 'value', 'discount', 'final_value', 'status', 'cancellation_date', 'cancellation_date', 'cancellation_reason'];
     protected $dates = ['start', 'end'];
+
+
+    protected $_duration = [
+        1 => 'Mensal',
+        3 => 'Trimestral'
+    ];
 
     public function student() {
         return $this->belongsTo(Student::class);
     }
 
-    public function plan() {
-        return $this->belongsTo(Plan::class);
+    // public function plan() {
+    //     return $this->belongsTo(Plan::class);
+    // }
+
+    public function modality() {
+        return $this->belongsTo(Modality::class);
     }
+    
 
     public function installments() {
         return $this->hasMany(AccountPayable::class);
@@ -53,8 +64,13 @@ class Registration extends Model
         return $this->classes()->where('status', 3)->where('finished', 1)->count();
     }
     
+    
     public function getDaysToRenewAttribute() {
         return now()->diffInDays(Carbon::parse($this->end), false);
+    }
+
+    public function getPlanDurationAttribute() {
+        return $this->_duration[$this->duration];
     }
 
     public function getDataByWeekday($weekday) {

@@ -32,7 +32,9 @@
                         <tr>
                             <th width="1%">Aluno</th>
                             <th>Aluno</th>
+                            <th>Modalidade</th>
                             <th>Plano</th>
+                            
                             <th>Inicio</th>
                             <th>Vencimento</th>
                             <th>Renovação</th>
@@ -60,7 +62,9 @@
             columns: [
                 {data: 'image'},
                 {data: 'student'},
+                {data: 'modality'},
                 {data: 'plan'},
+                
                 {data: 'start'},
                 {data: 'end'},
                 {data: 'renew'},
